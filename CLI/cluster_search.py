@@ -538,28 +538,3 @@ def main():
 if __name__ == "__main__":
     main()
 
-
-#python cluster/cluster_search.py data/D90_Lung_upload_data_3306234/ /Volumes/PurcellMS/_Nathan\ Croft\ Group/Nathan\ Croft/VSCode/MHC_motif_atlas_ligands/Gibbs_motifs_human/output_matrices_human --hla_types A0204,A0201 --processes 4
-
-#python cluster/cluster_search.py data/D90_Lung_upload_data_3306234/ /Volumes/PurcellMS/_Nathan\ Croft\ Group/Nathan\ Croft/VSCode/MHC_motif_atlas_ligands/Gibbs_motifs_human/output_matrices_human --processes 4
-
-# /Volumes/PurcellMS/_Nathan Croft Group/Nathan Croft/VSCode/MHC_motif_atlas_ligands/Gibbs_motifs_human/
-
-# python cluster/cluster_search.py data/D90_Lung_upload_data_3306234_6/ /Volumes/PurcellMS/_Nathan\ Croft\ Group/Nathan\ Croft/VSCode/MHC_motif_atlas_ligands/Gibbs_motifs_human/output_matrices_human --processes 4
-
-
-
-
-#
-
-#PBMC /Volumes/PurcellMS/_Nathan Croft Group/Nathan Croft/VSCode/misc_files/HLA_matching/PBMC_601
-
-
-#python cluster/cluster_search.py /Volumes/PurcellMS/_Nathan Croft Group/Nathan Croft/VSCode/misc_files/HLA_matching/PBMC_601 /Volumes/PurcellMS/_Nathan\ Croft\ Group/Nathan\ Croft/VSCode/MHC_motif_atlas_ligands/Gibbs_motifs_human/output_matrices_human --processes 4
-
-
-#python cluster/cluster_search.py /Volumes/PurcellMS/_Nathan\ Croft\ Group/Nathan\ Croft/VSCode/misc_files/HLA_matching/PBMC_601 /Volumes/PurcellMS/_Nathan\ Croft\ Group/Nathan\ Croft/VSCode/MHC_motif_atlas_ligands/Gibbs_motifs_human/output_matrices_human --processes 4 --output_folder cluster/output/pbmc --hla_types A0201,A0101,B1302,B3503,C0401
-
-
-
-#python cluster/cluster_search.py /Volumes/PurcellMS/_Nathan Croft Group/Nathan Croft/VSCode/misc_files/HLA_matching/PBMC_601 /Volumes/PurcellMS/_Nathan\ Croft\ Group/Nathan\ Croft/VSCode/MHC_motif_atlas_ligands/Gibbs_motifs_human/output_matrices_human --processes 4 --output_folder cluster/output --hla_types A0201,A0101,B1302,B3503,C0401
