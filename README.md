@@ -8,10 +8,13 @@ HLA-PepClust `CLI` module is designed for identifying HLA type by clustering pep
 Ensure you have the following installed on your system:
 - Python 3.9 or higher
 - `pip` (Python package installer)
-## Download or clone the git repo
-    ```bash
-    git clone https://github.com/Sanpme66/HLA-PepClust.git
-    ```
+
+## Download or Clone the Git Repository
+
+```bash
+git clone https://github.com/Sanpme66/HLA-PepClust.git
+```
+
 
 ## Setting Up the Python Environment
 
