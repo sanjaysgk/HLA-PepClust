@@ -19,7 +19,7 @@ class ClusterSearch:
     def __init__(self):
         self.correlation_dict = {}
         self.valid_HLA = []
-        self._outfolder = self._make_dir('output',self.generate_unique_random_ids(6)[0])
+        
         
     def generate_unique_random_ids(self, count: int) -> list:
         """
@@ -73,7 +73,7 @@ class ClusterSearch:
         Check if the HLA type is in the list.
 
         :param HLA_list: List of HLA types
-        :param ref_folder: Reference folder containing HLA files
+        :param ref_folder: Reference folder containing HLA Matrix files
         :return: True if HLA type is in the list, False otherwise
         """
         if not HLA_list:
@@ -150,7 +150,7 @@ class ClusterSearch:
         return True
 
 
-    def compute_correlations(self, gibbs_folder: str, human_reference_folder: str, n_clusters:str ,hla_list: str = None) -> None:
+    def compute_correlations(self, gibbs_folder: str, human_reference_folder: str, n_clusters:str ,output_path:str,hla_list: str = None) -> None:
         """
         Compute correlations between test and reference Gibbs matrices.
 
@@ -159,7 +159,7 @@ class ClusterSearch:
         :param hla_list: List of HLA types to process (optional, default is all available types)
         """
         gibbs_matrix_folder = os.path.join(gibbs_folder, 'matrices')
-
+        self._outfolder = self._make_dir(output_path,self.generate_unique_random_ids(6)[0])
         
         if hla_list:
             hla_list = hla_list[0].split(",")  # Split if comma-separated string is passed
@@ -448,17 +448,14 @@ class ClusterSearch:
                 # print("####"*100)
                 # print(HLA_list)
                 # time.sleep(10)
-                
-                
-                
                 if u_hla:
                     u_hla_nat_img = self._naturally_presented_log(self.formate_HLA_DB(u_hla[0]), DB_image_folder)
                     title3 = f"{self.formate_HLA_DB(u_hla[0])} -> {row}: {corr:.2f}" if u_hla else "Provided HLA type found"
                 else:
-                    u_hla_nat_img = None  # Empty image if no alternative found
+                    u_hla_nat_img = None  
                     title3 = "Provided HLA type found"
             else:
-                u_hla_nat_img = None  # If column is in HLA_list, use the original image
+                u_hla_nat_img = None  
                 title3 = "Provided HLA type found"
             
             # Open the images
@@ -468,13 +465,13 @@ class ClusterSearch:
                 # title3 = f"{formate_HLA_DB(u_hla[0])} -> {row}: {corr:.2f}" if u_hla else "Provided HLA type found"
 
 
-                # Handle missing image (empty image or user-provided alternative)
+               
                 if u_hla_nat_img:
                     img3 = Image.open(u_hla_nat_img)
                 else:
                     img3 = Image.new('RGB', (img1.width, img1.height), color=(255, 255, 255))  # Empty image
                 
-                # Add the title to both images with larger font size
+                
                 img1 = self.add_title(img1, title, position=(img1.width // 4, 5), font_size=60)  # Increased font size
                 img2 = self.add_title(img2, title2, position=(img2.width // 4, 5), font_size=60)  # Increased font size
                 img3 = self.add_title(img3, title3, position=(img2.width // 4, 5), font_size=60)  # Increased font size
@@ -482,14 +479,14 @@ class ClusterSearch:
                 # Append both images
                 images.append(img1)
                 images.append(img2)
-                images.append(img3)  # Add the third image or empty image
+                images.append(img3)  
 
         # Calculate grid dimensions
-        rows = (len(images) + columns - 1) // columns  # Round up the number of rows needed
+        rows = (len(images) + columns - 1) // columns  
         width = images[0].width * columns
         height = images[0].height * rows
 
-        # Create a new blank image with the calculated dimensions
+        
         grid_image = Image.new('RGB', (width, height))
 
         # Paste the images into the grid, 2 images per row
@@ -499,7 +496,7 @@ class ClusterSearch:
             grid_image.paste(img, (col * img.width, row * img.height))
 
         # Save the final image grid
-        grid_image.save(f'{self._outfolder}/campare_image_grid.png')
+        grid_image.save(f'{self._outfolder}/campare_allotypes.png')
         logging.info(f"Output saved in {self._outfolder}")
 
 
@@ -509,7 +506,7 @@ def run_cluster_search(args):
     #     os.makedirs("output", exist_ok=True)
     #     output_folder = "output"
     cluster_search = ClusterSearch()
-    cluster_search.compute_correlations(args.gibbs_folder, args.reference_folder,args.n_clusters, args.hla_types)
+    cluster_search.compute_correlations(args.gibbs_folder, args.reference_folder,args.n_clusters,args.output,args.hla_types)
     # if args.output_folder is None:
     cluster_search.plot_heatmap(args.output_folder)
     cluster_search.check_HLA_DB(args.hla_types, args.reference_folder)
@@ -528,7 +525,7 @@ def main():
     parser.add_argument("--processes", type=int, default=4, help="Number of processes to use")
     parser.add_argument("--n_clusters", type=str, default="all", help="Number of clusters to search for")
     parser.add_argument("--best_KL", type=bool, default=False, help="Find the best KL divergence only")
-    
+    parser.add_argument("--output", type=str, default="output", help="Path to the output folder")
     args = parser.parse_args()
 
     if args.processes > 1:
