@@ -67,6 +67,30 @@ class ClusterSearch:
             os.makedirs(os.path.join(path, f'clust_result_{rand_ids}'))
         return os.path.join(path, f'clust_result_{rand_ids}')
     
+    def _check_HLA_DB(self, HLA_list: list, ref_folder: str) -> bool:
+        """
+        Check if the HLA type is in the list.
+
+        :param HLA_list: List of HLA types
+        :param ref_folder: Reference folder containing HLA files
+        :return: True if HLA type is in the list, False otherwise
+        """
+        if not HLA_list:
+            logging.warning("No HLA types provided. Using all available HLA types from the reference folder.")
+            return True
+
+        DB_hla_list = [self.formate_HLA_DB(filename) for filename in os.listdir(ref_folder)]
+
+        for HLA in HLA_list:
+            if self.formate_HLA_DB(HLA) not in DB_hla_list:
+                logging.error(f"HLA type {HLA} not found in the reference folder.")
+                logging.error(f"Available HLA types: {DB_hla_list}")
+                return False
+            else:
+                self.valid_HLA.append(HLA)
+
+        return True
+    
     @staticmethod
     def format_input_gibbs(gibbs_matrix: str) -> pd.DataFrame:
         """
@@ -91,7 +115,7 @@ class ClusterSearch:
         return df1, df2
     
     @staticmethod
-    def formate_HLA_DB(self,HLA: str) -> str:
+    def formate_HLA_DB(HLA: str) -> str:
         """
         Format the HLA database file name to extract meaningful parts.
 
@@ -303,8 +327,8 @@ class ClusterSearch:
         """
         Find all image paths in the specified folder.
         """
-        print("#####"*100)
-        print(matrix_name)
+        # print("#####"*100)
+        # print(matrix_name)
         for filename in os.listdir(image_folder):
             if filename.endswith(".png") and matrix_name in filename:
                 return os.path.join(image_folder, filename)
@@ -343,7 +367,7 @@ class ClusterSearch:
         """
         # Get the highest correlation for each row (cluster)
         highest_corr_per_row = self.find_highest_correlation_for_each_row(correlation_dict)
-        print(highest_corr_per_row)
+        # print(highest_corr_per_row)
         # Sort HLA_list first by letter (A, B, C...) and then by numeric part (e.g., 0101, 3201)
         sorted_HLA_list = sorted(
             HLA_list,
@@ -366,6 +390,7 @@ class ClusterSearch:
             # Find the image paths
             image_path = self._find_gibbs_image_path(row.split('.')[1], image_folder)
             nat_img = self._naturally_presented_log(self.formate_HLA_DB(col), DB_image_folder)
+            logging.info(f"Cluster matrix {row.split('.')[1]} best allotype match {self.formate_HLA_DB(col)} with correlation {corr:.2f}")
 
             # Check if the column HLA is in the user provided list, if not find another image or empty
             if self.formate_HLA_DB(col.replace('.','')) not in HLA_list:
@@ -426,7 +451,7 @@ class ClusterSearch:
         # Save the final image grid
         grid_image.save(f'{self._outfolder}/campare_image_grid.png')
 
-    
+
 
 def run_cluster_search(args):
     # if args.output_folder is None:
@@ -438,6 +463,7 @@ def run_cluster_search(args):
     cluster_search.plot_heatmap(args.output_folder)
     # cluster_search.create_image_grid(cluster_search.correlation_dict, os.path.join(args.gibbs_folder, 'logos'), os.path.join(args.reference_folder, 'images'), os.path.join(args.output_folder, 'image_grid_D90.png'), HLA_list=cluster_search.valid_HLA)
     cluster_search.create_image_grid(cluster_search.correlation_dict, os.path.join(args.gibbs_folder, 'logos'), str(args.reference_folder).replace('/output_matrices_human',''), os.path.join(args.output_folder, 'image_grid_D90.png'), HLA_list=cluster_search.valid_HLA)
+   
 
 
 def main():
