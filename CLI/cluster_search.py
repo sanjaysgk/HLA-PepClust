@@ -10,6 +10,7 @@ from multiprocessing import Pool
 from PIL import Image, ImageDraw, ImageFont
 import os
 import re
+import time
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -81,7 +82,7 @@ class ClusterSearch:
 
         DB_hla_list = [self.formate_HLA_DB(filename) for filename in os.listdir(ref_folder)]
 
-        for HLA in HLA_list:
+        for HLA in self.formate_HLA_user_in(HLA_list):
             if self.formate_HLA_DB(HLA) not in DB_hla_list:
                 logging.error(f"HLA type {HLA} not found in the reference folder.")
                 logging.error(f"Available HLA types: {DB_hla_list}")
@@ -149,7 +150,7 @@ class ClusterSearch:
         return True
 
 
-    def compute_correlations(self, gibbs_folder: str, human_reference_folder: str, hla_list: str = None) -> None:
+    def compute_correlations(self, gibbs_folder: str, human_reference_folder: str, n_clusters:str ,hla_list: str = None) -> None:
         """
         Compute correlations between test and reference Gibbs matrices.
 
@@ -173,14 +174,41 @@ class ClusterSearch:
         # Check for valid HLA types in the reference folder
         if not self.check_HLA_DB(hla_list, human_reference_folder):
             logging.error("Invalid or missing HLA types. Aborting correlation computation.")
-            return
+            return None
 
-        # Process files for correlation calculation
-        for filename1 in os.listdir(gibbs_matrix_folder):
-            for filename2 in os.listdir(human_reference_folder):
-                # If specific HLA types are provided, check for matching HLA type
-                if hla_list is None or self.formate_HLA_DB(filename2) in hla_list:
-                    self._compute_and_log_correlation(gibbs_matrix_folder, human_reference_folder, filename1, filename2)
+        if n_clusters == "all":
+            logging.info("Processing all clusters")
+            # Process files for correlation calculation
+            for filename1 in os.listdir(gibbs_matrix_folder):
+                for filename2 in os.listdir(human_reference_folder):
+                    # If specific HLA types are provided, check for matching HLA type
+                    if hla_list is None or self.formate_HLA_DB(filename2) in hla_list:
+                        self._compute_and_log_correlation(gibbs_matrix_folder, human_reference_folder, filename1, filename2)
+        elif n_clusters == "best_KL":
+            logging.info(f"Processing for best KL divergence clusters")
+            # Process files for correlation calculation
+            for filename1 in os.listdir(gibbs_matrix_folder):
+                for filename2 in os.listdir(human_reference_folder):
+                    # If specific HLA types are provided, check for matching HLA type
+                    if hla_list is None or self.formate_HLA_DB(filename2) in hla_list:
+                        self._compute_and_log_correlation(gibbs_matrix_folder, human_reference_folder, filename1, filename2)
+        elif n_clusters.isdigit() and int(n_clusters) > 0 and int(n_clusters) <=6:
+            logging.info(f"Processing for {n_clusters} clusters")
+            # Process files for correlation calculation
+            for filename1 in os.listdir(gibbs_matrix_folder):
+                if filename1.endswith(f"of{n_clusters}.mat"):
+                    for filename2 in os.listdir(human_reference_folder):
+                        # If specific HLA types are provided, check for matching HLA type
+                        if hla_list is None or self.formate_HLA_DB(filename2) in hla_list:
+                            self._compute_and_log_correlation(gibbs_matrix_folder, human_reference_folder, filename1, filename2)
+        else:
+            logging.info(f"Given n_clusters params {n_clusters} not correct procceding with 'all' clusters")
+            for filename1 in os.listdir(gibbs_matrix_folder):
+                for filename2 in os.listdir(human_reference_folder):
+                    # If specific HLA types are provided, check for matching HLA type
+                    if hla_list is None or self.formate_HLA_DB(filename2) in hla_list:
+                        self._compute_and_log_correlation(gibbs_matrix_folder, human_reference_folder, filename1, filename2)        
+        
 
     def _compute_and_log_correlation(self, gibbs_matrix_folder: str, human_reference_folder: str, filename1: str, filename2: str) -> None:
         """
@@ -343,6 +371,22 @@ class ClusterSearch:
         :return: Formatted HLA type
         """
         return HLA.replace("HLA_", "").replace("*", "").replace("txt", "").replace(".", "")
+    def formate_HLA_user_in(self,HLA: str) -> str:
+        """
+        Format the HLA database file name to extract meaningful parts.
+
+        :param HLA: HLA file name
+        :return: Formatted HLA type
+        """
+        assert isinstance(HLA, str), "HLA type must be a string."
+        
+        if isinstance(HLA, str):
+            HLA = HLA.split(",")
+            HLA = [x.replace("HLA_", "").replace("*", "").replace("txt", "").replace(".", "") for x in HLA]
+            return HLA
+        else:
+            return HLA.replace("HLA_", "").replace("*", "").replace("txt", "").replace(".", "")
+        
 
     def _naturally_presented_log(self,HLA_name, DB_image_folder):
         """
@@ -401,6 +445,12 @@ class ClusterSearch:
                 # print(HLA_list)
                 # print(formate_HLA_DB(col)[0])
                 # print(u_hla)
+                # print("####"*100)
+                # print(HLA_list)
+                # time.sleep(10)
+                
+                
+                
                 if u_hla:
                     u_hla_nat_img = self._naturally_presented_log(self.formate_HLA_DB(u_hla[0]), DB_image_folder)
                     title3 = f"{self.formate_HLA_DB(u_hla[0])} -> {row}: {corr:.2f}" if u_hla else "Provided HLA type found"
@@ -450,6 +500,7 @@ class ClusterSearch:
 
         # Save the final image grid
         grid_image.save(f'{self._outfolder}/campare_image_grid.png')
+        logging.info(f"Output saved in {self._outfolder}")
 
 
 
@@ -458,12 +509,14 @@ def run_cluster_search(args):
     #     os.makedirs("output", exist_ok=True)
     #     output_folder = "output"
     cluster_search = ClusterSearch()
-    cluster_search.compute_correlations(args.gibbs_folder, args.reference_folder, args.hla_types)
+    cluster_search.compute_correlations(args.gibbs_folder, args.reference_folder,args.n_clusters, args.hla_types)
     # if args.output_folder is None:
     cluster_search.plot_heatmap(args.output_folder)
+    cluster_search.check_HLA_DB(args.hla_types, args.reference_folder)
     # cluster_search.create_image_grid(cluster_search.correlation_dict, os.path.join(args.gibbs_folder, 'logos'), os.path.join(args.reference_folder, 'images'), os.path.join(args.output_folder, 'image_grid_D90.png'), HLA_list=cluster_search.valid_HLA)
     cluster_search.create_image_grid(cluster_search.correlation_dict, os.path.join(args.gibbs_folder, 'logos'), str(args.reference_folder).replace('/output_matrices_human',''), os.path.join(args.output_folder, 'image_grid_D90.png'), HLA_list=cluster_search.valid_HLA)
-   
+    logging.info("Process completed successfully.")
+    
 
 
 def main():
