@@ -6,3 +6,5 @@
 data/D101*
 data/*.gz
 output/*
+./__pycache__/*
+
