@@ -18,6 +18,21 @@ class ClusterSearch:
     def __init__(self):
         self.correlation_dict = {}
         self.valid_HLA = []
+        self._outfolder = self._make_dir('output',self.generate_unique_random_ids(6)[0])
+        
+    def generate_unique_random_ids(self, count: int) -> list:
+        """
+        Generate a list of unique 6-digit random IDs.
+
+        :param count: Number of unique random IDs to generate
+        :return: List of unique 6-digit random IDs
+        """
+        start = 100000
+        end = 999999
+        if count > (end - start + 1):
+            raise ValueError("Count is larger than the range of unique IDs available.")
+        
+        return np.random.choice(range(start, end + 1), size=count, replace=False).tolist()
         
     def parse_gibbs_output(self, gibbs_path: str, n_clusters: int) -> pd.DataFrame:
         """
@@ -42,6 +57,16 @@ class ClusterSearch:
 
         raise FileNotFoundError(f"No cluster file found for {n_clusters} clusters.")
 
+    def _make_dir(self, path: str,rand_ids:int) -> None:
+        """
+        Make a directory if it does not exist.
+
+        :param path: Path to the directory
+        """
+        if not os.path.exists(os.path.join(path, f'clust_result_{rand_ids}')):
+            os.makedirs(os.path.join(path, f'clust_result_{rand_ids}'))
+        return os.path.join(path, f'clust_result_{rand_ids}')
+    
     @staticmethod
     def format_input_gibbs(gibbs_matrix: str) -> pd.DataFrame:
         """
@@ -224,7 +249,8 @@ class ClusterSearch:
 
         plt.tight_layout()
         # plt.show()
-        plt.savefig(f"{output_path}/heatmap.png")
+        
+        plt.savefig(f"{self._outfolder}/heatmap.png")
         plt.close()
     ##### From here on, Logo comapre module #####
     
@@ -398,13 +424,17 @@ class ClusterSearch:
             grid_image.paste(img, (col * img.width, row * img.height))
 
         # Save the final image grid
-        grid_image.save(output_path)
+        grid_image.save(f'{self._outfolder}/campare_image_grid.png')
 
     
 
 def run_cluster_search(args):
+    # if args.output_folder is None:
+    #     os.makedirs("output", exist_ok=True)
+    #     output_folder = "output"
     cluster_search = ClusterSearch()
     cluster_search.compute_correlations(args.gibbs_folder, args.reference_folder, args.hla_types)
+    # if args.output_folder is None:
     cluster_search.plot_heatmap(args.output_folder)
     # cluster_search.create_image_grid(cluster_search.correlation_dict, os.path.join(args.gibbs_folder, 'logos'), os.path.join(args.reference_folder, 'images'), os.path.join(args.output_folder, 'image_grid_D90.png'), HLA_list=cluster_search.valid_HLA)
     cluster_search.create_image_grid(cluster_search.correlation_dict, os.path.join(args.gibbs_folder, 'logos'), str(args.reference_folder).replace('/output_matrices_human',''), os.path.join(args.output_folder, 'image_grid_D90.png'), HLA_list=cluster_search.valid_HLA)
@@ -416,7 +446,10 @@ def main():
     parser.add_argument("reference_folder", type=str, help="Path to the human reference folder containing matrices")
     parser.add_argument("--output_folder", type=str, default="output", help="Path to the output folder")
     parser.add_argument("--hla_types", nargs='*', default=None, help="List of HLA types to search (defaults to all if none specified)")
-    parser.add_argument("--processes", type=int, default=1, help="Number of processes to use")
+    parser.add_argument("--processes", type=int, default=4, help="Number of processes to use")
+    parser.add_argument("--n_clusters", type=str, default="all", help="Number of clusters to search for")
+    parser.add_argument("--best_KL", type=bool, default=False, help="Find the best KL divergence only")
+    
     args = parser.parse_args()
 
     if args.processes > 1:
