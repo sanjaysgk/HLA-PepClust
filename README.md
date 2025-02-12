@@ -69,9 +69,6 @@ Ensure you have the following installed on your system:
 
     Example usage:
     ```bash
-    cd 
-    ```
-    ```bash
     python CLI/cluster_search.py data/D90_HLA_3844874 data/ref_data/Gibbs_motifs_human/output_matrices_human --hla_types A0201,A0101,B1302,B3503,C0401 --n_clusters 6 --output test_results --processes 4
     ```
     
