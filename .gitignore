@@ -8,3 +8,5 @@ data/*.gz
 output/*
 ./__pycache__/*
 notes.txt
+data/command.run.txt
+.DS_Store
