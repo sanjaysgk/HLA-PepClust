@@ -32,7 +32,10 @@ jobs:
     - name: Install Dependencies
       run: |
         poetry install --no-interaction --no-root
-        poetry run pip install flake8 
+        poetry run pip install flake8 pytest
+    
+    - name: Check if pytest is installed
+      run: poetry run pytest --version || echo "pytest is not installed"
 
     - name: Lint with flake8
       run: |
