@@ -156,7 +156,7 @@ class ClusterSearch:
                 # logging.error(f"HLA type {HLA} not found in the reference folder.")
                 self.console.print(f"HLA type {HLA} not found in the reference folder.")
                 # logging.error(f"Available HLA types: {DB_hla_list}")
-                self.console.print(f"Available HLA types: {DB_hla_list}")
+                #self.console.print(f"Available HLA types: {DB_hla_list}")
                 return False
             else:
                 self.valid_HLA.append(HLA)
