@@ -90,7 +90,7 @@ git clone https://github.com/Sanpme66/HLA-PepClust.git
 
     Example usage:
     ```bash
-    python CLI/cluster_search.py data/D90_HLA_3844874 data/ref_data/Gibbs_motifs_human/output_matrices_human --hla_types A0201,A0101,B1302,B3503,C0401 --n_clusters 6 --output test_results --processes 4
+    python clust-search data/D90_HLA_3844874 data/ref_data/Gibbs_motifs_human/output_matrices_human --hla_types A0201,A0101,B1302,B3503,C0401 --n_clusters 6 --output test_results --processes 4
     ```
     
 
