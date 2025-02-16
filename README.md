@@ -69,6 +69,11 @@ git clone https://github.com/Sanpme66/HLA-PepClust.git
     ```bash
     clust-search -h      
     ```
+    ## Example Output
+
+    Here is an example of the output you might see after running the `clust-search` command:
+
+    ![Example Output](assets/img/CLI-help.png)
 
     ## clust-search main input params
      ```bash
