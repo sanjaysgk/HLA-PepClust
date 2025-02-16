@@ -3,10 +3,10 @@ name: Test HLA-PepClust
 on:
   push:
     branches:
-      - new-features
+      - main
   pull_request:
     branches:
-      - new-features
+      - main
 
 jobs:
   setup:
@@ -20,17 +20,11 @@ jobs:
         with:
           python-version: '3.9'
 
-      - name: Create virtual environment
-        run: python3 -m venv hlapepclust-env
-
-      - name: Activate virtual environment and upgrade pip
+      - name: Create and activate virtual environment
         run: |
+          python3 -m venv hlapepclust-env
           source hlapepclust-env/bin/activate
           pip install --upgrade pip
-
-      - name: Install dependencies
-        run: |
-          source hlapepclust-env/bin/activate
           pip install .
 
   test:
@@ -45,10 +39,27 @@ jobs:
         with:
           python-version: '3.9'
 
-      - name: Activate virtual environment
+      - name: Activate virtual environment and install dependencies
         run: |
+          python3 -m venv hlapepclust-env
           source hlapepclust-env/bin/activate
+          pip install --upgrade pip
+          pip install .
+
+      - name: Download test data (example)
+        run: |
+          mkdir -p data
+          wget -O data.zip https://github.com/Sanpme66/HLA-PepClust/raw/new-features/data.zip
+          unzip data.zip -d data/
+
+      - name: Run `clust-search` --help command
+        run: |
+          clust-search -h
           
+      - name: Run `clust-search` --version command
+        run: |
+          clust-search --version
+
       - name: Run `clust-search` command
         run: |
           source hlapepclust-env/bin/activate
