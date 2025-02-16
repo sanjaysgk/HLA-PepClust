@@ -44,8 +44,16 @@ jobs:
 
     - name: Run Tests with pytest
       run: |
-        poetry run pytest
+        export PYTHONPATH=$PYTHONPATH:$(pwd)/cli #poetry run pytest
 
     - name: Verify CLI Help Command
       run: |
         poetry run cluster-search -h
+    
+    - name: Verify CLI Version Command
+      run: |
+        poetry run cluster-search --version
+
+    - name: Verify CLI Command test data
+      run: |
+        poetry run clust-search data/D90_HLA_3844874 data/ref_data/Gibbs_motifs_human/output_matrices_human --hla_types A0201,A0101,B1302,B3503,C0401 --n_clusters 6 --output test_results --processes 4
