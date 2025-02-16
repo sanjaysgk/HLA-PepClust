@@ -11,7 +11,6 @@ notes.txt
 data/command.run.txt
 .DS_Store
 cli/*__pycache__
-test
 test_output
 poetry.lock
 *log

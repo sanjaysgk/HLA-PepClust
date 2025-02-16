@@ -13,3 +13,6 @@ rich = "^13.0"
 
 [tool.poetry.scripts]
 cluster-search = "cli.main:main"
+[tool.poetry.group.dev.dependencies]
+black = "^25.1.0"
+

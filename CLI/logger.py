@@ -16,6 +16,7 @@ LOG_LEVELS = {
     "debug": logging.DEBUG,
 }
 
+
 def configure_logging(level: str = "info", log_to_file: bool = False) -> logging.Logger:
     """
     Configures logging with RichHandler and optional file logging.
@@ -29,22 +30,29 @@ def configure_logging(level: str = "info", log_to_file: bool = False) -> logging
     """
     log_level = LOG_LEVELS.get(level.lower(), logging.INFO)
     logger = logging.getLogger(__name__)
-    
+
     # Configure handlers
-    handlers = [RichHandler(rich_tracebacks=True, tracebacks_show_locals=True, tracebacks_suppress=[click])]
+    handlers = [
+        RichHandler(
+            rich_tracebacks=True,
+            tracebacks_show_locals=True,
+            tracebacks_suppress=[click],
+        )
+    ]
     if log_to_file:
         file_handler = logging.FileHandler("cluster_search_pipeline.log")
         handlers.append(file_handler)
-    
+
     logging.basicConfig(
         level=log_level,
         format="%(asctime)s - %(levelname)s - %(message)s",
         datefmt="[%X]",
         handlers=handlers,
     )
-    
+
     logger.setLevel(log_level)
     return logger
+
 
 def save_console_log(file_name: str = "cluster_search.log"):
     """
@@ -55,6 +63,7 @@ def save_console_log(file_name: str = "cluster_search.log"):
     """
     with open(file_name, "w") as log_file:
         log_file.write(CONSOLE.export_text())
+
 
 def display_search_results(highest_co_mat: dict, threshold: int):
     """
@@ -68,11 +77,19 @@ def display_search_results(highest_co_mat: dict, threshold: int):
     table.add_column("Cluster", style="magenta")
     table.add_column("Best HLA Match", justify="center")
     table.add_column("Score", justify="right")
-    
+
     for key, value in highest_co_mat.items():
         score = value[1]
-        score_color = "green" if score >= threshold else "yellow" if score > 0.5 < threshold else "red"
+        score_color = (
+            "green"
+            if score >= threshold
+            else "yellow" if score > 0.5 < threshold else "red"
+        )
         best_hla_color = "green" if score >= threshold else "gray"
-        table.add_row(f"[{best_hla_color}]{key}[/]", f"[{best_hla_color}]{str(value[0]).replace('.txt', '')}[/]", f"[{score_color}]{score}[/]")
-    
+        table.add_row(
+            f"[{best_hla_color}]{key}[/]",
+            f"[{best_hla_color}]{str(value[0]).replace('.txt', '')}[/]",
+            f"[{score_color}]{score}[/]",
+        )
+
     CONSOLE.print(table)
