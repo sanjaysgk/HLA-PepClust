@@ -6,7 +6,7 @@ authors = ["Sanjay SG Krishna sanjya.sondekopppagopalakrishna@monash.edu"]
 packages = [{ include = "cli" }]
 
 [tool.poetry.dependencies]
-python = "^3.9"
+python = ">=3.9,<3.11"
 rich = "^13.0"
 pandas = "^2.2.3"
 matplotlib = "^3.9.4"
