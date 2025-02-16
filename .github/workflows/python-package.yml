@@ -44,7 +44,8 @@ jobs:
 
     - name: Run Tests with pytest
       run: |
-        export PYTHONPATH=$PYTHONPATH:$(pwd)/cli #poetry run pytest
+        poetry install     
+        #export PYTHONPATH=$PYTHONPATH:$(pwd)/cli #poetry run pytest
 
     - name: Verify CLI Help Command
       run: |
