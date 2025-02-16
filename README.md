@@ -45,18 +45,36 @@ git clone https://github.com/Sanpme66/HLA-PepClust.git
     cd HLA-PepClust/
     ```
 
-2. **Install the required packages**:
+<!-- 2. **Install the required packages**:
     ```bash
     pip install -r requirements.txt
-    ```
+    ``` -->
+
+2. **Install the HLA-pepClust packages**
+    ```bash
+    pip install .
+    ``` 
 
 ## Running HLA-PepClust
 
 1. **Run the main script**:
 
+    <!--     
+
     ```bash
     python CLI/cluster_search.py <input_data_path> <reference_data_path> --hla_types <hla_types> --n_clusters <number_of_clusters> --output <output_path>
     ```
+     -->
+     ## clust-search Help 
+    ```bash
+    clust-search -h      
+    ```
+
+    ## clust-search main input params
+     ```bash
+    clust-search <input_data_path> <reference_data_path> --hla_types <hla_types> --n_clusters <number_of_clusters> --output <output_path>
+    ```
+
     ### Command Line Arguments
 
     The `cluster_search.py` script accepts the following command line arguments:

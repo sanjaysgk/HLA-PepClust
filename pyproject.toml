@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "HLA-cluster-search"
+version = "0.1.0-dev"
+description = "CLI tool for cluster search"
+authors = ["Sanjay SG Krishna sanjya.sondekopppagopalakrishna@monash.edu"]
+packages = [{ include = "cli" }]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+rich = "^13.0"
+
+
+
+[tool.poetry.scripts]
+cluster-search = "cli.main:main"
