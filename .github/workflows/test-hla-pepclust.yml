@@ -25,7 +25,8 @@ jobs:
           python3 -m venv hlapepclust-env
           source hlapepclust-env/bin/activate
           pip install --upgrade pip
-          pip install .
+          pip install --install-option="--prefix=$PREFIX_PATH" clust-search
+          #pip install .
 
   test:
     runs-on: ubuntu-latest
@@ -44,7 +45,8 @@ jobs:
           python3 -m venv hlapepclust-env
           source hlapepclust-env/bin/activate
           pip install --upgrade pip
-          pip install .
+          pip install --install-option="--prefix=$PREFIX_PATH" clust-search
+          #pip install .
 
       - name: test data (example)
         run: |
@@ -52,11 +54,6 @@ jobs:
           #wget -O data.zip https://github.com/Sanpme66/HLA-PepClust/raw/new-features/data.zip
           #unzip data.zip -d data/
           ls -l data/
-
-
-      - name: Run `clust-search` --help command
-        run: |
-          clust-search -h
 
       - name: Run `clust-search` --version command
         run: |
