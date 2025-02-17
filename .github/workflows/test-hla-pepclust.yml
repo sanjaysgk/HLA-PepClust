@@ -51,7 +51,7 @@ jobs:
           #mkdir -p data
           #wget -O data.zip https://github.com/Sanpme66/HLA-PepClust/raw/new-features/data.zip
           #unzip data.zip -d data/
-          ll data/
+          ls -l data/
 
 
       - name: Run `clust-search` --help command
@@ -67,7 +67,7 @@ jobs:
           #source hlapepclust-env/bin/activate
           #wget -O data.zip "https://github.com/Sanpme66/HLA-PepClust/raw/new-features/data.zip" --header="Authorization: token ${{ secrets.GH_TOKEN }}"
           #unzip data.zip -d data/
-          ll -lh data/ref_data/
+          ls -l data/ref_data/
 
       - name: Run `clust-search` command with test data
         run: |
