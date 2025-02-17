@@ -46,11 +46,13 @@ jobs:
           pip install --upgrade pip
           pip install .
 
-      - name: Download test data (example)
+      - name: test data (example)
         run: |
-          mkdir -p data
-          wget -O data.zip https://github.com/Sanpme66/HLA-PepClust/raw/new-features/data.zip
-          unzip data.zip -d data/
+          #mkdir -p data
+          #wget -O data.zip https://github.com/Sanpme66/HLA-PepClust/raw/new-features/data.zip
+          #unzip data.zip -d data/
+          ll data/
+
 
       - name: Run `clust-search` --help command
         run: |
@@ -62,9 +64,10 @@ jobs:
 
       - name: Download reference data (example)
         run: |
-          source hlapepclust-env/bin/activate
-          wget -O data.zip "https://github.com/Sanpme66/HLA-PepClust/raw/new-features/data.zip" --header="Authorization: token ${{ secrets.GH_TOKEN }}"
-          unzip data.zip -d data/
+          #source hlapepclust-env/bin/activate
+          #wget -O data.zip "https://github.com/Sanpme66/HLA-PepClust/raw/new-features/data.zip" --header="Authorization: token ${{ secrets.GH_TOKEN }}"
+          #unzip data.zip -d data/
+          ll -lh data/ref_data/
 
       - name: Run `clust-search` command with test data
         run: |
