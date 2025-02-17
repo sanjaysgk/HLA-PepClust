@@ -2,9 +2,9 @@ name: HLA-PepClust Python Package CI
 
 on:
   push:
-    branches: [ "new-features" ]
+    branches: [ "main" ]
   pull_request:
-    branches: [ "new-features" ]
+    branches: [ "main" ]
 
 jobs:
   build:

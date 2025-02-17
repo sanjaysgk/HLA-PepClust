@@ -1,4 +1,7 @@
 # HLA-PepClust
+![CI Status Ubuntu](https://github.com/Sanpme66/HLA-PepClust/actions/workflows/python-package.yml/badge.svg)
+![MultiOS](https://github.com/Sanpme66/HLA-PepClust/actions/workflows/matrix.yml/badge.svg)
+![test-hla-pepclust](https://github.com/Sanpme66/HLA-PepClust/actions/workflows/test-hla-pepclust.yml/badge.svg)
 
 ## Introduction
 
