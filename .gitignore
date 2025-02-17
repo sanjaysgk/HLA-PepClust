@@ -16,4 +16,5 @@ poetry.lock
 *log
 *logs
 *notes
-.pytest_cache
+.pytest_cachedata.zip
+data.zip
