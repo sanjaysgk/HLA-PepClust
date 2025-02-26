@@ -24,9 +24,10 @@ jobs:
         run: |
           python3 -m venv hlapepclust-env
           source hlapepclust-env/bin/activate
-          pip install --upgrade pip
-          pip install --install-option="--prefix=$PREFIX_PATH" clust-search
-          #pip install .
+          which python
+          #pip install --upgrade pip
+          pip install -e .
+          pip freeze
 
   test:
     runs-on: ubuntu-latest
@@ -44,9 +45,11 @@ jobs:
         run: |
           python3 -m venv hlapepclust-env
           source hlapepclust-env/bin/activate
-          pip install --upgrade pip
-          pip install --install-option="--prefix=$PREFIX_PATH" clust-search
-          #pip install .
+          which python
+          #pip install --upgrade pip
+          #pip install --install-option="--prefix=$PREFIX_PATH" clust-search
+          pip install -e .
+          pip freeze
 
       - name: test data (example)
         run: |
