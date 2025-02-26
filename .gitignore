@@ -18,3 +18,4 @@ poetry.lock
 *notes
 .pytest_cachedata.zip
 data.zip
+HLA_PEPCLUST.egg-info
