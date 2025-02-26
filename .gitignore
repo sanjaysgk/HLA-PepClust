@@ -9,4 +9,17 @@ output/*
 ./__pycache__/*
 notes.txt
 data/command.run.txt
+<<<<<<< HEAD
 .DS_Store
+=======
+.DS_Store
+cli/*__pycache__
+test_output
+poetry.lock
+*log
+*logs
+*notes
+.pytest_cachedata.zip
+data.zip
+HLA_PEPCLUST.egg-info
+>>>>>>> new-features

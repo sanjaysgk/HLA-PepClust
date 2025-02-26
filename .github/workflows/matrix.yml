@@ -1,0 +1,97 @@
+name: Test HLA-PepClust on multiple OS
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  setup:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'
+
+      - name: Create and activate virtual environment
+        run: |
+          python -m venv hlapepclust-env
+          if [ $RUNNER_OS == 'Windows' ]; then
+            .\hlapepclust-env\Scripts\activate
+          else
+            source hlapepclust-env/bin/activate
+          fi
+          pip install --upgrade pip
+          pip install .
+
+  test:
+    runs-on: ${{ matrix.os }}
+    needs: setup
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'
+
+      - name: Activate virtual environment and install dependencies
+        run: |
+          python -m venv hlapepclust-env
+          if [ $RUNNER_OS == 'Windows' ]; then
+            .\hlapepclust-env\Scripts\activate
+          else
+            source hlapepclust-env/bin/activate
+          fi
+          pip install --upgrade pip
+          pip install .
+
+      - name: Download test data (example)
+        run: |
+          mkdir -p data
+          wget -O data.zip https://github.com/Sanpme66/HLA-PepClust/raw/new-features/data.zip
+          unzip data.zip -d data/
+
+      - name: Run `clust-search` --help command
+        run: |
+          clust-search -h
+
+      - name: Run `clust-search` --version command
+        run: |
+          clust-search --version
+
+      - name: Download reference data (example)
+        run: |
+          if [ $RUNNER_OS == 'Windows' ]; then
+            .\hlapepclust-env\Scripts\activate
+          else
+            source hlapepclust-env/bin/activate
+          fi
+          wget -O data.zip "https://github.com/Sanpme66/HLA-PepClust/raw/new-features/data.zip" --header="Authorization: token ${{ secrets.GH_TOKEN }}"
+          unzip data.zip -d data/
+
+      - name: Run `clust-search` command with test data
+        run: |
+          clust-search data/D90_HLA_3844874 data/ref_data/Gibbs_motifs_human/output_matrices_human --hla_types A0201,A0101,B1302,B3503,C0401 --n_clusters 6 --output test_results --processes 4
+
+      - name: Deactivate virtual environment
+        run: |
+          if [ $RUNNER_OS == 'Windows' ]; then
+            deactivate
+          else
+            deactivate
+          fi
