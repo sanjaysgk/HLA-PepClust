@@ -5,3 +5,13 @@
 .gitignore
 data/*
 output/*
+.DS_Store
+cli/*__pycache__
+test_output
+poetry.lock
+*log
+*logs
+*notes
+.pytest_cachedata.zip
+data.zip
+HLA_PEPCLUST.egg-info
