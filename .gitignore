@@ -15,3 +15,4 @@ poetry.lock
 .pytest_cachedata.zip
 data.zip
 HLA_PEPCLUST.egg-info
+__pycache__
