@@ -361,34 +361,42 @@ class ClusterSearch:
         """
         Plot a heatmap for the computed correlation dictionary.
         """
+        # Check if correlation_dict is empty
+        if not self.correlation_dict:
+            raise ValueError("correlation_dict is empty. Cannot generate heatmap.")
+
         rows = sorted(set(key[0] for key in self.correlation_dict.keys()))
         cols = sorted(set(key[1] for key in self.correlation_dict.keys()))
+        
+        # Create an empty DataFrame with the given rows and columns
         matrix = pd.DataFrame(index=rows, columns=cols, dtype=float)
 
+        # Fill the matrix with the correlation values
         for (row, col), value in self.correlation_dict.items():
             matrix.loc[row, col] = value
+
+        # Handle NaN values by filling them with 0 or a suitable value
+        matrix.fillna(0, inplace=True)
+
+        # Check if the matrix is empty after filling NaN values
+        if matrix.empty or matrix.isnull().all().all():
+            raise ValueError("Matrix is empty or filled with NaN values. Cannot generate heatmap.")
 
         custom_cmap = LinearSegmentedColormap.from_list(
             "CustomColours",
             [
-                "white",
-                "white",
-                "white",
-                "white",
-                "white",
-                "white",
-                "whitesmoke",
-                "lightgrey",
-                "grey",
-                "deeppink",
+                "white", "white", "white", "white", "white", "white", "whitesmoke",
+                "lightgrey", "grey", "deeppink",
             ],
         )
 
         HLA_A_count = sum(col.startswith("HLA_A") for col in matrix.columns)
         HLA_B_count = sum(col.startswith("HLA_B") for col in matrix.columns)
 
+        # Create the figure and axis
         fig, ax = plt.subplots(figsize=(20, 7.5))
 
+        # Plot the heatmap
         sns.heatmap(
             matrix,
             annot=False,
@@ -399,6 +407,7 @@ class ClusterSearch:
             ax=ax,
         )
 
+        # Add vertical and horizontal lines
         y_min, y_max = ax.get_ylim()
         x_min, x_max = ax.get_xlim()
 
@@ -412,9 +421,7 @@ class ClusterSearch:
 
         unique_names = matrix.index.unique()
         base_names = unique_names.str.replace(r"_gibbs\..*", "", regex=True)
-        occurrence_counts = {
-            base: unique_names.str.startswith(base).sum() for base in base_names
-        }
+        occurrence_counts = {base: unique_names.str.startswith(base).sum() for base in base_names}
 
         starting_horizontal = 0
         for count in occurrence_counts.values():
@@ -428,11 +435,11 @@ class ClusterSearch:
                 linestyles="--",
             )
 
+        # Finalize and save the heatmap
         plt.tight_layout()
-        # plt.show()
-
         plt.savefig(f"{self._outfolder}/heatmap.png")
         plt.close()
+
 
     ##### From here on, Logo comapre module #####
 
