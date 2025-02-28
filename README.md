@@ -1,10 +1,7 @@
 # HLA-PepClust
-<<<<<<< HEAD
-=======
 ![CI Status Ubuntu](https://github.com/Sanpme66/HLA-PepClust/actions/workflows/python-package.yml/badge.svg)
 ![MultiOS](https://github.com/Sanpme66/HLA-PepClust/actions/workflows/matrix.yml/badge.svg)
 ![test-hla-pepclust](https://github.com/Sanpme66/HLA-PepClust/actions/workflows/test-hla-pepclust.yml/badge.svg)
->>>>>>> new-features
 
 ## Introduction
 
@@ -51,12 +48,6 @@ git clone https://github.com/Sanpme66/HLA-PepClust.git
     cd HLA-PepClust/
     ```
 
-<<<<<<< HEAD
-2. **Install the required packages**:
-    ```bash
-    pip install -r requirements.txt
-    ```
-=======
 <!-- 2. **Install the required packages**:
     ```bash
     pip install -r requirements.txt
@@ -66,17 +57,11 @@ git clone https://github.com/Sanpme66/HLA-PepClust.git
     ```bash
     pip install .
     ``` 
->>>>>>> new-features
 
 ## Running HLA-PepClust
 
 1. **Run the main script**:
 
-<<<<<<< HEAD
-    ```bash
-    python CLI/cluster_search.py <input_data_path> <reference_data_path> --hla_types <hla_types> --n_clusters <number_of_clusters> --output <output_path>
-    ```
-=======
     <!--     
 
     ```bash
@@ -98,7 +83,6 @@ git clone https://github.com/Sanpme66/HLA-PepClust.git
     clust-search <input_data_path> <reference_data_path> --hla_types <hla_types> --n_clusters <number_of_clusters> --output <output_path>
     ```
 
->>>>>>> new-features
     ### Command Line Arguments
 
     The `cluster_search.py` script accepts the following command line arguments:
@@ -114,10 +98,6 @@ git clone https://github.com/Sanpme66/HLA-PepClust.git
 
     Example usage:
     ```bash
-<<<<<<< HEAD
-    python CLI/cluster_search.py data/D90_HLA_3844874 data/ref_data/Gibbs_motifs_human/output_matrices_human --hla_types A0201,A0101,B1302,B3503,C0401 --n_clusters 6 --output test_results --processes 4
-    ```
-=======
     clust-search data/D90_HLA_3844874 data/ref_data/Gibbs_motifs_human/output_matrices_human --hla_types A0201,A0101,B1302,B3503,C0401 --n_clusters 6 --output test_results --processes 4
     ```
 
@@ -126,7 +106,6 @@ git clone https://github.com/Sanpme66/HLA-PepClust.git
     Here is an example of the output you might see after running the `clust-search` command:
 
     ![Example Output](assets/img/search-results.png)
->>>>>>> new-features
     
 
 ## Deactivating the Virtual Environment
