@@ -56,28 +56,26 @@ class ClusterSearch:
             raise FileNotFoundError(f"Directory {res_path} does not exist.")
 
         for c_file in os.listdir(res_path):
-            if f"{n_clusters}g.ds" in c_file:
+            if f'{n_clusters}g.ds' in c_file:
                 file_path = os.path.join(res_path, c_file)
-                df = pd.read_csv(file_path, sep="\s+")
+                df = pd.read_csv(file_path, sep='\s+')
                 # output_path = f'data/sampledata_701014/res_{n_clusters}g.csv'
                 # df.to_csv(output_path, index=False)
-                # logging.info(f"Data parsed for No clusters {n_clusters}")
-                # CONSOLE.log(f"Data parsed for No clusters {n_clusters}")
+                logging.info(f"Data parsed for No clusters {n_clusters}")
                 return df
 
         raise FileNotFoundError(f"No cluster file found for {n_clusters} clusters.")
 
-    def _make_dir(self, path: str, rand_ids: int) -> None:
+    def _make_dir(self, path: str,rand_ids:int) -> None:
         """
         Make a directory if it does not exist.
 
         :param path: Path to the directory
         """
-        if not os.path.exists(os.path.join(path, f"clust_result_{rand_ids}")):
-            os.makedirs(os.path.join(path, f"clust_result_{rand_ids}"))
-        self.full_path = os.path.join(path, f"clust_result_{rand_ids}")
-        return os.path.join(path, f"clust_result_{rand_ids}")
-
+        if not os.path.exists(os.path.join(path, f'clust_result_{rand_ids}')):
+            os.makedirs(os.path.join(path, f'clust_result_{rand_ids}'))
+        return os.path.join(path, f'clust_result_{rand_ids}')
+    
     def _check_HLA_DB(self, HLA_list: list, ref_folder: str) -> bool:
         """
         Check if the HLA type is in the list.
@@ -108,7 +106,7 @@ class ClusterSearch:
                 self.valid_HLA.append(HLA)
 
         return True
-
+    
     @staticmethod
     def format_input_gibbs(gibbs_matrix: str) -> pd.DataFrame:
         """
@@ -120,23 +118,18 @@ class ClusterSearch:
         df = pd.read_csv(gibbs_matrix)
         amino_acids = df.iloc[0, 0].split()
         df.iloc[:, 0] = df.iloc[:, 0].str.replace(r"^\d+\s\w\s", "", regex=True)
-        new_df = pd.DataFrame(
-            df.iloc[1:, 0].str.split(expand=True).values, columns=amino_acids
-        )
+        new_df = pd.DataFrame(df.iloc[1:, 0].str.split(expand=True).values, columns=amino_acids)
         new_df.reset_index(drop=True, inplace=True)
-        new_df = new_df.apply(pd.to_numeric, errors="coerce")
+        new_df = new_df.apply(pd.to_numeric, errors='coerce')
         return new_df
 
     @staticmethod
-    def amino_acid_order_identical(
-        df1: pd.DataFrame, df2: pd.DataFrame
-    ) -> tuple[pd.DataFrame, pd.DataFrame]:
+    def amino_acid_order_identical(df1: pd.DataFrame, df2: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame]:
         if list(df1.columns) != list(df2.columns):
-            # logging.warning("The amino acid column order is different. Reordering columns.")
-            CONSOLE.log("The amino acid column order is different. Reordering columns.")
+            logging.warning("The amino acid column order is different. Reordering columns.")
             df2 = df2[df1.columns]
         return df1, df2
-
+    
     @staticmethod
     def formate_HLA_DB(HLA: str) -> str:
         """
@@ -146,7 +139,6 @@ class ClusterSearch:
         :return: Formatted HLA type
         """
         return HLA.replace("HLA_", "").replace("*", "").replace("txt", "")
-
     def check_HLA_DB(self, HLA_list: list, ref_folder: str) -> bool:
         """
         Check if the HLA type is in the list.

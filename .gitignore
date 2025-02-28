@@ -16,3 +16,4 @@ poetry.lock
 data.zip
 HLA_PEPCLUST.egg-info
 __pycache__
+**env
