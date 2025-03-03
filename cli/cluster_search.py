@@ -221,6 +221,7 @@ class ClusterSearch:
             with self.console.status("Processing all clusters") as status:
                 for filename1 in os.listdir(gibbs_matrix_folder):
                     for filename2 in os.listdir(human_reference_folder):
+                        print(filename1, filename2,"####"*100)
                         if (
                             hla_list is None
                             or self.formate_HLA_DB(filename2) in hla_list
@@ -345,16 +346,16 @@ class ClusterSearch:
             
             # Log the correlation
             # logging.info(f"Correlation between {filename1} and {filename2}: {correlation:.4f}")
-            # CONSOLE.log(f"Correlation between {filename1} and {filename2}: {correlation:.4f}")
             # Store the result in the correlation dictionary
             self.correlation_dict[(filename1, filename2)] = correlation
             return correlation
 
         except Exception as e:
             # logging.error(f"Failed to compute correlation between {filename1} and {filename2}: {str(e)}")
-            self.console(
+            self.console.print(
                 f"Failed to compute correlation between {filename1} and {filename2}: {str(e)}"
             )
+            return float('nan')
 
     def _find_highest_correlation(self) -> tuple[str, str, float]:
         """
