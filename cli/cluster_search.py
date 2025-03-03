@@ -72,9 +72,16 @@ class ClusterSearch:
 
         :param path: Path to the directory
         """
-        if not os.path.exists(os.path.join(path, f'clust_result_{rand_ids}')):
-            os.makedirs(os.path.join(path, f'clust_result_{rand_ids}'))
-        return os.path.join(path, f'clust_result_{rand_ids}')
+        # if not os.path.exists(os.path.join(path, f'clust_result_{rand_ids}')):
+        #     os.makedirs(os.path.join(path, f'clust_result_{rand_ids}'))
+            
+        if not os.path.exists(os.path.join(path, f'clust_result')):
+            os.makedirs(os.path.join(path, f'clust_result'))
+        #return os.path.join(path, f'clust_result_{rand_ids}')
+        
+        self.console.log(f"Output directory created {os.path.join(path, f'clust_result')}")
+
+        return os.path.join(path, f'clust_result')
     
     def _check_HLA_DB(self, HLA_list: list, ref_folder: str) -> bool:
         """
@@ -188,7 +195,7 @@ class ClusterSearch:
         gibbs_matrix_folder = os.path.join(gibbs_folder, "matrices")
         self._outfolder = self._make_dir(
             output_path, self.generate_unique_random_ids(6)[0]
-        )
+        ) #self.generate_unique_random_ids(6)[0]
 
         if hla_list:
             hla_list = hla_list[0].split(
@@ -229,6 +236,7 @@ class ClusterSearch:
                                 spinner="squish",
                                 spinner_style="yellow",
                             )
+                            # print(correlation)
 
         elif n_clusters == "best_KL":
             self.console.log("Processing for best KL divergence clusters")
@@ -258,6 +266,7 @@ class ClusterSearch:
             with self.console.status(f"Processing {n_clusters} clusters") as status:
                 for filename1 in os.listdir(gibbs_matrix_folder):
                     if filename1.endswith(f"of{n_clusters}.mat"):
+                        print(filename1)
                         for filename2 in os.listdir(human_reference_folder):
                             if (
                                 hla_list is None
@@ -323,7 +332,7 @@ class ClusterSearch:
             # Construct full paths to the files
             file1 = os.path.join(gibbs_matrix_folder, filename1)
             file2 = os.path.join(human_reference_folder, filename2)
-
+            # breakpoint()
             # Format input data
             m1 = self.format_input_gibbs(file1)
             m2 = self.format_input_gibbs(file2)
@@ -333,7 +342,7 @@ class ClusterSearch:
 
             # Calculate correlation
             correlation = m1.corrwith(m2, axis=1).mean()
-
+            
             # Log the correlation
             # logging.info(f"Correlation between {filename1} and {filename2}: {correlation:.4f}")
             # CONSOLE.log(f"Correlation between {filename1} and {filename2}: {correlation:.4f}")
@@ -501,6 +510,9 @@ class ClusterSearch:
         for filename in os.listdir(image_folder):
             if filename.endswith(".png") and matrix_name in filename:
                 return os.path.join(image_folder, filename)
+            
+            if filename.endswith(".jpg") and matrix_name in filename:
+                return os.path.join(image_folder, filename)
         logging.warning(f"No image found for matrix {matrix_name}")
         return None
 
@@ -594,6 +606,7 @@ class ClusterSearch:
             .split("_")[1]
             .replace(".txt", ""),  # Extract the part after "HLA_" and before ".txt"
         )
+        
         # print(highest_corr_per_row_sorted)
         for row, (col, corr) in highest_corr_per_row_sorted:
             # Generate title based on row and column
@@ -661,7 +674,9 @@ class ClusterSearch:
                 images.append(img1)
                 images.append(img2)
                 images.append(img3)
-
+        if not images:
+            self.console.log("Error: No images were found to create a grid.", style="bold red")
+            return 
         # Calculate grid dimensions
         rows = (len(images) + columns - 1) // columns
         width = images[0].width * columns
@@ -676,7 +691,7 @@ class ClusterSearch:
             grid_image.paste(img, (col * img.width, row * img.height))
 
         # Save the final image grid
-        grid_image.save(f"{self._outfolder}/campare_allotypes.png")
+        grid_image.save(f"{self._outfolder}/compare_allotypes.png")
         # logging.info(f"Output saved in {self._outfolder}")
         self.console.log(f"Output saved in {self._outfolder}")
 
@@ -715,8 +730,8 @@ def run_cluster_search(args):
     cluster_search.create_image_grid(
         cluster_search.correlation_dict,
         os.path.join(args.gibbs_folder, "logos"),
-        str(args.reference_folder).replace("/output_matrices_human", ""),
-        os.path.join(args.output, "image_grid_D90.png"),
+        str(args.reference_folder).replace("/output_matrices_human", "").replace("output_matrices",""),
+        os.path.join(args.output, "compare_motif_corr.png"),
         HLA_list=cluster_search.valid_HLA,
     )
     # logging.info("Process completed successfully.")
@@ -724,3 +739,37 @@ def run_cluster_search(args):
         log_file_path = os.path.join(cluster_search._outfolder, "search_cluster.log")
         save_console_log()
         # raise FileNotFoundError(f"Log file not found: {log_file_path}")
+
+## Remove thie after test
+
+# if __name__ == "__main__":
+    # ClusterSearch().compute_correlations(
+    #     "data/9mersonly",
+    #     "data/ref_data/Gibbs_motifs_mouse/output_matrices",
+    #     "all",
+    #     "data/outputM",
+    # )
+    # run_cluster_search(
+        
+    # ClusterSearch()._compute_and_log_correlation(
+    #     "data/9mersonly",
+    #     "data/ref_data/Gibbs_motifs_human/output_matrices_human",
+    #     "cluster_1of5.mat",
+    #     "HLA_A_02_01.txt",
+    # )
+    
+    # print(ClusterSearch().format_input_gibbs("data/9mersonly/matrices/gibbs.1of5.mat"))
+        
+    # run_cluster_search(
+    #     argparse.Namespace(
+    #         credits=False,
+    #         gibbs_folder="data/9mersonly",
+    #         hla_types=None,
+    #         log=False,
+    #         n_clusters="5",
+    #         output="data/outputM",
+    #         processes=4,
+    #         reference_folder="data/ref_data/Gibbs_motifs_mouse/output_matrices",
+    #         version=False,
+    #     )
+    # )
