@@ -15,6 +15,7 @@ from rich.traceback import install
 
 install(show_locals=True)
 from cli.logger import *
+from cli.imagegrid import imagelayout
 
 
 # Configure logging

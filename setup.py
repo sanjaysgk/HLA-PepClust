@@ -14,6 +14,7 @@ setup(
         "seaborn==0.13.2",
         "matplotlib==3.9.4",
         "rich-argparse==1.7.0",
+        "opencv-python"
     ],
     entry_points={
         "console_scripts": [

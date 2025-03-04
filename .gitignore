@@ -18,3 +18,8 @@ HLA_PEPCLUST.egg-info
 __pycache__
 **env
 test_results
+*ipynb_checkpoints
+*__pycache__
+*ipynb
+*.png
+cli/test_imagegrid.py
