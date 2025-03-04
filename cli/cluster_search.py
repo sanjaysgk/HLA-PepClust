@@ -12,6 +12,7 @@ import os
 import re
 import time
 from rich.traceback import install
+import sys
 
 install(show_locals=True)
 from cli.logger import *
@@ -43,7 +44,19 @@ class ClusterSearch:
         return np.random.choice(
             range(start, end + 1), size=count, replace=False
         ).tolist()
+    def _db_loader(self, db_path: str,species:str) -> pd.DataFrame:
+        """
+        Load the database file.
 
+        :param db_path: Path to the database file
+        :return: DataFrame containing the database
+        """
+        if not os.path.exists(os.path.join(db_path, f'{species}.db')):
+            raise FileNotFoundError(f"Database file {db_path} does not exist.")
+
+        return pd.read_csv(os.path.join(db_path, f'{species}.db'))
+    
+    
     def parse_gibbs_output(self, gibbs_path: str, n_clusters: int) -> pd.DataFrame:
         """
         Parse the Gibbs output files.
@@ -222,7 +235,7 @@ class ClusterSearch:
             with self.console.status("Processing all clusters") as status:
                 for filename1 in os.listdir(gibbs_matrix_folder):
                     for filename2 in os.listdir(human_reference_folder):
-                        print(filename1, filename2,"####"*100)
+                        # print(filename1, filename2,"####"*100)
                         if (
                             hla_list is None
                             or self.formate_HLA_DB(filename2) in hla_list
@@ -697,6 +710,13 @@ class ClusterSearch:
         # logging.info(f"Output saved in {self._outfolder}")
         self.console.log(f"Output saved in {self._outfolder}")
 
+    ## New Image Grid Module
+    def generate_image_grid(corr):
+        """
+        Generate an image grid for the correlation results.
+        """
+        pass
+
 
 def run_cluster_search(args):
     # if args.output_folder is None:
@@ -744,14 +764,13 @@ def run_cluster_search(args):
 
 ## Remove thie after test
 
-# if __name__ == "__main__":
+if __name__ == "__main__":
     # ClusterSearch().compute_correlations(
     #     "data/9mersonly",
     #     "data/ref_data/Gibbs_motifs_mouse/output_matrices",
     #     "all",
     #     "data/outputM",
     # )
-    # run_cluster_search(
         
     # ClusterSearch()._compute_and_log_correlation(
     #     "data/9mersonly",
@@ -759,8 +778,9 @@ def run_cluster_search(args):
     #     "cluster_1of5.mat",
     #     "HLA_A_02_01.txt",
     # )
+    # print(sys.argv)
     
-    # print(ClusterSearch().format_input_gibbs("data/9mersonly/matrices/gibbs.1of5.mat"))
+    print(ClusterSearch()._db_loader("data/ref_data/","mouse"))
         
     # run_cluster_search(
     #     argparse.Namespace(

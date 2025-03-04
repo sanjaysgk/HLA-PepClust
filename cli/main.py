@@ -8,6 +8,7 @@ from rich_argparse import RichHelpFormatter
 from cli import __version__
 from cli.cluster_search import run_cluster_search
 from cli.logger import CONSOLE
+from cli.database_gen import Database_gen
 
 # from pyfiglet import Figlet
 # fig = Figlet(font="slant")
@@ -85,13 +86,23 @@ def main():
         formatter_class=lambda prog: RichHelpFormatter(prog, max_help_position=42),
     )
 
+    
+    if not any(arg in sys.argv for arg in ("-db", "--database")):
+        parser.add_argument(
+            "gibbs_folder", type=str, help="Path to the test folder containing matrices."
+        )
+        parser.add_argument(
+            "reference_folder",
+            type=str,
+            help="Path to the human reference folder containing matrices.",
+        )
     parser.add_argument(
-        "gibbs_folder", type=str, help="Path to the test folder containing matrices."
-    )
-    parser.add_argument(
-        "reference_folder",
+        "-db",
+        "--database",
         type=str,
-        help="Path to the human reference folder containing matrices.",
+        default="data/config.json",
+        nargs='?',
+        help="Generate a motif database from the configuration file. (default: data/config.json)",
     )
 
     parser.add_argument(
@@ -142,7 +153,11 @@ def main():
     if args.credits:
         _print_credits(credits=True)
         sys.exit(0)
-
+        
+    if args.database:
+        db = Database_gen(args.database)
+        sys.exit(0)
+        
     if args.processes > 1:
         with Pool(args.processes) as pool:
             pool.map(run_cluster_search, [args])
