@@ -87,8 +87,8 @@ def display_search_results(highest_co_mat: dict, threshold: int):
         )
         best_hla_color = "green" if score >= threshold else "gray"
         table.add_row(
-            f"[{best_hla_color}]{key}[/]",
-            f"[{best_hla_color}]{str(value[0]).replace('.txt', '')}[/]",
+            f"[{best_hla_color}]{str(key).split('/')[-1]}[/]",
+            f"[{best_hla_color}]{str(value[0]).split('/')[-1].replace('.txt', '')}[/]",
             f"[{score_color}]{score}[/]",
         )
 

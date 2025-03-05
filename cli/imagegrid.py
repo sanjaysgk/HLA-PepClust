@@ -2,7 +2,7 @@
 
 '''arrange several images according to a layout'''
 
-import yaml
+# import yaml
 import sys
 import os
 import argparse
@@ -420,4 +420,40 @@ def imagelayout(conf, reportsizes=False, imagefiles=[], outputfile=''):
     print('Output written to %s' % (conf['outputfile']))
 
 
-    
+# if __name__ == '__main__':
+#     config = {
+#     "inputdir": "/Users/sanjay/Monash/Master_thesis/lab_work/Li_Lab/cluster/HLA-PepClust/data/ref_data/Gibbs_motifs_human/",
+#     "images": {
+#         "A": {
+#             "file": "HLA_A0101.png",
+#             "label": {
+#                 "text": "A"
+#             }
+#         },
+#         "B": {
+#             "file": "HLA_A0201.png",
+#             "label": {
+#                 "text": "H",
+#                 "fontsize": 50,
+#                 "fontcolor": "red",
+#                 "pos": "center-left"
+#             }
+#         },
+#         "C": "HLA_A0203.png",
+#         "D": "HLA_A0301.png",
+#         "E": "HLA_A1102.png",
+#         "F": "HLA_A0211.png",
+#         "G": "BLANK-640x480"
+#     },
+#     "layout": {
+#         "vjoin": [
+#             {"hjoin": ["A", "B", "C"]},
+#             {"hjoin": ["G", "G", "G"]}
+#         ]
+#     },
+#     "resizemethod": "nearest",
+#     "outputfile": "output_imggrid_dict2.png",
+#     "finalwidth": 1024,
+#     "finalheight": 800
+# }
+#     imagelayout(config, reportsizes=False, imagefiles=[], outputfile='output_imggrid_dict2.png')

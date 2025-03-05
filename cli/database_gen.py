@@ -71,7 +71,8 @@ def _HLA_liist(config):
             # sys.exit(f"Species {species} not supported")
             CONSOLE.log(f"Species {species} not supported")
             sys.exit(1)
-            
+        allotypes['motif_path'] = ""
+        allotypes['matrices_path'] = ""
         for motifs in allotypes['motif']:
             CONSOLE.log(f"[yellow]{species}[/yellow] {config[species]['path']}/motif/{motifs}", style="blue")
             if not os.path.exists(f"{config[species]['path']}/motif/{motifs}"):
@@ -83,8 +84,8 @@ def _HLA_liist(config):
                 CONSOLE.log(f"Matrix {motifs.replace('.png', '.txt')} does not exist")
                 sys.exit(1)
             else:
-                allotypes['motif_path'] = f"{config[species]['path']}/motif/{motifs}"
-                allotypes['matrices_path'] = f"{config[species]['path']}/matrices/{motifs.replace('.png', '.txt')}"
+                allotypes.loc[allotypes['motif'] == motifs, 'motif_path'] = f"{config[species]['path']}/motif/{motifs}"
+                allotypes.loc[allotypes['motif'] == motifs, 'matrices_path'] = f"{config[species]['path']}/matrices/{motifs.replace('.png', '.txt')}"
                 # CONSOLE.log(f"Motif {motifs} exists")
         # allotype_file_db = allotype_file.replace('.csv', '.db')        
         allotypes.to_csv(f"{config[species]['ref_data']}/{species}.db", index=False)

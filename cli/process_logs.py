@@ -9,3 +9,7 @@ def _file_not_exists(file_path: str):
 def _png_not_exists(file_path: str):
     """Error message for PNG file not found."""
     return f"PNG file not found: {file_path}"
+
+def _HLA_not_exists(file_path: str):
+    """Error message for HLA file not found."""
+    return f"HLA file not found: {file_path}"

@@ -100,9 +100,21 @@ def main():
         "-db",
         "--database",
         type=str,
-        default="data/config.json",
-        nargs='?',
         help="Generate a motif database from the configuration file. (default: data/config.json)",
+    )
+    parser.add_argument(
+        "-t",
+        "--threshold",
+        type=float,
+        default=0.5,
+        help="Threshold for motif similarity (default: 0.5).",
+    )
+    parser.add_argument(
+        "-s",
+        "--species",
+        type=str,
+        default="human",
+        help="Species to search [Human, Mouse] for (default: human).",
     )
 
     parser.add_argument(
@@ -133,6 +145,14 @@ def main():
         "-o", "--output", type=str, default="output", help="Path to the output folder."
     )
     parser.add_argument("-l", "--log", action="store_true", help="Enable logging.")
+
+    parser.add_argument(
+        "-im",
+        "--immunolyser",
+        default=False,
+        help="Enable immunolyser output.",
+        action="store_true"
+    )
 
     parser.add_argument(
         "-c",
