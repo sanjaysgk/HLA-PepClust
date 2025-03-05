@@ -1,0 +1,15 @@
+{
+     "human":{
+        "path": "data/ref_data/Gibbs_motifs_human",
+        "matrix": "/matrices",
+        "motif": "/motif",
+        "allotypes": "/allotypes/hla_data.csv"
+    },
+
+    "mouse" :{
+        "path": "data/ref_data/mouse",
+        "matrix": "/matrices",
+        "motif": "/motif",
+        "allotypes": "/allotypes/mhc_data.csv"
+    }
+}

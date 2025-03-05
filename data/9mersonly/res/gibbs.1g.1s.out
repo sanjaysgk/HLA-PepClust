@@ -1,0 +1,1270 @@
+# /Users/prmunday/Documents/2023/Immunolyser/app/tools/gibbscluster-2.0/bin/gibbs_cluster_1.2.2_DB.Darwin_x86_64 -mhc1 -trash -l 9 -g 1 -ts 1.5 -blf /Users/prmunday/Documents/2023/Immunolyser/app/tools/gibbscluster-2.0/data/blosum%i.freq_rownorm -blm 62 -base 0 -bg 1 -i 10 -s 1 -nt 20 -fr 20 -fs 100 -wlc 200 -swt 0 -lambda 0.8 -dlen 0 -ilen 0 -findels 10 -sigma 5 /Users/prmunday/Documents/2023/Immunolyser/app/static/images/e69ab154-9a48-46f9-b480-e5a820464bd2/Test/gibbscluster/9mersonly/data/pepdata.txt
+# Wed Feb 19 14:57:46 2025
+# User: prmunday
+# PWD : /Users/prmunday/Documents/2023/Immunolyser
+# Host: Darwin dyn-49-127-34-180.its.monash.edu.au 24.3.0 x86_64
+# -mhc1    1                    Use peptides of fixed length, no window shift
+# -trash   1                    Use trash cluster to remove outliers
+# -l       9                    Motif length
+# -g       1                    Number of initial clusters
+# -ts      1.500000             Start temperature
+# -blf     /Users/prmunday/Documents/2023/Immunolyser/app/tools/gibbscluster-2.0/data/blosum%i.freq_rownorm Real value blosum matrix filename
+# -blm     62                   Blosum matrix number
+# -base    0.000000             Baseline value to discard to trash
+# -bg      1                    [0] Flat (0.05) [1] Precalculated [2] From data
+# -i       10                   Number of iterations per train example
+# -s       1                    Seed [-1] Default, [0] Time [>0] Specific seed
+# -nt      20                   Number of temperature steps
+# -fr      20                   Interval between Single sequence moves (if -mhc1 == 1)
+# -fs      100                  Interval between Phase shift moves
+# -wlc     200.000000           Weigth on low count
+# -swt     0                    [0] 1/ns [1] Clustering [2] No sequence weighting
+# -lambda  0.800000             Penalty factor for overlapping clusters
+# -dlen    0                    Max length of deletions
+# -ilen    0                    Max length of insertions
+# -findels 10                   Interval between Indel moves
+# -sigma   5.000000             Weight on blosum for small cluster confidence
+# Command line parameters set to:
+#	[-l int]             9                    Motif length
+#	[-g int]             1                    Number of initial clusters
+#	[-trash]             1                    Use trash cluster to remove outliers
+#	[-i int]             10                   Number of iterations per train example
+#	[-s int]             1                    Seed [-1] Default, [0] Time [>0] Specific seed
+#	[-f filename]        0                    File for frequency matrices
+#	[-m filename]        0                    File for log-odds matrices
+#	[-a filename]        aln.txt              File for multiple alignments
+#	[-pc]                0                    Print core of alignment
+#	[-c filename]        core.txt             File for core
+#	[-alp string]        ARNDCQEGHILKMFPSTWYV Amino acid alphabet
+#	[-bg int]            1                    [0] Flat (0.05) [1] Precalculated [2] From data
+#	[-base float]        0.000000             Baseline value to discard to trash
+#	[-mhc1]              1                    Use peptides of fixed length, no window shift
+#	[-ts float]          1.500000             Start temperature
+#	[-te float]          0.000010             Final temperature
+#	[-nt int]            20                   Number of temperature steps
+#	[-ms int]            3                    Max phase shift distance
+#	[-fs int]            100                  Interval between Phase shift moves
+#	[-findels int]       10                   Interval between Indel moves
+#	[-fr int]            20                   Interval between Single sequence moves (if -mhc1 == 1)
+#	[-lambda float]      0.800000             Penalty factor for overlapping clusters
+#	[-sigma float]       5.000000             Weight on blosum for small cluster confidence
+#	[-noph]              0                    Exclude phase shift move
+#	[-r float]           5.000000             Scale factor for phase shift moves
+#	[-wlc float]         200.000000           Weigth on low count
+#	[-blf filename]      /Users/prmunday/Documents/2023/Immunolyser/app/tools/gibbscluster-2.0/data/blosum%i.freq_rownorm Real value blosum matrix filename
+#	[-blm int]           62                   Blosum matrix number
+#	[-cX int]            1                    [0] Count X as A, [1] Exclude X from count
+#	[-v]                 0                    Verbose mode
+#	[-debug]             0                    Debug model
+#	[-cthr float]        0.620000             Clustering threshold for sequence weighting
+#	[-swt int]           0                    [0] 1/ns [1] Clustering [2] No sequence weighting
+#	[-w string]          1,3,1,1,1,1,1,1,3    Weigths on positions
+#	[-iw]                0                    Include weights on positions
+#	[-noc float]         0.000000             Log-odds score assignment to no count elements
+#	[-p1a]               0                    Allow only Hydrophobic AA at P1
+#	[-p1l filename]      ILVMFYW              Allowed letters at P1 [Only with -p1a option]
+#	[-factor float]      2.885400             Scale factor for matrix 2/log2
+#	[-cntthr int]        0                    Low bound for amino acids counts to include in matrix
+#	[-p1s]               0                    Penalize disallowed P1 amino acids in shift
+#	[-pkld]              0                    Print KLD list (file to -kldf)
+#	[-kldf string]       kldfq.txt            Print complete list of KLD values to specified file
+#	[-kldq int]          1000                 Total datapoints when printing KLDs
+#	[-ilen int]          0                    Max length of insertions
+#	[-dlen int]          0                    Max length of deletions
+#	[-xc]                0                    Exclude final check of all peptides to clusters
+# Random seed is 1
+# Read 1139 elements on seqlist /Users/prmunday/Documents/2023/Immunolyser/app/static/images/e69ab154-9a48-46f9-b480-e5a820464bd2/Test/gibbscluster/9mersonly/data/pepdata.txt
+# Number of temperature steps 20 dt 0.078947
+# Back ground frequences
+# 0 A  0.07400
+# 1 R  0.05200
+# 2 N  0.04500
+# 3 D  0.05400
+# 4 C  0.02500
+# 5 Q  0.03400
+# 6 E  0.05400
+# 7 G  0.07400
+# 8 H  0.02600
+# 9 I  0.06800
+# 10 L  0.09900
+# 11 K  0.05800
+# 12 M  0.02500
+# 13 F  0.04700
+# 14 P  0.03900
+# 15 S  0.05700
+# 16 T  0.05100
+# 17 W  0.01300
+# 18 Y  0.03200
+# 19 V  0.07300
+# Read_realblosum done. Alphabet ARNDCQEGHILKMFPSTWYV
+# G 0 1139
+# G 1 0
+### Initial alignments weighed KLD sum 0.000000
+
+# Doing temprature step 0 1.500000
+# Doing temprature step 1 1.421053
+# Doing temprature step 2 1.342106
+# Doing temprature step 3 1.263160
+# Doing temprature step 4 1.184213
+# Doing temprature step 5 1.105266
+# Doing temprature step 6 1.026319
+# Doing temprature step 7 0.947372
+# Doing temprature step 8 0.868425
+# Doing temprature step 9 0.789479
+# Doing temprature step 10 0.710532
+# Doing temprature step 11 0.631585
+# Doing temprature step 12 0.552638
+# Doing temprature step 13 0.473691
+# Doing temprature step 14 0.394744
+# Doing temprature step 15 0.315798
+# Doing temprature step 16 0.236851
+# Doing temprature step 17 0.157904
+# Doing temprature step 18 0.078957
+# Doing temprature step 19 0.000010
+## Sequence alignment for group 0
+G  0    0          SQYLFPKLL  SQYLFPKLL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 14.248 bgG  -1 bgS  0.000 cS 14.248
+G  0    1          GAPLNLVDL  GAPLNLVDL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  7.868 bgG  -1 bgS  0.000 cS  7.868
+G  0    2          VSYRNIEEL  VSYRNIEEL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 21.372 bgG  -1 bgS  0.000 cS 21.372
+G  0    3          ASYEFVQRL  ASYEFVQRL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 25.294 bgG  -1 bgS  0.000 cS 25.294
+G  0    4          SIINFIERL  SIINFIERL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 18.014 bgG  -1 bgS  0.000 cS 18.014
+G  0    5          RRLPIFSRL  RRLPIFSRL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  5.506 bgG  -1 bgS  0.000 cS  5.506
+G  0    6          SGPHFSDPV  SGPHFSDPV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 12.897 bgG  -1 bgS  0.000 cS 12.897
+G  0    7          KALQFLEQV  KALQFLEQV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 14.777 bgG  -1 bgS  0.000 cS 14.777
+G  0    8          GVFRFLSNL  GVFRFLSNL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 11.883 bgG  -1 bgS  0.000 cS 11.883
+G  0    9          LTPDLYNKL  LTPDLYNKL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  9.437 bgG  -1 bgS  0.000 cS  9.437
+G  0   10          RTYHFRSTL  RTYHFRSTL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 15.337 bgG  -1 bgS  0.000 cS 15.337
+G  0   11          SLYNFKTTF  SLYNFKTTF o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 14.236 bgG  -1 bgS  0.000 cS 14.236
+G  0   12          KNHEFIATF  KNHEFIATF o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 14.852 bgG  -1 bgS  0.000 cS 14.852
+G  0   13          AIVEFLSNL  AIVEFLSNL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 17.408 bgG  -1 bgS  0.000 cS 17.408
+G  0   14          QIIAFFAHL  QIIAFFAHL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 13.160 bgG  -1 bgS  0.000 cS 13.160
+G  0   15          TTPVFGKGV  TTPVFGKGV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  4.303 bgG  -1 bgS  0.000 cS  4.303
+G  0   16          VGYRFVTAI  VGYRFVTAI o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 14.484 bgG  -1 bgS  0.000 cS 14.484
+G  0   17          IIWVKTNQL  IIWVKTNQL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 10.243 bgG  -1 bgS  0.000 cS 10.243
+G  0   18          VAWQHTQLF  VAWQHTQLF o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 11.973 bgG  -1 bgS  0.000 cS 11.973
+G  0   19          SGPINFTVF  SGPINFTVF o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 14.471 bgG  -1 bgS  0.000 cS 14.471
+G  0   20          SNVLYQHNL  SNVLYQHNL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 13.558 bgG  -1 bgS  0.000 cS 13.558
+G  0   21          VIAELRENL  VIAELRENL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 10.517 bgG  -1 bgS  0.000 cS 10.517
+G  0   22          SSVPGVRLL  SSVPGVRLL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  8.010 bgG  -1 bgS  0.000 cS  8.010
+G  0   23          SILTKFQEV  SILTKFQEV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 10.914 bgG  -1 bgS  0.000 cS 10.914
+G  0   24          SIYEKLIQF  SIYEKLIQF o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 17.587 bgG  -1 bgS  0.000 cS 17.587
+G  0   25          SQHVNLDQL  SQHVNLDQL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 16.112 bgG  -1 bgS  0.000 cS 16.112
+G  0   26          VNIDYTISF  VNIDYTISF o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 12.163 bgG  -1 bgS  0.000 cS 12.163
+G  0   27          STWERGSLF  STWERGSLF o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  9.104 bgG  -1 bgS  0.000 cS  9.104
+G  0   28          NTHENLTYL  NTHENLTYL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 15.547 bgG  -1 bgS  0.000 cS 15.547
+G  0   29          VNMKFVQDL  VNMKFVQDL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 13.785 bgG  -1 bgS  0.000 cS 13.785
+G  0   30          SNFFGKAAM  SNFFGKAAM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  6.686 bgG  -1 bgS  0.000 cS  6.686
+G  0   31          ATYRYTPLL  ATYRYTPLL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 14.136 bgG  -1 bgS  0.000 cS 14.136
+G  0   32          VAVVNKVDI  VAVVNKVDI o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  8.701 bgG  -1 bgS  0.000 cS  8.701
+G  0   33          ATFDYQQAF  ATFDYQQAF o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 10.732 bgG  -1 bgS  0.000 cS 10.732
+G  0   34          SLLKSQEPI  SLLKSQEPI o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  1.858 bgG  -1 bgS  0.000 cS  1.858
+G  0   35          KAPDFLSTF  KAPDFLSTF o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 16.059 bgG  -1 bgS  0.000 cS 16.059
+G  0   36          VHYVFDTTI  VHYVFDTTI o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 11.626 bgG  -1 bgS  0.000 cS 11.626
+G  0   37          KIQSFINRM  KIQSFINRM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 14.707 bgG  -1 bgS  0.000 cS 14.707
+G  0   38          AQMQNPDTL  AQMQNPDTL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 12.800 bgG  -1 bgS  0.000 cS 12.800
+G  0   39          VSILNRQVL  VSILNRQVL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 13.468 bgG  -1 bgS  0.000 cS 13.468
+G  0   40          QQYRFSVIM  QQYRFSVIM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 10.310 bgG  -1 bgS  0.000 cS 10.310
+G  0   41          SGPGFHGNV  SGPGFHGNV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 11.066 bgG  -1 bgS  0.000 cS 11.066
+G  0   42          KGLPFYAGL  KGLPFYAGL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 13.660 bgG  -1 bgS  0.000 cS 13.660
+G  0   43          SLLTNHVTL  SLLTNHVTL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 11.822 bgG  -1 bgS  0.000 cS 11.822
+G  0   44          SSLHLTQPL  SSLHLTQPL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 13.996 bgG  -1 bgS  0.000 cS 13.996
+G  0   45          MSPELIQQF  MSPELIQQF o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 13.607 bgG  -1 bgS  0.000 cS 13.607
+G  0   46          SAQEALARL  SAQEALARL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 12.536 bgG  -1 bgS  0.000 cS 12.536
+G  0   47          QSVDMKIGV  QSVDMKIGV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  2.886 bgG  -1 bgS  0.000 cS  2.886
+G  0   48          KAPEYLHRF  KAPEYLHRF o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 16.499 bgG  -1 bgS  0.000 cS 16.499
+G  0   49          AAFQYGIKM  AAFQYGIKM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  9.091 bgG  -1 bgS  0.000 cS  9.091
+G  0   50          RNIPRGAQL  RNIPRGAQL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  9.827 bgG  -1 bgS  0.000 cS  9.827
+G  0   51          TAPAKLVSF  TAPAKLVSF o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  6.645 bgG  -1 bgS  0.000 cS  6.645
+G  0   52          VMLEIYRNL  VMLEIYRNL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 12.404 bgG  -1 bgS  0.000 cS 12.404
+G  0   53          STVENFSQL  STVENFSQL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 22.841 bgG  -1 bgS  0.000 cS 22.841
+G  0   54          NANTNTEVL  NANTNTEVL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  7.559 bgG  -1 bgS  0.000 cS  7.559
+G  0   55          SIIEFQPTL  SIIEFQPTL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 20.587 bgG  -1 bgS  0.000 cS 20.587
+G  0   56          AAMKNVTEL  AAMKNVTEL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  9.891 bgG  -1 bgS  0.000 cS  9.891
+G  0   57          IIYNPYAAL  IIYNPYAAL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  9.595 bgG  -1 bgS  0.000 cS  9.595
+G  0   58          QNPDLAAQM  QNPDLAAQM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 11.292 bgG  -1 bgS  0.000 cS 11.292
+G  0   59          KILEWFASI  KILEWFASI o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 10.058 bgG  -1 bgS  0.000 cS 10.058
+G  0   60          KIVELNTKL  KIVELNTKL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  8.778 bgG  -1 bgS  0.000 cS  8.778
+G  0   61          RNLDWFPRM  RNLDWFPRM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 16.915 bgG  -1 bgS  0.000 cS 16.915
+G  0   62          QQYVFINQM  QQYVFINQM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 18.729 bgG  -1 bgS  0.000 cS 18.729
+G  0   63          SMIRLSESM  SMIRLSESM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 10.351 bgG  -1 bgS  0.000 cS 10.351
+G  0   64          IGPDVYAKL  IGPDVYAKL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  9.516 bgG  -1 bgS  0.000 cS  9.516
+G  0   65          QLVAFLQGL  QLVAFLQGL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  8.139 bgG  -1 bgS  0.000 cS  8.139
+G  0   66          KAPVFMEKL  KAPVFMEKL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 15.030 bgG  -1 bgS  0.000 cS 15.030
+G  0   67          SIYRFHGQF  SIYRFHGQF o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 17.312 bgG  -1 bgS  0.000 cS 17.312
+G  0   68          KTFLFSATM  KTFLFSATM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 11.888 bgG  -1 bgS  0.000 cS 11.888
+G  0   69          VNDELMKKI  VNDELMKKI o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  2.271 bgG  -1 bgS  0.000 cS  2.271
+G  0   70          SSVILQTLL  SSVILQTLL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  9.309 bgG  -1 bgS  0.000 cS  9.309
+G  0   71          AALANLDNI  AALANLDNI o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  8.308 bgG  -1 bgS  0.000 cS  8.308
+G  0   72          SAVENVVKL  SAVENVVKL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 18.544 bgG  -1 bgS  0.000 cS 18.544
+G  0   73          SGVYYTARV  SGVYYTARV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 11.700 bgG  -1 bgS  0.000 cS 11.700
+G  0   74          SLVHHMTGL  SLVHHMTGL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  6.834 bgG  -1 bgS  0.000 cS  6.834
+G  0   75          VSIDRYLAL  VSIDRYLAL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 12.895 bgG  -1 bgS  0.000 cS 12.895
+G  0   76          ILIEREVLM  ILIEREVLM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  4.753 bgG  -1 bgS  0.000 cS  4.753
+G  0   77          FSLENLRTM  FSLENLRTM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 16.381 bgG  -1 bgS  0.000 cS 16.381
+G  0   78          TLLDKLVNM  TLLDKLVNM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  7.029 bgG  -1 bgS  0.000 cS  7.029
+G  0   79          AQYDFMERL  AQYDFMERL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 21.122 bgG  -1 bgS  0.000 cS 21.122
+G  0   80          SGLLQTLNL  SGLLQTLNL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  6.426 bgG  -1 bgS  0.000 cS  6.426
+G  0   81          VSYIRSVYL  VSYIRSVYL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 15.482 bgG  -1 bgS  0.000 cS 15.482
+G  0   82          YAPINANAI  YAPINANAI o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  4.857 bgG  -1 bgS  0.000 cS  4.857
+G  0   83          VAPRYVALL  VAPRYVALL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 13.044 bgG  -1 bgS  0.000 cS 13.044
+G  0   84          KVYENVTGL  KVYENVTGL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 17.891 bgG  -1 bgS  0.000 cS 17.891
+G  0   85          SIYRFHAQF  SIYRFHAQF o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 19.629 bgG  -1 bgS  0.000 cS 19.629
+G  0   86          VSPTNPTKL  VSPTNPTKL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 20.472 bgG  -1 bgS  0.000 cS 20.472
+G  0   87          SQVYNDAHI  SQVYNDAHI o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  9.185 bgG  -1 bgS  0.000 cS  9.185
+G  0   88          AALQNAVAF  AALQNAVAF o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  6.397 bgG  -1 bgS  0.000 cS  6.397
+G  0   89          DNAKNILYL  DNAKNILYL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  3.714 bgG  -1 bgS  0.000 cS  3.714
+G  0   90          IAPSFVKGF  IAPSFVKGF o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  9.126 bgG  -1 bgS  0.000 cS  9.126
+G  0   91          RVVDLITNL  RVVDLITNL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  9.035 bgG  -1 bgS  0.000 cS  9.035
+G  0   92          QIYDIFQKL  QIYDIFQKL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 13.418 bgG  -1 bgS  0.000 cS 13.418
+G  0   93          FSPTFSERI  FSPTFSERI o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 14.928 bgG  -1 bgS  0.000 cS 14.928
+G  0   94          SIYGFKATF  SIYGFKATF o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 15.853 bgG  -1 bgS  0.000 cS 15.853
+G  0   95          FSSTNSIHI  FSSTNSIHI o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  3.604 bgG  -1 bgS  0.000 cS  3.604
+G  0   96          ATIINEEVL  ATIINEEVL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  8.870 bgG  -1 bgS  0.000 cS  8.870
+G  0   97          RIVELISRV  RIVELISRV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  9.504 bgG  -1 bgS  0.000 cS  9.504
+G  0   98          VMVEHKLGL  VMVEHKLGL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 11.499 bgG  -1 bgS  0.000 cS 11.499
+G  0   99          TSLSLLTVM  TSLSLLTVM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  8.729 bgG  -1 bgS  0.000 cS  8.729
+G  0  100          ICYIFHETF  ICYIFHETF o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 12.397 bgG  -1 bgS  0.000 cS 12.397
+G  0  101          FAYRFSNLL  FAYRFSNLL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 13.509 bgG  -1 bgS  0.000 cS 13.509
+G  0  102          SGFYYKTRI  SGFYYKTRI o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 13.529 bgG  -1 bgS  0.000 cS 13.529
+G  0  103          SSFHFNQHL  SSFHFNQHL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 19.137 bgG  -1 bgS  0.000 cS 19.137
+G  0  104          KTFKFQSNL  KTFKFQSNL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 14.911 bgG  -1 bgS  0.000 cS 14.911
+G  0  105          SIWLFQANL  SIWLFQANL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 14.740 bgG  -1 bgS  0.000 cS 14.740
+G  0  106          KAPTNEFYA  KAPTNEFYA o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  3.057 bgG  -1 bgS  0.000 cS  3.057
+G  0  107          YVVDNIDHL  YVVDNIDHL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 11.592 bgG  -1 bgS  0.000 cS 11.592
+G  0  108          ISPERLDPF  ISPERLDPF o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 14.605 bgG  -1 bgS  0.000 cS 14.605
+G  0  109          ASLDNREEL  ASLDNREEL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 13.510 bgG  -1 bgS  0.000 cS 13.510
+G  0  110          IAYDWNTHI  IAYDWNTHI o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 12.534 bgG  -1 bgS  0.000 cS 12.534
+G  0  111          KVLRFIAEV  KVLRFIAEV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  6.641 bgG  -1 bgS  0.000 cS  6.641
+G  0  112          TGYAYTQGL  TGYAYTQGL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 13.877 bgG  -1 bgS  0.000 cS 13.877
+G  0  113          IGYGIPPQM  IGYGIPPQM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  9.165 bgG  -1 bgS  0.000 cS  9.165
+G  0  114          FGIDNFEFI  FGIDNFEFI o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 10.691 bgG  -1 bgS  0.000 cS 10.691
+G  0  115          LSNELKLTL  LSNELKLTL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  3.052 bgG  -1 bgS  0.000 cS  3.052
+G  0  116          SILESFIHV  SILESFIHV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  9.534 bgG  -1 bgS  0.000 cS  9.534
+G  0  117          RGLDWYRSL  RGLDWYRSL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 10.676 bgG  -1 bgS  0.000 cS 10.676
+G  0  118          QSIAFISRL  QSIAFISRL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 14.988 bgG  -1 bgS  0.000 cS 14.988
+G  0  119          TNYRFKNLF  TNYRFKNLF o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 14.581 bgG  -1 bgS  0.000 cS 14.581
+G  0  120          IQYDRTLLV  IQYDRTLLV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  8.513 bgG  -1 bgS  0.000 cS  8.513
+G  0  121          SGPDLSTAL  SGPDLSTAL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 11.432 bgG  -1 bgS  0.000 cS 11.432
+G  0  122          TIMPKDIQL  TIMPKDIQL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  4.942 bgG  -1 bgS  0.000 cS  4.942
+G  0  123          VVMHPMPRV  VVMHPMPRV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  5.590 bgG  -1 bgS  0.000 cS  5.590
+G  0  124          FSYFPYPSL  FSYFPYPSL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 12.069 bgG  -1 bgS  0.000 cS 12.069
+G  0  125          TSWTKTQPL  TSWTKTQPL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 13.872 bgG  -1 bgS  0.000 cS 13.872
+G  0  126          NAVGNPEYL  NAVGNPEYL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 11.504 bgG  -1 bgS  0.000 cS 11.504
+G  0  127          SQPIAQQPL  SQPIAQQPL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 11.335 bgG  -1 bgS  0.000 cS 11.335
+G  0  128          VNFKHEVSV  VNFKHEVSV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  8.410 bgG  -1 bgS  0.000 cS  8.410
+G  0  129          SSPVFKAMF  SSPVFKAMF o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 15.050 bgG  -1 bgS  0.000 cS 15.050
+G  0  130          SGYLFIGSL  SGYLFIGSL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 14.631 bgG  -1 bgS  0.000 cS 14.631
+G  0  131          VSVETLLRN  VSVETLLRN o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  0.605 bgG  -1 bgS  0.000 cS  0.605
+G  0  132          SIVSFLARL  SIVSFLARL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 18.997 bgG  -1 bgS  0.000 cS 18.997
+G  0  133          SGLQNFEAL  SGLQNFEAL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 17.055 bgG  -1 bgS  0.000 cS 17.055
+G  0  134          VTYHGFPNL  VTYHGFPNL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 14.831 bgG  -1 bgS  0.000 cS 14.831
+G  0  135          SSPFKVSPL  SSPFKVSPL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 13.394 bgG  -1 bgS  0.000 cS 13.394
+G  0  136          AVVEFLTSV  AVVEFLTSV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 12.371 bgG  -1 bgS  0.000 cS 12.371
+G  0  137          SWVEKKLNL  SWVEKKLNL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 15.583 bgG  -1 bgS  0.000 cS 15.583
+G  0  138          GSLSNHTEL  GSLSNHTEL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 11.351 bgG  -1 bgS  0.000 cS 11.351
+G  0  139          SAFAFMESL  SAFAFMESL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 16.243 bgG  -1 bgS  0.000 cS 16.243
+G  0  140          RSYENHMYL  RSYENHMYL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 20.932 bgG  -1 bgS  0.000 cS 20.932
+G  0  141          IAPEYYDHL  IAPEYYDHL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 19.810 bgG  -1 bgS  0.000 cS 19.810
+G  0  142          HTFYNELRV  HTFYNELRV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  5.527 bgG  -1 bgS  0.000 cS  5.527
+G  0  143          KIYQWINEL  KIYQWINEL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 14.276 bgG  -1 bgS  0.000 cS 14.276
+G  0  144          VNMEKYPDL  VNMEKYPDL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 15.362 bgG  -1 bgS  0.000 cS 15.362
+G  0  145          KAFEYPSRL  KAFEYPSRL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 18.999 bgG  -1 bgS  0.000 cS 18.999
+G  0  146          IMLEALERV  IMLEALERV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  8.140 bgG  -1 bgS  0.000 cS  8.140
+G  0  147          AAYEHFETM  AAYEHFETM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 21.127 bgG  -1 bgS  0.000 cS 21.127
+G  0  148          VIHSFINAL  VIHSFINAL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 13.298 bgG  -1 bgS  0.000 cS 13.298
+G  0  149          AIVTFITKV  AIVTFITKV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 10.629 bgG  -1 bgS  0.000 cS 10.629
+G  0  150          KIIDFLSAL  KIIDFLSAL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 12.728 bgG  -1 bgS  0.000 cS 12.728
+G  0  151          KAYSFKEQI  KAYSFKEQI o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 18.171 bgG  -1 bgS  0.000 cS 18.171
+G  0  152          LTPEKYPKL  LTPEKYPKL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 13.554 bgG  -1 bgS  0.000 cS 13.554
+G  0  153          SNVKHVINF  SNVKHVINF o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 10.372 bgG  -1 bgS  0.000 cS 10.372
+G  0  154          KSFEWLSQM  KSFEWLSQM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 18.936 bgG  -1 bgS  0.000 cS 18.936
+G  0  155          SWHTESLPV  SWHTESLPV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  3.315 bgG  -1 bgS  0.000 cS  3.315
+G  0  156          IMYDKHIQM  IMYDKHIQM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 14.298 bgG  -1 bgS  0.000 cS 14.298
+G  0  157          DQIQNAQYL  DQIQNAQYL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 10.394 bgG  -1 bgS  0.000 cS 10.394
+G  0  158          VCPSNKPAI  VCPSNKPAI o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 10.630 bgG  -1 bgS  0.000 cS 10.630
+G  0  159          TGIRNLEWL  TGIRNLEWL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 11.975 bgG  -1 bgS  0.000 cS 11.975
+G  0  160          VNVPFHLAL  VNVPFHLAL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 14.079 bgG  -1 bgS  0.000 cS 14.079
+G  0  161          SSYTFKATV  SSYTFKATV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 19.665 bgG  -1 bgS  0.000 cS 19.665
+G  0  162          QTYYRVSNM  QTYYRVSNM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 12.969 bgG  -1 bgS  0.000 cS 12.969
+G  0  163          SILRYLARI  SILRYLARI o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 12.785 bgG  -1 bgS  0.000 cS 12.785
+G  0  164          SNFVFARTM  SNFVFARTM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 16.159 bgG  -1 bgS  0.000 cS 16.159
+G  0  165          KSVENFVSL  KSVENFVSL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 18.103 bgG  -1 bgS  0.000 cS 18.103
+G  0  166          SMAHNREEL  SMAHNREEL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  9.819 bgG  -1 bgS  0.000 cS  9.819
+G  0  167          SSVPFVNGV  SSVPFVNGV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 14.791 bgG  -1 bgS  0.000 cS 14.791
+G  0  168          VGPELHEKL  VGPELHEKL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 15.980 bgG  -1 bgS  0.000 cS 15.980
+G  0  169          SSVENIQRV  SSVENIQRV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 22.531 bgG  -1 bgS  0.000 cS 22.531
+G  0  170          FSPSFINHI  FSPSFINHI o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 14.386 bgG  -1 bgS  0.000 cS 14.386
+G  0  171          ATYIWKNNF  ATYIWKNNF o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 11.618 bgG  -1 bgS  0.000 cS 11.618
+G  0  172          VAFIFNQKF  VAFIFNQKF o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 12.662 bgG  -1 bgS  0.000 cS 12.662
+G  0  173          AINPKLMQL  AINPKLMQL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  5.962 bgG  -1 bgS  0.000 cS  5.962
+G  0  174          KTYEHFNAM  KTYEHFNAM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 17.617 bgG  -1 bgS  0.000 cS 17.617
+G  0  175          ATPGRLVDM  ATPGRLVDM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  6.530 bgG  -1 bgS  0.000 cS  6.530
+G  0  176          TNPEFVINV  TNPEFVINV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 15.696 bgG  -1 bgS  0.000 cS 15.696
+G  0  177          SSIGYHTSV  SSIGYHTSV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 11.037 bgG  -1 bgS  0.000 cS 11.037
+G  0  178          FSITDQQTL  FSITDQQTL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  8.355 bgG  -1 bgS  0.000 cS  8.355
+G  0  179          KIVQFIVTL  KIVQFIVTL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 14.011 bgG  -1 bgS  0.000 cS 14.011
+G  0  180          SNYYRTWNV  SNYYRTWNV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 13.948 bgG  -1 bgS  0.000 cS 13.948
+G  0  181          AIVNFVSKV  AIVNFVSKV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  6.950 bgG  -1 bgS  0.000 cS  6.950
+G  0  182          SCVNFKEMM  SCVNFKEMM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 11.868 bgG  -1 bgS  0.000 cS 11.868
+G  0  183          SAVSFTIRL  SAVSFTIRL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 18.777 bgG  -1 bgS  0.000 cS 18.777
+G  0  184          INQIYEARV  INQIYEARV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  6.294 bgG  -1 bgS  0.000 cS  6.294
+G  0  185          LGPQNAAAV  LGPQNAAAV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  4.162 bgG  -1 bgS  0.000 cS  4.162
+G  0  186          FMATNPEHL  FMATNPEHL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 10.591 bgG  -1 bgS  0.000 cS 10.591
+G  0  187          VAEEFLKNF  VAEEFLKNF o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 11.516 bgG  -1 bgS  0.000 cS 11.516
+G  0  188          QNLERGTAV  QNLERGTAV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  6.577 bgG  -1 bgS  0.000 cS  6.577
+G  0  189          VNVERYKQI  VNVERYKQI o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 14.543 bgG  -1 bgS  0.000 cS 14.543
+G  0  190          MAPQNLSTF  MAPQNLSTF o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 13.319 bgG  -1 bgS  0.000 cS 13.319
+G  0  191          FQHPNTDML  FQHPNTDML o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 10.492 bgG  -1 bgS  0.000 cS 10.492
+G  0  192          VNPQFKIRL  VNPQFKIRL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 20.842 bgG  -1 bgS  0.000 cS 20.842
+G  0  193          SSYGQQSSF  SSYGQQSSF o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 10.451 bgG  -1 bgS  0.000 cS 10.451
+G  0  194          SAYSKQATF  SAYSKQATF o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 15.139 bgG  -1 bgS  0.000 cS 15.139
+G  0  195          TNHFPQPQL  TNHFPQPQL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  7.720 bgG  -1 bgS  0.000 cS  7.720
+G  0  196          TTFSYVNNM  TTFSYVNNM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 14.052 bgG  -1 bgS  0.000 cS 14.052
+G  0  197          TILEFSQNM  TILEFSQNM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 17.954 bgG  -1 bgS  0.000 cS 17.954
+G  0  198          ISYVFEGKM  ISYVFEGKM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 13.894 bgG  -1 bgS  0.000 cS 13.894
+G  0  199          KTVVNKDVF  KTVVNKDVF o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  7.502 bgG  -1 bgS  0.000 cS  7.502
+G  0  200          TTPEFLTRI  TTPEFLTRI o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 19.030 bgG  -1 bgS  0.000 cS 19.030
+G  0  201          SSYWRITSI  SSYWRITSI o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 16.535 bgG  -1 bgS  0.000 cS 16.535
+G  0  202          AAIANHQVL  AAIANHQVL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 11.221 bgG  -1 bgS  0.000 cS 11.221
+G  0  203          TIYERFVLV  TIYERFVLV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 12.303 bgG  -1 bgS  0.000 cS 12.303
+G  0  204          GTYEFLYTV  GTYEFLYTV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 14.195 bgG  -1 bgS  0.000 cS 14.195
+G  0  205          AIVEHLVTL  AIVEHLVTL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 12.551 bgG  -1 bgS  0.000 cS 12.551
+G  0  206          TIVEFLHSF  TIVEFLHSF o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 12.737 bgG  -1 bgS  0.000 cS 12.737
+G  0  207          INWDFFPKV  INWDFFPKV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 14.970 bgG  -1 bgS  0.000 cS 14.970
+G  0  208          SAIHNSTKV  SAIHNSTKV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 12.556 bgG  -1 bgS  0.000 cS 12.556
+G  0  209          IFFTRAVQF  IFFTRAVQF o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  3.829 bgG  -1 bgS  0.000 cS  3.829
+G  0  210          VSLLDIDHL  VSLLDIDHL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  8.149 bgG  -1 bgS  0.000 cS  8.149
+G  0  211          VGPDRLEKL  VGPDRLEKL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 16.600 bgG  -1 bgS  0.000 cS 16.600
+G  0  212          VIQDRFSPT  VIQDRFSPT o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  5.259 bgG  -1 bgS  0.000 cS  5.259
+G  0  213          RSYLFLGGI  RSYLFLGGI o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  9.303 bgG  -1 bgS  0.000 cS  9.303
+G  0  214          VAPEYTRQL  VAPEYTRQL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 20.837 bgG  -1 bgS  0.000 cS 20.837
+G  0  215          QVYTFTERM  QVYTFTERM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 20.312 bgG  -1 bgS  0.000 cS 20.312
+G  0  216          SGYEFIHKL  SGYEFIHKL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 22.101 bgG  -1 bgS  0.000 cS 22.101
+G  0  217          VQLENQMVL  VQLENQMVL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 14.578 bgG  -1 bgS  0.000 cS 14.578
+G  0  218          VNQDYFASV  VNQDYFASV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 11.915 bgG  -1 bgS  0.000 cS 11.915
+G  0  219          TMFLRETSL  TMFLRETSL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  7.371 bgG  -1 bgS  0.000 cS  7.371
+G  0  220          SCYLFSRTL  SCYLFSRTL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 14.179 bgG  -1 bgS  0.000 cS 14.179
+G  0  221          WKVVNPYYL  WKVVNPYYL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  2.946 bgG  -1 bgS  0.000 cS  2.946
+G  0  222          YNMDQFTPV  YNMDQFTPV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  6.071 bgG  -1 bgS  0.000 cS  6.071
+G  0  223          TLVELTVHM  TLVELTVHM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  8.337 bgG  -1 bgS  0.000 cS  8.337
+G  0  224          FSVLNWDQV  FSVLNWDQV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  7.667 bgG  -1 bgS  0.000 cS  7.667
+G  0  225          SSPLGKDLL  SSPLGKDLL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  7.642 bgG  -1 bgS  0.000 cS  7.642
+G  0  226          SHVTNVDFL  SHVTNVDFL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 12.198 bgG  -1 bgS  0.000 cS 12.198
+G  0  227          SAVKNLQQL  SAVKNLQQL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 20.029 bgG  -1 bgS  0.000 cS 20.029
+G  0  228          RSPAFTSRL  RSPAFTSRL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 17.599 bgG  -1 bgS  0.000 cS 17.599
+G  0  229          THYSFLATL  THYSFLATL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 16.174 bgG  -1 bgS  0.000 cS 16.174
+G  0  230          SNVSYYTRI  SNVSYYTRI o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 18.431 bgG  -1 bgS  0.000 cS 18.431
+G  0  231          VIFIHGGAF  VIFIHGGAF o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  1.684 bgG  -1 bgS  0.000 cS  1.684
+G  0  232          IGYPFLVSV  IGYPFLVSV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 13.833 bgG  -1 bgS  0.000 cS 13.833
+G  0  233          GSLKNVTTL  GSLKNVTTL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 11.375 bgG  -1 bgS  0.000 cS 11.375
+G  0  234          RAFEFKSLL  RAFEFKSLL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 15.653 bgG  -1 bgS  0.000 cS 15.653
+G  0  235          QVFEFLIRL  QVFEFLIRL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 16.830 bgG  -1 bgS  0.000 cS 16.830
+G  0  236          QSIAHYRPI  QSIAHYRPI o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  7.725 bgG  -1 bgS  0.000 cS  7.725
+G  0  237          SSPVNPVVF  SSPVNPVVF o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 14.384 bgG  -1 bgS  0.000 cS 14.384
+G  0  238          SAYEFYHAL  SAYEFYHAL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 23.598 bgG  -1 bgS  0.000 cS 23.598
+G  0  239          SSYMHFTNV  SSYMHFTNV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 17.199 bgG  -1 bgS  0.000 cS 17.199
+G  0  240          IAVANAQEL  IAVANAQEL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 10.105 bgG  -1 bgS  0.000 cS 10.105
+G  0  241          YQYTNSEVL  YQYTNSEVL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 13.889 bgG  -1 bgS  0.000 cS 13.889
+G  0  242          SHLSRNMTM  SHLSRNMTM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  7.276 bgG  -1 bgS  0.000 cS  7.276
+G  0  243          IVFEDFARL  IVFEDFARL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 12.105 bgG  -1 bgS  0.000 cS 12.105
+G  0  244          VSVEYTEKM  VSVEYTEKM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 20.719 bgG  -1 bgS  0.000 cS 20.719
+G  0  245          SIYARFVQL  SIYARFVQL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 17.460 bgG  -1 bgS  0.000 cS 17.460
+G  0  246          KSLKNFITI  KSLKNFITI o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 10.433 bgG  -1 bgS  0.000 cS 10.433
+G  0  247          VNVERVLNV  VNVERVLNV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 12.133 bgG  -1 bgS  0.000 cS 12.133
+G  0  248          VFYQKKYGI  VFYQKKYGI o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  6.891 bgG  -1 bgS  0.000 cS  6.891
+G  0  249          SGYNKLASF  SGYNKLASF o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 11.114 bgG  -1 bgS  0.000 cS 11.114
+G  0  250          NMPWNVDTL  NMPWNVDTL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 11.799 bgG  -1 bgS  0.000 cS 11.799
+G  0  251          KAIINIFFL  KAIINIFFL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  7.099 bgG  -1 bgS  0.000 cS  7.099
+G  0  252          KNFKFTMDL  KNFKFTMDL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 11.515 bgG  -1 bgS  0.000 cS 11.515
+G  0  253          VISERVIQL  VISERVIQL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  9.675 bgG  -1 bgS  0.000 cS  9.675
+G  0  254          SAVIHSENF  SAVIHSENF o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 11.284 bgG  -1 bgS  0.000 cS 11.284
+G  0  255          VSPTVNQRL  VSPTVNQRL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 13.173 bgG  -1 bgS  0.000 cS 13.173
+G  0  256          SLILFSTRL  SLILFSTRL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 12.529 bgG  -1 bgS  0.000 cS 12.529
+G  0  257          VNIDIIHRI  VNIDIIHRI o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  8.208 bgG  -1 bgS  0.000 cS  8.208
+G  0  258          QVFDAKNMM  QVFDAKNMM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  4.714 bgG  -1 bgS  0.000 cS  4.714
+G  0  259          ASLVNADKL  ASLVNADKL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  9.617 bgG  -1 bgS  0.000 cS  9.617
+G  0  260          VAYQYLCRL  VAYQYLCRL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 18.872 bgG  -1 bgS  0.000 cS 18.872
+G  0  261          YAPLHLVPL  YAPLHLVPL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  8.441 bgG  -1 bgS  0.000 cS  8.441
+G  0  262          SSFQFHNRM  SSFQFHNRM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 23.645 bgG  -1 bgS  0.000 cS 23.645
+G  0  263          VSLDRYLAL  VSLDRYLAL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 12.469 bgG  -1 bgS  0.000 cS 12.469
+G  0  264          SGLLNSQAL  SGLLNSQAL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 11.740 bgG  -1 bgS  0.000 cS 11.740
+G  0  265          SAIFNFQSL  SAIFNFQSL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 16.886 bgG  -1 bgS  0.000 cS 16.886
+G  0  266          QNQDRFALL  QNQDRFALL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  8.975 bgG  -1 bgS  0.000 cS  8.975
+G  0  267          SNFHFAVLV  SNFHFAVLV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 10.098 bgG  -1 bgS  0.000 cS 10.098
+G  0  268          SVFIFPPNI  SVFIFPPNI o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 13.689 bgG  -1 bgS  0.000 cS 13.689
+G  0  269          VSLDRYLAI  VSLDRYLAI o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  9.201 bgG  -1 bgS  0.000 cS  9.201
+G  0  270          RAYEFAERC  RAYEFAERC o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 14.864 bgG  -1 bgS  0.000 cS 14.864
+G  0  271          RTFEFKSLL  RTFEFKSLL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 15.195 bgG  -1 bgS  0.000 cS 15.195
+G  0  272          VNQFFKTML  VNQFFKTML o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 11.850 bgG  -1 bgS  0.000 cS 11.850
+G  0  273          SLNERFTNM  SLNERFTNM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 12.810 bgG  -1 bgS  0.000 cS 12.810
+G  0  274          VNFEKLHMI  VNFEKLHMI o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 11.788 bgG  -1 bgS  0.000 cS 11.788
+G  0  275          KATTNIVEM  KATTNIVEM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  7.153 bgG  -1 bgS  0.000 cS  7.153
+G  0  276          VWITRAPGM  VWITRAPGM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 10.889 bgG  -1 bgS  0.000 cS 10.889
+G  0  277          SQVINPTAI  SQVINPTAI o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 11.204 bgG  -1 bgS  0.000 cS 11.204
+G  0  278          QQHRFERSV  QQHRFERSV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  6.791 bgG  -1 bgS  0.000 cS  6.791
+G  0  279          KWFFQKLRF  KWFFQKLRF o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  4.047 bgG  -1 bgS  0.000 cS  4.047
+G  0  280          SGPENFQVG  SGPENFQVG o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  8.345 bgG  -1 bgS  0.000 cS  8.345
+G  0  281          TGPDYYSQL  TGPDYYSQL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 17.643 bgG  -1 bgS  0.000 cS 17.643
+G  0  282          RTVENVTVF  RTVENVTVF o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 12.108 bgG  -1 bgS  0.000 cS 12.108
+G  0  283          IGPKNYEFL  IGPKNYEFL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 16.015 bgG  -1 bgS  0.000 cS 16.015
+G  0  284          SATINAEFV  SATINAEFV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  5.622 bgG  -1 bgS  0.000 cS  5.622
+G  0  285          SAPSADAPM  SAPSADAPM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  8.341 bgG  -1 bgS  0.000 cS  8.341
+G  0  286          KILPWFEQL  KILPWFEQL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 15.270 bgG  -1 bgS  0.000 cS 15.270
+G  0  287          LSHFNMDTL  LSHFNMDTL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  5.708 bgG  -1 bgS  0.000 cS  5.708
+G  0  288          QNYLFGCEL  QNYLFGCEL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  8.532 bgG  -1 bgS  0.000 cS  8.532
+G  0  289          TSPARGYEL  TSPARGYEL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  5.593 bgG  -1 bgS  0.000 cS  5.593
+G  0  290          KNLVFVVGL  KNLVFVVGL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 10.246 bgG  -1 bgS  0.000 cS 10.246
+G  0  291          RVYEFLDKL  RVYEFLDKL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 18.119 bgG  -1 bgS  0.000 cS 18.119
+G  0  292          QQPSNYGPM  QQPSNYGPM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 15.824 bgG  -1 bgS  0.000 cS 15.824
+G  0  293          VNVHKEIQM  VNVHKEIQM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 10.953 bgG  -1 bgS  0.000 cS 10.953
+G  0  294          YQQMNPEAL  YQQMNPEAL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  6.442 bgG  -1 bgS  0.000 cS  6.442
+G  0  295          RSPPFTARI  RSPPFTARI o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 16.814 bgG  -1 bgS  0.000 cS 16.814
+G  0  296          TRIPKIQKL  TRIPKIQKL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  8.181 bgG  -1 bgS  0.000 cS  8.181
+G  0  297          LCPPRYPKL  LCPPRYPKL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  9.029 bgG  -1 bgS  0.000 cS  9.029
+G  0  298          VAHTFVIGV  VAHTFVIGV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  8.851 bgG  -1 bgS  0.000 cS  8.851
+G  0  299          VNLEFLSLI  VNLEFLSLI o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 14.567 bgG  -1 bgS  0.000 cS 14.567
+G  0  300          VIYEPFQLL  VIYEPFQLL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 18.860 bgG  -1 bgS  0.000 cS 18.860
+G  0  301          QNLLTPLNV  QNLLTPLNV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  1.500 bgG  -1 bgS  0.000 cS  1.500
+G  0  302          RVISFIRQM  RVISFIRQM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 12.647 bgG  -1 bgS  0.000 cS 12.647
+G  0  303          SKLANIDYL  SKLANIDYL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  9.190 bgG  -1 bgS  0.000 cS  9.190
+G  0  304          QIYEIFQKL  QIYEIFQKL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 15.346 bgG  -1 bgS  0.000 cS 15.346
+G  0  305          VSYFFNGRL  VSYFFNGRL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 15.520 bgG  -1 bgS  0.000 cS 15.520
+G  0  306          ATFEKESVM  ATFEKESVM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 10.407 bgG  -1 bgS  0.000 cS 10.407
+G  0  307          QGPQFVTGV  QGPQFVTGV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 11.511 bgG  -1 bgS  0.000 cS 11.511
+G  0  308          SGPQLNAQL  SGPQLNAQL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 11.741 bgG  -1 bgS  0.000 cS 11.741
+G  0  309          KILPAFSSL  KILPAFSSL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  6.501 bgG  -1 bgS  0.000 cS  6.501
+G  0  310          VAYRHLVGV  VAYRHLVGV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 12.427 bgG  -1 bgS  0.000 cS 12.427
+G  0  311          KNPADLPKL  KNPADLPKL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  8.627 bgG  -1 bgS  0.000 cS  8.627
+G  0  312          FQIVNPHLL  FQIVNPHLL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  7.776 bgG  -1 bgS  0.000 cS  7.776
+G  0  313          SQPVNPHSL  SQPVNPHSL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 16.498 bgG  -1 bgS  0.000 cS 16.498
+G  0  314          NTYNYKSTF  NTYNYKSTF o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  9.445 bgG  -1 bgS  0.000 cS  9.445
+G  0  315          FSYLNPQEL  FSYLNPQEL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 16.075 bgG  -1 bgS  0.000 cS 16.075
+G  0  316          KAYRFLSQF  KAYRFLSQF o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 17.942 bgG  -1 bgS  0.000 cS 17.942
+G  0  317          GGYEEYSGL  GGYEEYSGL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 10.734 bgG  -1 bgS  0.000 cS 10.734
+G  0  318          KAFDYPSRL  KAFDYPSRL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 17.081 bgG  -1 bgS  0.000 cS 17.081
+G  0  319          RIMEFTTTL  RIMEFTTTL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 16.547 bgG  -1 bgS  0.000 cS 16.547
+G  0  320          FGPVNHEEL  FGPVNHEEL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 12.145 bgG  -1 bgS  0.000 cS 12.145
+G  0  321          AWIQKINEL  AWIQKINEL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  9.362 bgG  -1 bgS  0.000 cS  9.362
+G  0  322          KGVTYVNSF  KGVTYVNSF o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  7.632 bgG  -1 bgS  0.000 cS  7.632
+G  0  323          MWIPGVAPL  MWIPGVAPL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  4.502 bgG  -1 bgS  0.000 cS  4.502
+G  0  324          VNLREYPSL  VNLREYPSL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 11.807 bgG  -1 bgS  0.000 cS 11.807
+G  0  325          VNIRFVGGL  VNIRFVGGL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 12.268 bgG  -1 bgS  0.000 cS 12.268
+G  0  326          FSEENHEPL  FSEENHEPL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 13.868 bgG  -1 bgS  0.000 cS 13.868
+G  0  327          SLSPHFLSL  SLSPHFLSL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  4.129 bgG  -1 bgS  0.000 cS  4.129
+G  0  328          KNLDWFPRM  KNLDWFPRM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 17.515 bgG  -1 bgS  0.000 cS 17.515
+G  0  329          LSYTRFSLA  LSYTRFSLA o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  2.439 bgG  -1 bgS  0.000 cS  2.439
+G  0  330          ITFSYVNNM  ITFSYVNNM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 13.984 bgG  -1 bgS  0.000 cS 13.984
+G  0  331          SNVERITNV  SNVERITNV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 16.994 bgG  -1 bgS  0.000 cS 16.994
+G  0  332          SFEMPLTPM  SFEMPLTPM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  2.565 bgG  -1 bgS  0.000 cS  2.565
+G  0  333          IGHRYIEVF  IGHRYIEVF o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  6.850 bgG  -1 bgS  0.000 cS  6.850
+G  0  334          FSNVNLKEV  FSNVNLKEV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  1.623 bgG  -1 bgS  0.000 cS  1.623
+G  0  335          SSFSRVTNF  SSFSRVTNF o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 15.685 bgG  -1 bgS  0.000 cS 15.685
+G  0  336          VWRTNPGSV  VWRTNPGSV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  4.213 bgG  -1 bgS  0.000 cS  4.213
+G  0  337          VGLKFLTNM  VGLKFLTNM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 16.729 bgG  -1 bgS  0.000 cS 16.729
+G  0  338          EIYEFHNNI  EIYEFHNNI o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 16.086 bgG  -1 bgS  0.000 cS 16.086
+G  0  339          SSPQFVGNL  SSPQFVGNL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 19.116 bgG  -1 bgS  0.000 cS 19.116
+G  0  340          TAVEFANHL  TAVEFANHL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 16.626 bgG  -1 bgS  0.000 cS 16.626
+G  0  341          IAYEYLCHL  IAYEYLCHL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 17.500 bgG  -1 bgS  0.000 cS 17.500
+G  0  342          ATFPKEIQM  ATFPKEIQM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 10.077 bgG  -1 bgS  0.000 cS 10.077
+G  0  343          RVQLFEIRL  RVQLFEIRL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  6.431 bgG  -1 bgS  0.000 cS  6.431
+G  0  344          KSWKKIFNL  KSWKKIFNL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  7.543 bgG  -1 bgS  0.000 cS  7.543
+G  0  345          SIYDAFPKV  SIYDAFPKV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 12.766 bgG  -1 bgS  0.000 cS 12.766
+G  0  346          TSFIFTQFL  TSFIFTQFL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 15.840 bgG  -1 bgS  0.000 cS 15.840
+G  0  347          KNFTKKIQL  KNFTKKIQL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 11.849 bgG  -1 bgS  0.000 cS 11.849
+G  0  348          LSHVNEEWL  LSHVNEEWL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  6.408 bgG  -1 bgS  0.000 cS  6.408
+G  0  349          SNYDKLNKL  SNYDKLNKL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 19.670 bgG  -1 bgS  0.000 cS 19.670
+G  0  350          TSHKYVTQM  TSHKYVTQM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 13.365 bgG  -1 bgS  0.000 cS 13.365
+G  0  351          SIYQFLIAV  SIYQFLIAV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 15.249 bgG  -1 bgS  0.000 cS 15.249
+G  0  352          VIVRFLTVM  VIVRFLTVM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 15.594 bgG  -1 bgS  0.000 cS 15.594
+G  0  353          FQYRNRIAM  FQYRNRIAM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 11.587 bgG  -1 bgS  0.000 cS 11.587
+G  0  354          GSPTNLDKI  GSPTNLDKI o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 10.276 bgG  -1 bgS  0.000 cS 10.276
+G  0  355          SSMAEFLKV  SSMAEFLKV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  3.725 bgG  -1 bgS  0.000 cS  3.725
+G  0  356          SQLQNEFYL  SQLQNEFYL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 13.255 bgG  -1 bgS  0.000 cS 13.255
+G  0  357          VIIDTFADL  VIIDTFADL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  9.132 bgG  -1 bgS  0.000 cS  9.132
+G  0  358          AWYQKQELL  AWYQKQELL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 13.511 bgG  -1 bgS  0.000 cS 13.511
+G  0  359          VINFDFPKL  VINFDFPKL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  3.723 bgG  -1 bgS  0.000 cS  3.723
+G  0  360          KNNQFQALL  KNNQFQALL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  8.958 bgG  -1 bgS  0.000 cS  8.958
+G  0  361          TTFTREGSF  TTFTREGSF o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  4.200 bgG  -1 bgS  0.000 cS  4.200
+G  0  362          TAPVNIAVI  TAPVNIAVI o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  8.926 bgG  -1 bgS  0.000 cS  8.926
+G  0  363          VTYSHEVYF  VTYSHEVYF o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 13.657 bgG  -1 bgS  0.000 cS 13.657
+G  0  364          VNLKKKSYL  VNLKKKSYL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 12.857 bgG  -1 bgS  0.000 cS 12.857
+G  0  365          YVHVNRDTL  YVHVNRDTL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  5.995 bgG  -1 bgS  0.000 cS  5.995
+G  0  366          VTHEPHMPL  VTHEPHMPL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 11.754 bgG  -1 bgS  0.000 cS 11.754
+G  0  367          VMIQHVENL  VMIQHVENL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 14.661 bgG  -1 bgS  0.000 cS 14.661
+G  0  368          TAPKFLTPL  TAPKFLTPL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 16.963 bgG  -1 bgS  0.000 cS 16.963
+G  0  369          VAPDRFPTL  VAPDRFPTL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 19.107 bgG  -1 bgS  0.000 cS 19.107
+G  0  370          RQIFNGTFV  RQIFNGTFV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  4.032 bgG  -1 bgS  0.000 cS  4.032
+G  0  371          IGPDFQKGL  IGPDFQKGL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 11.491 bgG  -1 bgS  0.000 cS 11.491
+G  0  372          TNIAREELM  TNIAREELM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  7.188 bgG  -1 bgS  0.000 cS  7.188
+G  0  373          TQYSFYQQL  TQYSFYQQL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 23.733 bgG  -1 bgS  0.000 cS 23.733
+G  0  374          ISPENHISL  ISPENHISL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 17.641 bgG  -1 bgS  0.000 cS 17.641
+G  0  375          SSLMKVENM  SSLMKVENM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 13.400 bgG  -1 bgS  0.000 cS 13.400
+G  0  376          ATFGYPFRL  ATFGYPFRL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  8.333 bgG  -1 bgS  0.000 cS  8.333
+G  0  377          SSPSNKFFF  SSPSNKFFF o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 13.488 bgG  -1 bgS  0.000 cS 13.488
+G  0  378          SNYNFEKPF  SNYNFEKPF o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 14.159 bgG  -1 bgS  0.000 cS 14.159
+G  0  379          KSLTYYTNL  KSLTYYTNL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 16.759 bgG  -1 bgS  0.000 cS 16.759
+G  0  380          SSYVFFTKL  SSYVFFTKL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 23.616 bgG  -1 bgS  0.000 cS 23.616
+G  0  381          KIFEKHAYL  KIFEKHAYL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 14.292 bgG  -1 bgS  0.000 cS 14.292
+G  0  382          SSFSHYSGL  SSFSHYSGL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 17.300 bgG  -1 bgS  0.000 cS 17.300
+G  0  383          QNIQKILGL  QNIQKILGL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  7.358 bgG  -1 bgS  0.000 cS  7.358
+G  0  384          VGIRNTFLL  VGIRNTFLL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  9.450 bgG  -1 bgS  0.000 cS  9.450
+G  0  385          STFEFHSIL  STFEFHSIL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 15.743 bgG  -1 bgS  0.000 cS 15.743
+G  0  386          SSVHTFPAL  SSVHTFPAL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 11.432 bgG  -1 bgS  0.000 cS 11.432
+G  0  387          ASYTFKATV  ASYTFKATV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 15.828 bgG  -1 bgS  0.000 cS 15.828
+G  0  388          VCFSYRNNF  VCFSYRNNF o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 10.144 bgG  -1 bgS  0.000 cS 10.144
+G  0  389          VSYEKFSNL  VSYEKFSNL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 23.297 bgG  -1 bgS  0.000 cS 23.297
+G  0  390          VALINKDFL  VALINKDFL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 12.205 bgG  -1 bgS  0.000 cS 12.205
+G  0  391          TSVENHEFL  TSVENHEFL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 18.283 bgG  -1 bgS  0.000 cS 18.283
+G  0  392          SSVLLQTLL  SSVLLQTLL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  8.843 bgG  -1 bgS  0.000 cS  8.843
+G  0  393          INAEFVTQL  INAEFVTQL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 15.961 bgG  -1 bgS  0.000 cS 15.961
+G  0  394          SNWPTYPQL  SNWPTYPQL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 17.424 bgG  -1 bgS  0.000 cS 17.424
+G  0  395          VVYTPWSNL  VVYTPWSNL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 13.103 bgG  -1 bgS  0.000 cS 13.103
+G  0  396          VIMKLFPQL  VIMKLFPQL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 11.454 bgG  -1 bgS  0.000 cS 11.454
+G  0  397          SALANYIHL  SALANYIHL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 16.333 bgG  -1 bgS  0.000 cS 16.333
+G  0  398          QQQSNYGPM  QQQSNYGPM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 11.842 bgG  -1 bgS  0.000 cS 11.842
+G  0  399          QAYAFLQYL  QAYAFLQYL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 19.226 bgG  -1 bgS  0.000 cS 19.226
+G  0  400          SFYEHIITV  SFYEHIITV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 12.895 bgG  -1 bgS  0.000 cS 12.895
+G  0  401          VNYPFLEKM  VNYPFLEKM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 24.299 bgG  -1 bgS  0.000 cS 24.299
+G  0  402          AALVSRTFL  AALVSRTFL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  2.577 bgG  -1 bgS  0.000 cS  2.577
+G  0  403          EIYDFHNNI  EIYDFHNNI o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 14.158 bgG  -1 bgS  0.000 cS 14.158
+G  0  404          SAYQKTVPI  SAYQKTVPI o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 15.236 bgG  -1 bgS  0.000 cS 15.236
+G  0  405          SAYLYKQGF  SAYLYKQGF o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 15.413 bgG  -1 bgS  0.000 cS 15.413
+G  0  406          VGVEKKLLL  VGVEKKLLL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  9.743 bgG  -1 bgS  0.000 cS  9.743
+G  0  407          RGLSRYPNL  RGLSRYPNL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 12.635 bgG  -1 bgS  0.000 cS 12.635
+G  0  408          AVVRFINRF  AVVRFINRF o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 11.801 bgG  -1 bgS  0.000 cS 11.801
+G  0  409          AVYQYHVTF  AVYQYHVTF o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 11.887 bgG  -1 bgS  0.000 cS 11.887
+G  0  410          TRLYPEPSL  TRLYPEPSL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  0.739 bgG  -1 bgS  0.000 cS  0.739
+G  0  411          SSYTTHPQM  SSYTTHPQM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 19.158 bgG  -1 bgS  0.000 cS 19.158
+G  0  412          SAPRFLTAF  SAPRFLTAF o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 16.541 bgG  -1 bgS  0.000 cS 16.541
+G  0  413          SALDWWPKI  SALDWWPKI o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 10.829 bgG  -1 bgS  0.000 cS 10.829
+G  0  414          GMIENGPFL  GMIENGPFL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  9.525 bgG  -1 bgS  0.000 cS  9.525
+G  0  415          STIRNAQSI  STIRNAQSI o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 12.447 bgG  -1 bgS  0.000 cS 12.447
+G  0  416          GGIQNVGHI  GGIQNVGHI o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  5.116 bgG  -1 bgS  0.000 cS  5.116
+G  0  417          IQYAYTGRL  IQYAYTGRL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 13.807 bgG  -1 bgS  0.000 cS 13.807
+G  0  418          SSVQLSEKM  SSVQLSEKM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 13.972 bgG  -1 bgS  0.000 cS 13.972
+G  0  419          INYVFRHYI  INYVFRHYI o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 12.936 bgG  -1 bgS  0.000 cS 12.936
+G  0  420          TQYIFTEKL  TQYIFTEKL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 17.810 bgG  -1 bgS  0.000 cS 17.810
+G  0  421          VVYPWTQRY  VVYPWTQRY o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  8.914 bgG  -1 bgS  0.000 cS  8.914
+G  0  422          VGPEFKDKL  VGPEFKDKL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 19.687 bgG  -1 bgS  0.000 cS 19.687
+G  0  423          STDVDRTLM  STDVDRTLM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  1.328 bgG  -1 bgS  0.000 cS  1.328
+G  0  424          VGVAFLTTV  VGVAFLTTV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 12.327 bgG  -1 bgS  0.000 cS 12.327
+G  0  425          SITKFLNRI  SITKFLNRI o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 10.464 bgG  -1 bgS  0.000 cS 10.464
+G  0  426          SVIDLQTKL  SVIDLQTKL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 11.042 bgG  -1 bgS  0.000 cS 11.042
+G  0  427          ATYTFIQQL  ATYTFIQQL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 20.625 bgG  -1 bgS  0.000 cS 20.625
+G  0  428          RAIENIDTL  RAIENIDTL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 16.112 bgG  -1 bgS  0.000 cS 16.112
+G  0  429          STQQYGSNV  STQQYGSNV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  9.134 bgG  -1 bgS  0.000 cS  9.134
+G  0  430          RQLENGTTL  RQLENGTTL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 14.207 bgG  -1 bgS  0.000 cS 14.207
+G  0  431          TIYQFLRLF  TIYQFLRLF o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 13.120 bgG  -1 bgS  0.000 cS 13.120
+G  0  432          ASLSNLHSL  ASLSNLHSL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 12.658 bgG  -1 bgS  0.000 cS 12.658
+G  0  433          ALNEKLVNL  ALNEKLVNL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  4.945 bgG  -1 bgS  0.000 cS  4.945
+G  0  434          QTVENVEHL  QTVENVEHL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 18.186 bgG  -1 bgS  0.000 cS 18.186
+G  0  435          VIYPFMQGL  VIYPFMQGL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 20.215 bgG  -1 bgS  0.000 cS 20.215
+G  0  436          SSLHPMGGL  SSLHPMGGL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  6.199 bgG  -1 bgS  0.000 cS  6.199
+G  0  437          FAPKNIYSI  FAPKNIYSI o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  7.977 bgG  -1 bgS  0.000 cS  7.977
+G  0  438          VAYKFPELL  VAYKFPELL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 19.066 bgG  -1 bgS  0.000 cS 19.066
+G  0  439          SILRKTTTV  SILRKTTTV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 11.055 bgG  -1 bgS  0.000 cS 11.055
+G  0  440          SAFTFRVTV  SAFTFRVTV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 13.988 bgG  -1 bgS  0.000 cS 13.988
+G  0  441          SQVVHKAVL  SQVVHKAVL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 10.334 bgG  -1 bgS  0.000 cS 10.334
+G  0  442          SGPDLRYEM  SGPDLRYEM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  9.609 bgG  -1 bgS  0.000 cS  9.609
+G  0  443          TALENLSTL  TALENLSTL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 17.124 bgG  -1 bgS  0.000 cS 17.124
+G  0  444          GAVTNVKVI  GAVTNVKVI o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  2.269 bgG  -1 bgS  0.000 cS  2.269
+G  0  445          KSIARVLTV  KSIARVLTV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  4.194 bgG  -1 bgS  0.000 cS  4.194
+G  0  446          SNWWFVAHL  SNWWFVAHL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 18.642 bgG  -1 bgS  0.000 cS 18.642
+G  0  447          QIYARQYYM  QIYARQYYM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 11.109 bgG  -1 bgS  0.000 cS 11.109
+G  0  448          STLLNYDYI  STLLNYDYI o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 13.134 bgG  -1 bgS  0.000 cS 13.134
+G  0  449          GGPENVAEM  GGPENVAEM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 12.793 bgG  -1 bgS  0.000 cS 12.793
+G  0  450          AQFEFTETV  AQFEFTETV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 17.206 bgG  -1 bgS  0.000 cS 17.206
+G  0  451          SQFQFSAQL  SQFQFSAQL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 19.219 bgG  -1 bgS  0.000 cS 19.219
+G  0  452          KAPDNRETL  KAPDNRETL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 17.640 bgG  -1 bgS  0.000 cS 17.640
+G  0  453          ANWIKAVQM  ANWIKAVQM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  7.380 bgG  -1 bgS  0.000 cS  7.380
+G  0  454          TTFSRLINL  TTFSRLINL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 11.291 bgG  -1 bgS  0.000 cS 11.291
+G  0  455          VIVPHIVNL  VIVPHIVNL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 13.762 bgG  -1 bgS  0.000 cS 13.762
+G  0  456          IGIENIHYL  IGIENIHYL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 15.423 bgG  -1 bgS  0.000 cS 15.423
+G  0  457          RGYDFKADI  RGYDFKADI o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 11.545 bgG  -1 bgS  0.000 cS 11.545
+G  0  458          VNVGRGYGL  VNVGRGYGL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  5.071 bgG  -1 bgS  0.000 cS  5.071
+G  0  459          SALNNFQVV  SALNNFQVV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 12.951 bgG  -1 bgS  0.000 cS 12.951
+G  0  460          TTLERTEGL  TTLERTEGL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 13.089 bgG  -1 bgS  0.000 cS 13.089
+G  0  461          RAFSFLNEV  RAFSFLNEV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 11.290 bgG  -1 bgS  0.000 cS 11.290
+G  0  462          VIVVLRNPL  VIVVLRNPL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  8.211 bgG  -1 bgS  0.000 cS  8.211
+G  0  463          QQYSFINQL  QQYSFINQL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 19.727 bgG  -1 bgS  0.000 cS 19.727
+G  0  464          KAYKYIVTC  KAYKYIVTC o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  7.302 bgG  -1 bgS  0.000 cS  7.302
+G  0  465          IAQDFKTDL  IAQDFKTDL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 11.881 bgG  -1 bgS  0.000 cS 11.881
+G  0  466          IMLGRMPNL  IMLGRMPNL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  6.787 bgG  -1 bgS  0.000 cS  6.787
+G  0  467          AIITGFRNV  AIITGFRNV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  3.703 bgG  -1 bgS  0.000 cS  3.703
+G  0  468          YGLKNLTAL  YGLKNLTAL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  8.404 bgG  -1 bgS  0.000 cS  8.404
+G  0  469          RTYSFLNLL  RTYSFLNLL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 15.730 bgG  -1 bgS  0.000 cS 15.730
+G  0  470          IGPRFVLNL  IGPRFVLNL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 12.946 bgG  -1 bgS  0.000 cS 12.946
+G  0  471          AAPRSFIFL  AAPRSFIFL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  6.544 bgG  -1 bgS  0.000 cS  6.544
+G  0  472          AVVAFVMKM  AVVAFVMKM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  7.229 bgG  -1 bgS  0.000 cS  7.229
+G  0  473          KAFSFRSSL  KAFSFRSSL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 13.696 bgG  -1 bgS  0.000 cS 13.696
+G  0  474          KSYRRKDGV  KSYRRKDGV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 10.905 bgG  -1 bgS  0.000 cS 10.905
+G  0  475          IHAQYNTPI  IHAQYNTPI o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  1.807 bgG  -1 bgS  0.000 cS  1.807
+G  0  476          KTFRKSFNL  KTFRKSFNL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  7.007 bgG  -1 bgS  0.000 cS  7.007
+G  0  477          VSIEHQELM  VSIEHQELM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 16.318 bgG  -1 bgS  0.000 cS 16.318
+G  0  478          IQWRFVNRI  IQWRFVNRI o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 12.401 bgG  -1 bgS  0.000 cS 12.401
+G  0  479          AFFKTLSNM  AFFKTLSNM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  5.368 bgG  -1 bgS  0.000 cS  5.368
+G  0  480          VNYRHLALL  VNYRHLALL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 15.531 bgG  -1 bgS  0.000 cS 15.531
+G  0  481          SLYDAFPKV  SLYDAFPKV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  9.029 bgG  -1 bgS  0.000 cS  9.029
+G  0  482          VNYIFQISV  VNYIFQISV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 14.006 bgG  -1 bgS  0.000 cS 14.006
+G  0  483          KTIYNVEHL  KTIYNVEHL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 13.469 bgG  -1 bgS  0.000 cS 13.469
+G  0  484          SAFRFLFNL  SAFRFLFNL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 16.424 bgG  -1 bgS  0.000 cS 16.424
+G  0  485          VGLYYINKI  VGLYYINKI o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  7.583 bgG  -1 bgS  0.000 cS  7.583
+G  0  486          RAFQHIESF  RAFQHIESF o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 10.825 bgG  -1 bgS  0.000 cS 10.825
+G  0  487          STIRNADVI  STIRNADVI o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  8.546 bgG  -1 bgS  0.000 cS  8.546
+G  0  488          ISLKNSQEI  ISLKNSQEI o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  9.216 bgG  -1 bgS  0.000 cS  9.216
+G  0  489          IGPVHQNRF  IGPVHQNRF o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 10.256 bgG  -1 bgS  0.000 cS 10.256
+G  0  490          QRIDEFESM  QRIDEFESM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  5.807 bgG  -1 bgS  0.000 cS  5.807
+G  0  491          RSLENRVTF  RSLENRVTF o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 12.933 bgG  -1 bgS  0.000 cS 12.933
+G  0  492          NQQEFVRAL  NQQEFVRAL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  9.133 bgG  -1 bgS  0.000 cS  9.133
+G  0  493          ANIDFYAQV  ANIDFYAQV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 15.546 bgG  -1 bgS  0.000 cS 15.546
+G  0  494          SLITNKVVM  SLITNKVVM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 10.143 bgG  -1 bgS  0.000 cS 10.143
+G  0  495          SLVPQMPKL  SLVPQMPKL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  6.992 bgG  -1 bgS  0.000 cS  6.992
+G  0  496          SSINFLTRV  SSINFLTRV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 16.891 bgG  -1 bgS  0.000 cS 16.891
+G  0  497          SNFRFSKTV  SNFRFSKTV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 12.944 bgG  -1 bgS  0.000 cS 12.944
+G  0  498          VGYGHLSTL  VGYGHLSTL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 14.267 bgG  -1 bgS  0.000 cS 14.267
+G  0  499          VNLKYLLKL  VNLKYLLKL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 11.444 bgG  -1 bgS  0.000 cS 11.444
+G  0  500          SAYIFNSNV  SAYIFNSNV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 15.194 bgG  -1 bgS  0.000 cS 15.194
+G  0  501          LSLPFEARL  LSLPFEARL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 12.157 bgG  -1 bgS  0.000 cS 12.157
+G  0  502          SIYAREALI  SIYAREALI o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  7.801 bgG  -1 bgS  0.000 cS  7.801
+G  0  503          ASVLNVNHI  ASVLNVNHI o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  9.793 bgG  -1 bgS  0.000 cS  9.793
+G  0  504          SALEFLTHL  SALEFLTHL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 22.581 bgG  -1 bgS  0.000 cS 22.581
+G  0  505          ASSPKFSEL  ASSPKFSEL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  6.751 bgG  -1 bgS  0.000 cS  6.751
+G  0  506          TNISFTNMV  TNISFTNMV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 11.049 bgG  -1 bgS  0.000 cS 11.049
+G  0  507          AVMRGPPPL  AVMRGPPPL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  3.869 bgG  -1 bgS  0.000 cS  3.869
+G  0  508          TVPELTQQM  TVPELTQQM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 15.694 bgG  -1 bgS  0.000 cS 15.694
+G  0  509          SVYQKTNAI  SVYQKTNAI o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 11.704 bgG  -1 bgS  0.000 cS 11.704
+G  0  510          AALEFLNRF  AALEFLNRF o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 16.695 bgG  -1 bgS  0.000 cS 16.695
+G  0  511          SCYTFPLRI  SCYTFPLRI o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 14.955 bgG  -1 bgS  0.000 cS 14.955
+G  0  512          VIYPFQPRA  VIYPFQPRA o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 15.131 bgG  -1 bgS  0.000 cS 15.131
+G  0  513          SSYTFPKMM  SSYTFPKMM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 18.794 bgG  -1 bgS  0.000 cS 18.794
+G  0  514          VAVTFSERL  VAVTFSERL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 18.971 bgG  -1 bgS  0.000 cS 18.971
+G  0  515          SMWEKGSVF  SMWEKGSVF o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  8.146 bgG  -1 bgS  0.000 cS  8.146
+G  0  516          VMLENYSHL  VMLENYSHL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 21.221 bgG  -1 bgS  0.000 cS 21.221
+G  0  517          VSVELTNSL  VSVELTNSL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 15.166 bgG  -1 bgS  0.000 cS 15.166
+G  0  518          RLYEFSCRM  RLYEFSCRM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 14.434 bgG  -1 bgS  0.000 cS 14.434
+G  0  519          TNQDFIQRL  TNQDFIQRL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 18.223 bgG  -1 bgS  0.000 cS 18.223
+G  0  520          SGILDRDTM  SGILDRDTM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  5.363 bgG  -1 bgS  0.000 cS  5.363
+G  0  521          TIQEFLERI  TIQEFLERI o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 15.136 bgG  -1 bgS  0.000 cS 15.136
+G  0  522          LSPPSYSKL  LSPPSYSKL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  8.609 bgG  -1 bgS  0.000 cS  8.609
+G  0  523          RNLEQFARL  RNLEQFARL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 13.821 bgG  -1 bgS  0.000 cS 13.821
+G  0  524          SQISNTEFL  SQISNTEFL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 17.895 bgG  -1 bgS  0.000 cS 17.895
+G  0  525          SSPENKNWL  SSPENKNWL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 21.662 bgG  -1 bgS  0.000 cS 21.662
+G  0  526          TAFDFTSRV  TAFDFTSRV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 16.315 bgG  -1 bgS  0.000 cS 16.315
+G  0  527          SIFEHKIVF  SIFEHKIVF o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 11.665 bgG  -1 bgS  0.000 cS 11.665
+G  0  528          SWIEGLTGL  SWIEGLTGL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 12.896 bgG  -1 bgS  0.000 cS 12.896
+G  0  529          VAYTRFALM  VAYTRFALM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 16.233 bgG  -1 bgS  0.000 cS 16.233
+G  0  530          RIYGKFLGL  RIYGKFLGL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  7.770 bgG  -1 bgS  0.000 cS  7.770
+G  0  531          KAFTHGVAM  KAFTHGVAM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  6.560 bgG  -1 bgS  0.000 cS  6.560
+G  0  532          VAYWRQAGL  VAYWRQAGL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 15.313 bgG  -1 bgS  0.000 cS 15.313
+G  0  533          SGMAYVERM  SGMAYVERM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 14.109 bgG  -1 bgS  0.000 cS 14.109
+G  0  534          AALENTHLL  AALENTHLL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 12.958 bgG  -1 bgS  0.000 cS 12.958
+G  0  535          GTFQRSAGL  GTFQRSAGL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  6.326 bgG  -1 bgS  0.000 cS  6.326
+G  0  536          SGVWNVTEL  SGVWNVTEL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 15.222 bgG  -1 bgS  0.000 cS 15.222
+G  0  537          RMLENYEEI  RMLENYEEI o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 13.527 bgG  -1 bgS  0.000 cS 13.527
+G  0  538          SAPVFKEKL  SAPVFKEKL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 19.488 bgG  -1 bgS  0.000 cS 19.488
+G  0  539          VSSTLTVHV  VSSTLTVHV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  5.042 bgG  -1 bgS  0.000 cS  5.042
+G  0  540          AMAPRTLLL  AMAPRTLLL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  2.248 bgG  -1 bgS  0.000 cS  2.248
+G  0  541          QIAEFKEAF  QIAEFKEAF o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  9.480 bgG  -1 bgS  0.000 cS  9.480
+G  0  542          VISDFITRL  VISDFITRL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 15.355 bgG  -1 bgS  0.000 cS 15.355
+G  0  543          TNFEYLTHL  TNFEYLTHL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 19.622 bgG  -1 bgS  0.000 cS 19.622
+G  0  544          YAADNQIYI  YAADNQIYI o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  5.025 bgG  -1 bgS  0.000 cS  5.025
+G  0  545          VSMDFVQRF  VSMDFVQRF o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 18.636 bgG  -1 bgS  0.000 cS 18.636
+G  0  546          TIYRKTVQV  TIYRKTVQV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 11.520 bgG  -1 bgS  0.000 cS 11.520
+G  0  547          QNYRFYRGM  QNYRFYRGM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 18.858 bgG  -1 bgS  0.000 cS 18.858
+G  0  548          SNYHFYSSI  SNYHFYSSI o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 19.486 bgG  -1 bgS  0.000 cS 19.486
+G  0  549          TSPINAEKL  TSPINAEKL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 14.062 bgG  -1 bgS  0.000 cS 14.062
+G  0  550          RVIDFVAQV  RVIDFVAQV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  9.924 bgG  -1 bgS  0.000 cS  9.924
+G  0  551          RAPSTYGGM  RAPSTYGGM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  7.958 bgG  -1 bgS  0.000 cS  7.958
+G  0  552          ITYGQFAQL  ITYGQFAQL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 11.105 bgG  -1 bgS  0.000 cS 11.105
+G  0  553          VTQEFVTRT  VTQEFVTRT o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 11.733 bgG  -1 bgS  0.000 cS 11.733
+G  0  554          AIYEFIHNF  AIYEFIHNF o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 17.772 bgG  -1 bgS  0.000 cS 17.772
+G  0  555          STKDQYPYL  STKDQYPYL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  9.312 bgG  -1 bgS  0.000 cS  9.312
+G  0  556          SHDRREQQI  SHDRREQQI o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  5.320 bgG  -1 bgS  0.000 cS  5.320
+G  0  557          TAYLFSRFV  TAYLFSRFV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  9.707 bgG  -1 bgS  0.000 cS  9.707
+G  0  558          VSPVSYLRI  VSPVSYLRI o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  9.548 bgG  -1 bgS  0.000 cS  9.548
+G  0  559          VTNRFDQLF  VTNRFDQLF o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  6.119 bgG  -1 bgS  0.000 cS  6.119
+G  0  560          YQYDFSRTL  YQYDFSRTL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 15.613 bgG  -1 bgS  0.000 cS 15.613
+G  0  561          VQNINIENL  VQNINIENL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 13.056 bgG  -1 bgS  0.000 cS 13.056
+G  0  562          RGLDYFSSL  RGLDYFSSL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 11.767 bgG  -1 bgS  0.000 cS 11.767
+G  0  563          RNYEYLIRL  RNYEYLIRL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 20.261 bgG  -1 bgS  0.000 cS 20.261
+G  0  564          MAPDLRQDF  MAPDLRQDF o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  5.202 bgG  -1 bgS  0.000 cS  5.202
+G  0  565          STMVNADHF  STMVNADHF o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 10.407 bgG  -1 bgS  0.000 cS 10.407
+G  0  566          SNVNYYNRL  SNVNYYNRL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 18.658 bgG  -1 bgS  0.000 cS 18.658
+G  0  567          VTYSFRQSF  VTYSFRQSF o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 18.099 bgG  -1 bgS  0.000 cS 18.099
+G  0  568          SILGNLKNM  SILGNLKNM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 12.158 bgG  -1 bgS  0.000 cS 12.158
+G  0  569          ITHEFINTF  ITHEFINTF o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 14.174 bgG  -1 bgS  0.000 cS 14.174
+G  0  570          MSPDLRQDF  MSPDLRQDF o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  6.253 bgG  -1 bgS  0.000 cS  6.253
+G  0  571          SQYRFIYNM  SQYRFIYNM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 21.234 bgG  -1 bgS  0.000 cS 21.234
+G  0  572          AQITGTEHL  AQITGTEHL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  8.795 bgG  -1 bgS  0.000 cS  8.795
+G  0  573          SAIINEDNL  SAIINEDNL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 14.257 bgG  -1 bgS  0.000 cS 14.257
+G  0  574          VNFEFPEFQ  VNFEFPEFQ o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  9.106 bgG  -1 bgS  0.000 cS  9.106
+G  0  575          SAYQRGESL  SAYQRGESL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 16.748 bgG  -1 bgS  0.000 cS 16.748
+G  0  576          RGYSFTTTA  RGYSFTTTA o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 10.265 bgG  -1 bgS  0.000 cS 10.265
+G  0  577          RAPSNQNWL  RAPSNQNWL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 13.423 bgG  -1 bgS  0.000 cS 13.423
+G  0  578          ANFPRATGL  ANFPRATGL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 10.581 bgG  -1 bgS  0.000 cS 10.581
+G  0  579          VGPELHHKL  VGPELHHKL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 13.528 bgG  -1 bgS  0.000 cS 13.528
+G  0  580          THSSRFIPL  THSSRFIPL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  3.431 bgG  -1 bgS  0.000 cS  3.431
+G  0  581          TTFEHAHNM  TTFEHAHNM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 12.788 bgG  -1 bgS  0.000 cS 12.788
+G  0  582          IIYIFYQKL  IIYIFYQKL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 19.225 bgG  -1 bgS  0.000 cS 19.225
+G  0  583          SIHRFLSSL  SIHRFLSSL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 15.479 bgG  -1 bgS  0.000 cS 15.479
+G  0  584          SNPDLMRQL  SNPDLMRQL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 15.116 bgG  -1 bgS  0.000 cS 15.116
+G  0  585          ATPLLMRPM  ATPLLMRPM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  5.931 bgG  -1 bgS  0.000 cS  5.931
+G  0  586          VNQNLLTPL  VNQNLLTPL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  9.362 bgG  -1 bgS  0.000 cS  9.362
+G  0  587          KALDYIHHM  KALDYIHHM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 13.319 bgG  -1 bgS  0.000 cS 13.319
+G  0  588          AALQNLEQL  AALQNLEQL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 16.851 bgG  -1 bgS  0.000 cS 16.851
+G  0  589          SNFSHFLTM  SNFSHFLTM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 16.283 bgG  -1 bgS  0.000 cS 16.283
+G  0  590          STYDYGRQL  STYDYGRQL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 17.830 bgG  -1 bgS  0.000 cS 17.830
+G  0  591          VNVDHPINL  VNVDHPINL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 14.826 bgG  -1 bgS  0.000 cS 14.826
+G  0  592          KNFKFLGTL  KNFKFLGTL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 13.264 bgG  -1 bgS  0.000 cS 13.264
+G  0  593          AMIELVERL  AMIELVERL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 12.614 bgG  -1 bgS  0.000 cS 12.614
+G  0  594          VMLETFRNL  VMLETFRNL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 13.511 bgG  -1 bgS  0.000 cS 13.511
+G  0  595          TALDHYSEL  TALDHYSEL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 11.954 bgG  -1 bgS  0.000 cS 11.954
+G  0  596          IIYDFYLRL  IIYDFYLRL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 20.446 bgG  -1 bgS  0.000 cS 20.446
+G  0  597          NIFQKLNYM  NIFQKLNYM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 11.016 bgG  -1 bgS  0.000 cS 11.016
+G  0  598          MSYEQLMQL  MSYEQLMQL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 13.734 bgG  -1 bgS  0.000 cS 13.734
+G  0  599          SHLFPFEKL  SHLFPFEKL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  8.789 bgG  -1 bgS  0.000 cS  8.789
+G  0  600          FSLKGFPSL  FSLKGFPSL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  6.168 bgG  -1 bgS  0.000 cS  6.168
+G  0  601          ATFEFTANV  ATFEFTANV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 15.684 bgG  -1 bgS  0.000 cS 15.684
+G  0  602          VADGFISRM  VADGFISRM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 11.891 bgG  -1 bgS  0.000 cS 11.891
+G  0  603          AVYQFGSAL  AVYQFGSAL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 11.510 bgG  -1 bgS  0.000 cS 11.510
+G  0  604          KILDTFEKL  KILDTFEKL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 10.364 bgG  -1 bgS  0.000 cS 10.364
+G  0  605          VIVDTFHGL  VIVDTFHGL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  9.700 bgG  -1 bgS  0.000 cS  9.700
+G  0  606          INIEMYQRL  INIEMYQRL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 16.936 bgG  -1 bgS  0.000 cS 16.936
+G  0  607          ISLPRGKGI  ISLPRGKGI o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  1.516 bgG  -1 bgS  0.000 cS  1.516
+G  0  608          SNYAFMQAL  SNYAFMQAL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 18.961 bgG  -1 bgS  0.000 cS 18.961
+G  0  609          ESFSDYPPL  ESFSDYPPL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 10.005 bgG  -1 bgS  0.000 cS 10.005
+G  0  610          AINPKLLQL  AINPKLLQL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  5.492 bgG  -1 bgS  0.000 cS  5.492
+G  0  611          GCYSNRETL  GCYSNRETL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 12.266 bgG  -1 bgS  0.000 cS 12.266
+G  0  612          SGPLEYPQL  SGPLEYPQL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 13.246 bgG  -1 bgS  0.000 cS 13.246
+G  0  613          KAFRFSSSL  KAFRFSSSL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 13.630 bgG  -1 bgS  0.000 cS 13.630
+G  0  614          KTYQFLNDI  KTYQFLNDI o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 13.647 bgG  -1 bgS  0.000 cS 13.647
+G  0  615          VFIDKQTNL  VFIDKQTNL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 11.151 bgG  -1 bgS  0.000 cS 11.151
+G  0  616          ASIVNKDGL  ASIVNKDGL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 11.018 bgG  -1 bgS  0.000 cS 11.018
+G  0  617          SNYERLESL  SNYERLESL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 22.941 bgG  -1 bgS  0.000 cS 22.941
+G  0  618          VQFQKLQQL  VQFQKLQQL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 18.180 bgG  -1 bgS  0.000 cS 18.180
+G  0  619          TVPSPGRHI  TVPSPGRHI o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  3.262 bgG  -1 bgS  0.000 cS  3.262
+G  0  620          SVVRFIARF  SVVRFIARF o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 14.884 bgG  -1 bgS  0.000 cS 14.884
+G  0  621          VVFFFKTLL  VVFFFKTLL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 11.510 bgG  -1 bgS  0.000 cS 11.510
+G  0  622          IAFRFLSYV  IAFRFLSYV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 13.708 bgG  -1 bgS  0.000 cS 13.708
+G  0  623          KNYDFAQVL  KNYDFAQVL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 17.998 bgG  -1 bgS  0.000 cS 17.998
+G  0  624          TSLLNLTVI  TSLLNLTVI o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  8.033 bgG  -1 bgS  0.000 cS  8.033
+G  0  625          STYEYVRFI  STYEYVRFI o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 16.152 bgG  -1 bgS  0.000 cS 16.152
+G  0  626          SQYQRFTYL  SQYQRFTYL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 22.357 bgG  -1 bgS  0.000 cS 22.357
+G  0  627          ANYQRDGPM  ANYQRDGPM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 10.395 bgG  -1 bgS  0.000 cS 10.395
+G  0  628          SAVKNDYEM  SAVKNDYEM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 10.038 bgG  -1 bgS  0.000 cS 10.038
+G  0  629          SSYLHTAGL  SSYLHTAGL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 15.556 bgG  -1 bgS  0.000 cS 15.556
+G  0  630          SIQLKTNFL  SIQLKTNFL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  8.077 bgG  -1 bgS  0.000 cS  8.077
+G  0  631          IGIVKQAGL  IGIVKQAGL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  5.119 bgG  -1 bgS  0.000 cS  5.119
+G  0  632          EIYHFHNRI  EIYHFHNRI o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 13.012 bgG  -1 bgS  0.000 cS 13.012
+G  0  633          VNFEKFWEL  VNFEKFWEL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 15.942 bgG  -1 bgS  0.000 cS 15.942
+G  0  634          NVPVRSSPL  NVPVRSSPL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  6.288 bgG  -1 bgS  0.000 cS  6.288
+G  0  635          VGIENIHVM  VGIENIHVM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 15.397 bgG  -1 bgS  0.000 cS 15.397
+G  0  636          SLVDLNTRL  SLVDLNTRL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  8.876 bgG  -1 bgS  0.000 cS  8.876
+G  0  637          VITNFSARI  VITNFSARI o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  6.054 bgG  -1 bgS  0.000 cS  6.054
+G  0  638          VNYDYSTLI  VNYDYSTLI o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 14.629 bgG  -1 bgS  0.000 cS 14.629
+G  0  639          VFQTLPRHM  VFQTLPRHM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  5.828 bgG  -1 bgS  0.000 cS  5.828
+G  0  640          KAIVNVIGM  KAIVNVIGM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  9.186 bgG  -1 bgS  0.000 cS  9.186
+G  0  641          STIEFKNML  STIEFKNML o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 18.584 bgG  -1 bgS  0.000 cS 18.584
+G  0  642          VGYNPYSHL  VGYNPYSHL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 15.737 bgG  -1 bgS  0.000 cS 15.737
+G  0  643          SVFEKYFQF  SVFEKYFQF o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 13.183 bgG  -1 bgS  0.000 cS 13.183
+G  0  644          SVVTFSVHM  SVVTFSVHM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 15.044 bgG  -1 bgS  0.000 cS 15.044
+G  0  645          VNYYFERNM  VNYYFERNM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 18.812 bgG  -1 bgS  0.000 cS 18.812
+G  0  646          RVAEFTTNL  RVAEFTTNL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 13.580 bgG  -1 bgS  0.000 cS 13.580
+G  0  647          KAPTFEVQM  KAPTFEVQM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 15.945 bgG  -1 bgS  0.000 cS 15.945
+G  0  648          VNLKEYPAL  VNLKEYPAL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  9.431 bgG  -1 bgS  0.000 cS  9.431
+G  0  649          VAPFLRQEF  VAPFLRQEF o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  6.797 bgG  -1 bgS  0.000 cS  6.797
+G  0  650          SDYPPLGRF  SDYPPLGRF o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  8.188 bgG  -1 bgS  0.000 cS  8.188
+G  0  651          RIVENVNVI  RIVENVNVI o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 10.023 bgG  -1 bgS  0.000 cS 10.023
+G  0  652          VNLIYHQRI  VNLIYHQRI o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 13.778 bgG  -1 bgS  0.000 cS 13.778
+G  0  653          EAPNLQNKM  EAPNLQNKM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  5.762 bgG  -1 bgS  0.000 cS  5.762
+G  0  654          SMEVNVDTL  SMEVNVDTL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  9.508 bgG  -1 bgS  0.000 cS  9.508
+G  0  655          VNQERFPNV  VNQERFPNV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 15.510 bgG  -1 bgS  0.000 cS 15.510
+G  0  656          ISPFFPNGV  ISPFFPNGV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 10.386 bgG  -1 bgS  0.000 cS 10.386
+G  0  657          KSYSFIARM  KSYSFIARM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 21.744 bgG  -1 bgS  0.000 cS 21.744
+G  0  658          FQNVNSVTL  FQNVNSVTL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  5.754 bgG  -1 bgS  0.000 cS  5.754
+G  0  659          VAPEEHPVL  VAPEEHPVL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 13.417 bgG  -1 bgS  0.000 cS 13.417
+G  0  660          VIWGPFRNM  VIWGPFRNM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 10.039 bgG  -1 bgS  0.000 cS 10.039
+G  0  661          GVCTNIIHM  GVCTNIIHM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  3.423 bgG  -1 bgS  0.000 cS  3.423
+G  0  662          NGPEFEARI  NGPEFEARI o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 12.761 bgG  -1 bgS  0.000 cS 12.761
+G  0  663          VIWGKYAQV  VIWGKYAQV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  9.186 bgG  -1 bgS  0.000 cS  9.186
+G  0  664          VGLHFLTNL  VGLHFLTNL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 16.202 bgG  -1 bgS  0.000 cS 16.202
+G  0  665          SSFRHSQTF  SSFRHSQTF o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 15.277 bgG  -1 bgS  0.000 cS 15.277
+G  0  666          HSVQNTEYF  HSVQNTEYF o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 14.014 bgG  -1 bgS  0.000 cS 14.014
+G  0  667          SVLLFIEHV  SVLLFIEHV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 12.200 bgG  -1 bgS  0.000 cS 12.200
+G  0  668          VAIRFDSGL  VAIRFDSGL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 11.555 bgG  -1 bgS  0.000 cS 11.555
+G  0  669          VMVTNVTSL  VMVTNVTSL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 14.947 bgG  -1 bgS  0.000 cS 14.947
+G  0  670          STYLRLNHM  STYLRLNHM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 17.673 bgG  -1 bgS  0.000 cS 17.673
+G  0  671          KAYGASKPF  KAYGASKPF o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  1.418 bgG  -1 bgS  0.000 cS  1.418
+G  0  672          SDPILYRPV  SDPILYRPV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  3.927 bgG  -1 bgS  0.000 cS  3.927
+G  0  673          SSIVNSIQV  SSIVNSIQV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 12.518 bgG  -1 bgS  0.000 cS 12.518
+G  0  674          VSFELFADK  VSFELFADK o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  5.874 bgG  -1 bgS  0.000 cS  5.874
+G  0  675          SNIQYITRF  SNIQYITRF o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 17.807 bgG  -1 bgS  0.000 cS 17.807
+G  0  676          VGPVNISVV  VGPVNISVV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 11.130 bgG  -1 bgS  0.000 cS 11.130
+G  0  677          ANPRLWLRL  ANPRLWLRL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  9.127 bgG  -1 bgS  0.000 cS  9.127
+G  0  678          SIFEFVHAL  SIFEFVHAL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 17.150 bgG  -1 bgS  0.000 cS 17.150
+G  0  679          VGLINKDSV  VGLINKDSV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  8.536 bgG  -1 bgS  0.000 cS  8.536
+G  0  680          TNLVPYPRI  TNLVPYPRI o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  9.767 bgG  -1 bgS  0.000 cS  9.767
+G  0  681          RSIQNAQFL  RSIQNAQFL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 13.810 bgG  -1 bgS  0.000 cS 13.810
+G  0  682          IWVEATNRL  IWVEATNRL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 12.208 bgG  -1 bgS  0.000 cS 12.208
+G  0  683          LSPSHYALL  LSPSHYALL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  9.549 bgG  -1 bgS  0.000 cS  9.549
+G  0  684          RSYEFFNEL  RSYEFFNEL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 22.132 bgG  -1 bgS  0.000 cS 22.132
+G  0  685          VRQRELEQL  VRQRELEQL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  6.348 bgG  -1 bgS  0.000 cS  6.348
+G  0  686          QILSDFPKL  QILSDFPKL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  7.352 bgG  -1 bgS  0.000 cS  7.352
+G  0  687          ATFIREVLM  ATFIREVLM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  4.916 bgG  -1 bgS  0.000 cS  4.916
+G  0  688          SILVNQEVL  SILVNQEVL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 13.722 bgG  -1 bgS  0.000 cS 13.722
+G  0  689          ALVSKKVNV  ALVSKKVNV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  2.632 bgG  -1 bgS  0.000 cS  2.632
+G  0  690          SSLSHISPF  SSLSHISPF o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 13.009 bgG  -1 bgS  0.000 cS 13.009
+G  0  691          VNVRFSTIV  VNVRFSTIV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  8.591 bgG  -1 bgS  0.000 cS  8.591
+G  0  692          VNSNFYLRM  VNSNFYLRM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 12.759 bgG  -1 bgS  0.000 cS 12.759
+G  0  693          SAPWYLNRV  SAPWYLNRV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 17.626 bgG  -1 bgS  0.000 cS 17.626
+G  0  694          GSVRNAVVL  GSVRNAVVL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  7.164 bgG  -1 bgS  0.000 cS  7.164
+G  0  695          IWISKLPHF  IWISKLPHF o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 10.434 bgG  -1 bgS  0.000 cS 10.434
+G  0  696          AAVEFISKM  AAVEFISKM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 16.931 bgG  -1 bgS  0.000 cS 16.931
+G  0  697          VIAAFTSRF  VIAAFTSRF o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 10.739 bgG  -1 bgS  0.000 cS 10.739
+G  0  698          SGMGGRTPV  SGMGGRTPV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  1.449 bgG  -1 bgS  0.000 cS  1.449
+G  0  699          SLYLFKLGL  SLYLFKLGL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 11.021 bgG  -1 bgS  0.000 cS 11.021
+G  0  700          KMVVFLNNL  KMVVFLNNL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 13.694 bgG  -1 bgS  0.000 cS 13.694
+G  0  701          AVIQFLERI  AVIQFLERI o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 12.907 bgG  -1 bgS  0.000 cS 12.907
+G  0  702          SNPKFGARL  SNPKFGARL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 18.121 bgG  -1 bgS  0.000 cS 18.121
+G  0  703          VWHEEHRGM  VWHEEHRGM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  9.856 bgG  -1 bgS  0.000 cS  9.856
+G  0  704          SINEFVAAV  SINEFVAAV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  9.843 bgG  -1 bgS  0.000 cS  9.843
+G  0  705          RVMEYINRL  RVMEYINRL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 13.580 bgG  -1 bgS  0.000 cS 13.580
+G  0  706          VNYEFGIAL  VNYEFGIAL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 17.746 bgG  -1 bgS  0.000 cS 17.746
+G  0  707          VALRNLEQI  VALRNLEQI o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 15.661 bgG  -1 bgS  0.000 cS 15.661
+G  0  708          VAYEYLCHL  VAYEYLCHL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 20.136 bgG  -1 bgS  0.000 cS 20.136
+G  0  709          HSALIYSNL  HSALIYSNL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  1.639 bgG  -1 bgS  0.000 cS  1.639
+G  0  710          SVIKVFPDL  SVIKVFPDL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  6.146 bgG  -1 bgS  0.000 cS  6.146
+G  0  711          TSLAFESRL  TSLAFESRL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 13.409 bgG  -1 bgS  0.000 cS 13.409
+G  0  712          LAIRNDEEL  LAIRNDEEL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  6.253 bgG  -1 bgS  0.000 cS  6.253
+G  0  713          HAIENIDTF  HAIENIDTF o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 11.819 bgG  -1 bgS  0.000 cS 11.819
+G  0  714          THIQKLIGV  THIQKLIGV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  2.307 bgG  -1 bgS  0.000 cS  2.307
+G  0  715          YTHEKKVYL  YTHEKKVYL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  9.925 bgG  -1 bgS  0.000 cS  9.925
+G  0  716          VNFPFLVKL  VNFPFLVKL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 18.833 bgG  -1 bgS  0.000 cS 18.833
+G  0  717          VAFDYQSKM  VAFDYQSKM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 16.794 bgG  -1 bgS  0.000 cS 16.794
+G  0  718          SYMWTINNF  SYMWTINNF o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  3.046 bgG  -1 bgS  0.000 cS  3.046
+G  0  719          SIWQFFSRL  SIWQFFSRL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 21.348 bgG  -1 bgS  0.000 cS 21.348
+G  0  720          KGFSYLVTA  KGFSYLVTA o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  3.819 bgG  -1 bgS  0.000 cS  3.819
+G  0  721          VGFTFPNRL  VGFTFPNRL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 19.408 bgG  -1 bgS  0.000 cS 19.408
+G  0  722          ISHSVLSEM  ISHSVLSEM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  5.710 bgG  -1 bgS  0.000 cS  5.710
+G  0  723          QAIKNGQAL  QAIKNGQAL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  9.297 bgG  -1 bgS  0.000 cS  9.297
+G  0  724          QRIDEFEAM  QRIDEFEAM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  4.361 bgG  -1 bgS  0.000 cS  4.361
+G  0  725          SIIRYAIGV  SIIRYAIGV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  6.159 bgG  -1 bgS  0.000 cS  6.159
+G  0  726          IAYKFGKTV  IAYKFGKTV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  8.910 bgG  -1 bgS  0.000 cS  8.910
+G  0  727          GGNINVETI  GGNINVETI o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  2.107 bgG  -1 bgS  0.000 cS  2.107
+G  0  728          SFIKRNTPL  SFIKRNTPL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  7.396 bgG  -1 bgS  0.000 cS  7.396
+G  0  729          SYYRHAAQL  SYYRHAAQL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 11.736 bgG  -1 bgS  0.000 cS 11.736
+G  0  730          VVYRFFSRL  VVYRFFSRL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 22.310 bgG  -1 bgS  0.000 cS 22.310
+G  0  731          AGFAFLTGV  AGFAFLTGV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  8.614 bgG  -1 bgS  0.000 cS  8.614
+G  0  732          SMVKKWQTM  SMVKKWQTM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 12.675 bgG  -1 bgS  0.000 cS 12.675
+G  0  733          SQLALKQSL  SQLALKQSL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 10.266 bgG  -1 bgS  0.000 cS 10.266
+G  0  734          WAVSNREML  WAVSNREML o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 10.451 bgG  -1 bgS  0.000 cS 10.451
+G  0  735          ISLDRHFMF  ISLDRHFMF o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  4.419 bgG  -1 bgS  0.000 cS  4.419
+G  0  736          FAYEGRDYI  FAYEGRDYI o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  7.927 bgG  -1 bgS  0.000 cS  7.927
+G  0  737          LSYSYQSRF  LSYSYQSRF o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 13.313 bgG  -1 bgS  0.000 cS 13.313
+G  0  738          IQLMNTAHL  IQLMNTAHL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 11.693 bgG  -1 bgS  0.000 cS 11.693
+G  0  739          VRVPWLHNL  VRVPWLHNL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 10.688 bgG  -1 bgS  0.000 cS 10.688
+G  0  740          SIFQQLAHM  SIFQQLAHM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 14.092 bgG  -1 bgS  0.000 cS 14.092
+G  0  741          SAVVDKDFL  SAVVDKDFL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  7.290 bgG  -1 bgS  0.000 cS  7.290
+G  0  742          VNMVPFPRL  VNMVPFPRL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 14.104 bgG  -1 bgS  0.000 cS 14.104
+G  0  743          IGPTYYQRL  IGPTYYQRL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 18.977 bgG  -1 bgS  0.000 cS 18.977
+G  0  744          TSPARLSGL  TSPARLSGL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 10.668 bgG  -1 bgS  0.000 cS 10.668
+G  0  745          INFYKSNYV  INFYKSNYV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  7.095 bgG  -1 bgS  0.000 cS  7.095
+G  0  746          ELFPVFTQL  ELFPVFTQL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  5.223 bgG  -1 bgS  0.000 cS  5.223
+G  0  747          QQYGFQHPL  QQYGFQHPL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 14.027 bgG  -1 bgS  0.000 cS 14.027
+G  0  748          NSHTNTEVL  NSHTNTEVL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 11.453 bgG  -1 bgS  0.000 cS 11.453
+G  0  749          SILAMINNM  SILAMINNM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  8.871 bgG  -1 bgS  0.000 cS  8.871
+G  0  750          HILDFTCRL  HILDFTCRL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 10.669 bgG  -1 bgS  0.000 cS 10.669
+G  0  751          VAYDMRIQF  VAYDMRIQF o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 10.957 bgG  -1 bgS  0.000 cS 10.957
+G  0  752          TATANQIPI  TATANQIPI o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  1.989 bgG  -1 bgS  0.000 cS  1.989
+G  0  753          SQYEFENYM  SQYEFENYM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 24.817 bgG  -1 bgS  0.000 cS 24.817
+G  0  754          RVVELQQTL  RVVELQQTL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 10.965 bgG  -1 bgS  0.000 cS 10.965
+G  0  755          ISPRFDVQL  ISPRFDVQL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 14.292 bgG  -1 bgS  0.000 cS 14.292
+G  0  756          ESITFIGRL  ESITFIGRL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 11.798 bgG  -1 bgS  0.000 cS 11.798
+G  0  757          SNIAHMVGL  SNIAHMVGL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  9.199 bgG  -1 bgS  0.000 cS  9.199
+G  0  758          KQGQNLWFL  KQGQNLWFL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  5.653 bgG  -1 bgS  0.000 cS  5.653
+G  0  759          STPEFGTHL  STPEFGTHL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 21.501 bgG  -1 bgS  0.000 cS 21.501
+G  0  760          AAPELKARL  AAPELKARL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 14.782 bgG  -1 bgS  0.000 cS 14.782
+G  0  761          SGPEYLKRL  SGPEYLKRL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 19.082 bgG  -1 bgS  0.000 cS 19.082
+G  0  762          SAYDFKADI  SAYDFKADI o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 16.582 bgG  -1 bgS  0.000 cS 16.582
+G  0  763          RGYDFAAVL  RGYDFAAVL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 13.089 bgG  -1 bgS  0.000 cS 13.089
+G  0  764          SQLELKSLI  SQLELKSLI o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  8.473 bgG  -1 bgS  0.000 cS  8.473
+G  0  765          TAFEFLSSA  TAFEFLSSA o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  9.597 bgG  -1 bgS  0.000 cS  9.597
+G  0  766          GALKNTDYF  GALKNTDYF o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  8.221 bgG  -1 bgS  0.000 cS  8.221
+G  0  767          IQAENAEFM  IQAENAEFM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 11.470 bgG  -1 bgS  0.000 cS 11.470
+G  0  768          KGIGNKTEI  KGIGNKTEI o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  6.202 bgG  -1 bgS  0.000 cS  6.202
+G  0  769          KNLEVFMHV  KNLEVFMHV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  7.488 bgG  -1 bgS  0.000 cS  7.488
+G  0  770          VGVENVAEL  VGVENVAEL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 15.645 bgG  -1 bgS  0.000 cS 15.645
+G  0  771          KVAQRTSQL  KVAQRTSQL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  7.961 bgG  -1 bgS  0.000 cS  7.961
+G  0  772          VHAQFNTPM  VHAQFNTPM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 10.287 bgG  -1 bgS  0.000 cS 10.287
+G  0  773          VMWEKTTQV  VMWEKTTQV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 14.611 bgG  -1 bgS  0.000 cS 14.611
+G  0  774          KSYNFHTGL  KSYNFHTGL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 16.917 bgG  -1 bgS  0.000 cS 16.917
+G  0  775          VTFERVEQM  VTFERVEQM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 19.584 bgG  -1 bgS  0.000 cS 19.584
+G  0  776          SAYSLPASL  SAYSLPASL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 15.193 bgG  -1 bgS  0.000 cS 15.193
+G  0  777          AVLSFSTRL  AVLSFSTRL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 13.169 bgG  -1 bgS  0.000 cS 13.169
+G  0  778          ISYDYLTSL  ISYDYLTSL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 18.861 bgG  -1 bgS  0.000 cS 18.861
+G  0  779          LSPLPDRSL  LSPLPDRSL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  0.866 bgG  -1 bgS  0.000 cS  0.866
+G  0  780          VFLERGEVM  VFLERGEVM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  8.284 bgG  -1 bgS  0.000 cS  8.284
+G  0  781          QTFSFSARL  QTFSFSARL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 15.323 bgG  -1 bgS  0.000 cS 15.323
+G  0  782          VGFDYKERL  VGFDYKERL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 19.302 bgG  -1 bgS  0.000 cS 19.302
+G  0  783          AIFKKTVAM  AIFKKTVAM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  7.069 bgG  -1 bgS  0.000 cS  7.069
+G  0  784          TTPQNQVDM  TTPQNQVDM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 13.138 bgG  -1 bgS  0.000 cS 13.138
+G  0  785          SLIILKQVM  SLIILKQVM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  5.563 bgG  -1 bgS  0.000 cS  5.563
+G  0  786          SAEEFVQRL  SAEEFVQRL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 19.501 bgG  -1 bgS  0.000 cS 19.501
+G  0  787          VWIQKTSEM  VWIQKTSEM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 13.088 bgG  -1 bgS  0.000 cS 13.088
+G  0  788          KLVDFVIHF  KLVDFVIHF o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  7.572 bgG  -1 bgS  0.000 cS  7.572
+G  0  789          KIYEFDYHL  KIYEFDYHL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 16.718 bgG  -1 bgS  0.000 cS 16.718
+G  0  790          RGYDFKADM  RGYDFKADM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 15.229 bgG  -1 bgS  0.000 cS 15.229
+G  0  791          AMYIFLHTV  AMYIFLHTV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 11.571 bgG  -1 bgS  0.000 cS 11.571
+G  0  792          VAYVFQALI  VAYVFQALI o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 13.118 bgG  -1 bgS  0.000 cS 13.118
+G  0  793          VNTDYPRPV  VNTDYPRPV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  8.417 bgG  -1 bgS  0.000 cS  8.417
+G  0  794          SIIAMKTLL  SIIAMKTLL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  6.215 bgG  -1 bgS  0.000 cS  6.215
+G  0  795          SAPENAVRM  SAPENAVRM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 22.038 bgG  -1 bgS  0.000 cS 22.038
+G  0  796          ISPVNPVAI  ISPVNPVAI o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  9.795 bgG  -1 bgS  0.000 cS  9.795
+G  0  797          ISFEFRSLL  ISFEFRSLL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 15.637 bgG  -1 bgS  0.000 cS 15.637
+G  0  798          KTFQKLSNL  KTFQKLSNL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 13.243 bgG  -1 bgS  0.000 cS 13.243
+G  0  799          VSPAYYPGL  VSPAYYPGL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 17.107 bgG  -1 bgS  0.000 cS 17.107
+G  0  800          VAVPLIGKL  VAVPLIGKL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  8.836 bgG  -1 bgS  0.000 cS  8.836
+G  0  801          STCEFVRTL  STCEFVRTL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 14.099 bgG  -1 bgS  0.000 cS 14.099
+G  0  802          RTYSFTSAM  RTYSFTSAM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 16.428 bgG  -1 bgS  0.000 cS 16.428
+G  0  803          VNYHYMSQV  VNYHYMSQV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 15.649 bgG  -1 bgS  0.000 cS 15.649
+G  0  804          VTIYKTWYL  VTIYKTWYL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  9.866 bgG  -1 bgS  0.000 cS  9.866
+G  0  805          SVVDLTCRL  SVVDLTCRL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 10.328 bgG  -1 bgS  0.000 cS 10.328
+G  0  806          NSILNVSKV  NSILNVSKV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  6.237 bgG  -1 bgS  0.000 cS  6.237
+G  0  807          VVYGGFSRL  VVYGGFSRL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 11.932 bgG  -1 bgS  0.000 cS 11.932
+G  0  808          IRYFPTQAL  IRYFPTQAL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  6.035 bgG  -1 bgS  0.000 cS  6.035
+G  0  809          SSYRFVQNV  SSYRFVQNV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 21.989 bgG  -1 bgS  0.000 cS 21.989
+G  0  810          TVYEFAVRI  TVYEFAVRI o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 15.131 bgG  -1 bgS  0.000 cS 15.131
+G  0  811          ISPEAFKPL  ISPEAFKPL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 11.046 bgG  -1 bgS  0.000 cS 11.046
+G  0  812          VLLELQQHL  VLLELQQHL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 11.750 bgG  -1 bgS  0.000 cS 11.750
+G  0  813          ATYIFLQTF  ATYIFLQTF o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 15.907 bgG  -1 bgS  0.000 cS 15.907
+G  0  814          IAVEMTQHL  IAVEMTQHL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 13.889 bgG  -1 bgS  0.000 cS 13.889
+G  0  815          VGFDPHPPM  VGFDPHPPM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 14.389 bgG  -1 bgS  0.000 cS 14.389
+G  0  816          VMLETYRNL  VMLETYRNL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 14.165 bgG  -1 bgS  0.000 cS 14.165
+G  0  817          VGVNNPVFL  VGVNNPVFL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 11.432 bgG  -1 bgS  0.000 cS 11.432
+G  0  818          RNVESYTKL  RNVESYTKL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 12.612 bgG  -1 bgS  0.000 cS 12.612
+G  0  819          FAHTNIESL  FAHTNIESL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 12.210 bgG  -1 bgS  0.000 cS 12.210
+G  0  820          VHYHPHPFL  VHYHPHPFL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 11.533 bgG  -1 bgS  0.000 cS 11.533
+G  0  821          QTFNFTRGL  QTFNFTRGL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 10.700 bgG  -1 bgS  0.000 cS 10.700
+G  0  822          SAITNVAKI  SAITNVAKI o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 12.326 bgG  -1 bgS  0.000 cS 12.326
+G  0  823          LAPPHYPTL  LAPPHYPTL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 13.425 bgG  -1 bgS  0.000 cS 13.425
+G  0  824          NVFQYLTRL  NVFQYLTRL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 13.205 bgG  -1 bgS  0.000 cS 13.205
+G  0  825          VNYPAKPVL  VNYPAKPVL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 13.071 bgG  -1 bgS  0.000 cS 13.071
+G  0  826          RLLDWFRSL  RLLDWFRSL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  6.685 bgG  -1 bgS  0.000 cS  6.685
+G  0  827          ANFSFFTSL  ANFSFFTSL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 17.624 bgG  -1 bgS  0.000 cS 17.624
+G  0  828          LVYKNFPQL  LVYKNFPQL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 14.853 bgG  -1 bgS  0.000 cS 14.853
+G  0  829          STISNDVFI  STISNDVFI o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  8.070 bgG  -1 bgS  0.000 cS  8.070
+G  0  830          SMVQNRVFL  SMVQNRVFL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 13.702 bgG  -1 bgS  0.000 cS 13.702
+G  0  831          NGPQNIYNL  NGPQNIYNL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 12.632 bgG  -1 bgS  0.000 cS 12.632
+G  0  832          SSLDFYANV  SSLDFYANV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 18.865 bgG  -1 bgS  0.000 cS 18.865
+G  0  833          LNYAYTAQL  LNYAYTAQL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 12.613 bgG  -1 bgS  0.000 cS 12.613
+G  0  834          SQLVKADEM  SQLVKADEM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  7.603 bgG  -1 bgS  0.000 cS  7.603
+G  0  835          FAHHNRYVL  FAHHNRYVL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  5.205 bgG  -1 bgS  0.000 cS  5.205
+G  0  836          AANRNNDAL  AANRNNDAL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  4.070 bgG  -1 bgS  0.000 cS  4.070
+G  0  837          VQYTYEQRL  VQYTYEQRL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 21.118 bgG  -1 bgS  0.000 cS 21.118
+G  0  838          SFERYPKNF  SFERYPKNF o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  2.758 bgG  -1 bgS  0.000 cS  2.758
+G  0  839          RVWEYTSTV  RVWEYTSTV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 10.638 bgG  -1 bgS  0.000 cS 10.638
+G  0  840          KVYSLIQSL  KVYSLIQSL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 11.918 bgG  -1 bgS  0.000 cS 11.918
+G  0  841          GTLLYTMRL  GTLLYTMRL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  6.802 bgG  -1 bgS  0.000 cS  6.802
+G  0  842          SAALNKDFL  SAALNKDFL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  9.505 bgG  -1 bgS  0.000 cS  9.505
+G  0  843          ATFDFSQYM  ATFDFSQYM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 17.718 bgG  -1 bgS  0.000 cS 17.718
+G  0  844          VGGEALGRL  VGGEALGRL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  3.825 bgG  -1 bgS  0.000 cS  3.825
+G  0  845          TLLEKLATM  TLLEKLATM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  8.674 bgG  -1 bgS  0.000 cS  8.674
+G  0  846          VAFLHKQQM  VAFLHKQQM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 16.012 bgG  -1 bgS  0.000 cS 16.012
+G  0  847          IIEPSLRQL  IIEPSLRQL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  2.759 bgG  -1 bgS  0.000 cS  2.759
+G  0  848          VSAGIQTSF  VSAGIQTSF o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  1.002 bgG  -1 bgS  0.000 cS  1.002
+G  0  849          IQLKFTETL  IQLKFTETL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 14.695 bgG  -1 bgS  0.000 cS 14.695
+G  0  850          VGVYNGKTF  VGVYNGKTF o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  5.717 bgG  -1 bgS  0.000 cS  5.717
+G  0  851          ERYIHLENL  ERYIHLENL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  8.831 bgG  -1 bgS  0.000 cS  8.831
+G  0  852          IIYDRKFLM  IIYDRKFLM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  9.342 bgG  -1 bgS  0.000 cS  9.342
+G  0  853          AQIDHYLGL  AQIDHYLGL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  9.399 bgG  -1 bgS  0.000 cS  9.399
+G  0  854          VAPSFLNSV  VAPSFLNSV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 15.910 bgG  -1 bgS  0.000 cS 15.910
+G  0  855          AAVIDQERL  AAVIDQERL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  7.842 bgG  -1 bgS  0.000 cS  7.842
+G  0  856          TNYRFPSSL  TNYRFPSSL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 18.591 bgG  -1 bgS  0.000 cS 18.591
+G  0  857          SVWTKVEGV  SVWTKVEGV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  7.525 bgG  -1 bgS  0.000 cS  7.525
+G  0  858          AAYMNKVEL  AAYMNKVEL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 12.568 bgG  -1 bgS  0.000 cS 12.568
+G  0  859          NQIVFTHRI  NQIVFTHRI o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  8.615 bgG  -1 bgS  0.000 cS  8.615
+G  0  860          IVYTFMTHF  IVYTFMTHF o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 14.799 bgG  -1 bgS  0.000 cS 14.799
+G  0  861          VNWIHSNLF  VNWIHSNLF o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  6.546 bgG  -1 bgS  0.000 cS  6.546
+G  0  862          KAVDFDGRL  KAVDFDGRL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 11.355 bgG  -1 bgS  0.000 cS 11.355
+G  0  863          VGIEFKEKL  VGIEFKEKL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 19.456 bgG  -1 bgS  0.000 cS 19.456
+G  0  864          SLYPRSILI  SLYPRSILI o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  6.035 bgG  -1 bgS  0.000 cS  6.035
+G  0  865          KVVEFLQSL  KVVEFLQSL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 16.816 bgG  -1 bgS  0.000 cS 16.816
+G  0  866          ENYTYIQNF  ENYTYIQNF o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 14.941 bgG  -1 bgS  0.000 cS 14.941
+G  0  867          TIFERAVDM  TIFERAVDM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  9.121 bgG  -1 bgS  0.000 cS  9.121
+G  0  868          ITPPGYSHV  ITPPGYSHV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  9.450 bgG  -1 bgS  0.000 cS  9.450
+G  0  869          KALINADEL  KALINADEL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  7.324 bgG  -1 bgS  0.000 cS  7.324
+G  0  870          VGVKYVNKF  VGVKYVNKF o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  9.499 bgG  -1 bgS  0.000 cS  9.499
+G  0  871          IGLAYVNHL  IGLAYVNHL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  9.030 bgG  -1 bgS  0.000 cS  9.030
+G  0  872          FSPPSYSKL  FSPPSYSKL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 11.029 bgG  -1 bgS  0.000 cS 11.029
+G  0  873          RGPLNQTAL  RGPLNQTAL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 10.586 bgG  -1 bgS  0.000 cS 10.586
+G  0  874          VGPWLLALF  VGPWLLALF o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  7.235 bgG  -1 bgS  0.000 cS  7.235
+G  0  875          NSIRNLDTI  NSIRNLDTI o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  9.258 bgG  -1 bgS  0.000 cS  9.258
+G  0  876          SGDEPKEKL  SGDEPKEKL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 10.658 bgG  -1 bgS  0.000 cS 10.658
+G  0  877          ANFRFTDRL  ANFRFTDRL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 17.714 bgG  -1 bgS  0.000 cS 17.714
+G  0  878          IHVDFSQSV  IHVDFSQSV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  9.720 bgG  -1 bgS  0.000 cS  9.720
+G  0  879          VIYDFIEKT  VIYDFIEKT o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 14.088 bgG  -1 bgS  0.000 cS 14.088
+G  0  880          SSLPKRLAL  SSLPKRLAL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  9.046 bgG  -1 bgS  0.000 cS  9.046
+G  0  881          ISYNFIEKL  ISYNFIEKL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 18.142 bgG  -1 bgS  0.000 cS 18.142
+G  0  882          KSYERINNI  KSYERINNI o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 17.075 bgG  -1 bgS  0.000 cS 17.075
+G  0  883          TGLRYNMRL  TGLRYNMRL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  7.798 bgG  -1 bgS  0.000 cS  7.798
+G  0  884          INQDGYPDI  INQDGYPDI o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  3.433 bgG  -1 bgS  0.000 cS  3.433
+G  0  885          IWDWKTTKL  IWDWKTTKL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  6.844 bgG  -1 bgS  0.000 cS  6.844
+G  0  886          SWLHPPPVL  SWLHPPPVL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 10.000 bgG  -1 bgS  0.000 cS 10.000
+G  0  887          TALENLIVL  TALENLIVL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 12.893 bgG  -1 bgS  0.000 cS 12.893
+G  0  888          AALRFLSQL  AALRFLSQL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 14.909 bgG  -1 bgS  0.000 cS 14.909
+G  0  889          AVPLFSKNV  AVPLFSKNV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  5.419 bgG  -1 bgS  0.000 cS  5.419
+G  0  890          RQILNADAM  RQILNADAM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  6.303 bgG  -1 bgS  0.000 cS  6.303
+G  0  891          VGLRYYTGV  VGLRYYTGV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 11.438 bgG  -1 bgS  0.000 cS 11.438
+G  0  892          RGYEFIVRL  RGYEFIVRL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 20.999 bgG  -1 bgS  0.000 cS 20.999
+G  0  893          KAPLNIAVM  KAPLNIAVM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 11.668 bgG  -1 bgS  0.000 cS 11.668
+G  0  894          VAFDRHLYV  VAFDRHLYV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 11.393 bgG  -1 bgS  0.000 cS 11.393
+G  0  895          MAYKYLEEM  MAYKYLEEM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 13.671 bgG  -1 bgS  0.000 cS 13.671
+G  0  896          AVYTFETLL  AVYTFETLL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 12.806 bgG  -1 bgS  0.000 cS 12.806
+G  0  897          SSYNFIRHM  SSYNFIRHM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 21.388 bgG  -1 bgS  0.000 cS 21.388
+G  0  898          VTMEQYQRL  VTMEQYQRL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 17.790 bgG  -1 bgS  0.000 cS 17.790
+G  0  899          VFYEREVQM  VFYEREVQM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 15.853 bgG  -1 bgS  0.000 cS 15.853
+G  0  900          VNWDFVEQV  VNWDFVEQV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 17.782 bgG  -1 bgS  0.000 cS 17.782
+G  0  901          SGYDFENRL  SGYDFENRL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 22.606 bgG  -1 bgS  0.000 cS 22.606
+G  0  902          DWFPVFRDL  DWFPVFRDL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  1.315 bgG  -1 bgS  0.000 cS  1.315
+G  0  903          TSLPYYTGV  TSLPYYTGV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 12.168 bgG  -1 bgS  0.000 cS 12.168
+G  0  904          SLYLFKLGI  SLYLFKLGI o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  7.748 bgG  -1 bgS  0.000 cS  7.748
+G  0  905          KALSNTTVF  KALSNTTVF o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 10.909 bgG  -1 bgS  0.000 cS 10.909
+G  0  906          VYFARKANM  VYFARKANM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  8.186 bgG  -1 bgS  0.000 cS  8.186
+G  0  907          QQYSFINQM  QQYSFINQM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 20.142 bgG  -1 bgS  0.000 cS 20.142
+G  0  908          KIWEWLVGV  KIWEWLVGV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  8.653 bgG  -1 bgS  0.000 cS  8.653
+G  0  909          AQYLFIQTF  AQYLFIQTF o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 15.398 bgG  -1 bgS  0.000 cS 15.398
+G  0  910          SAYLFKQGL  SAYLFKQGL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 19.762 bgG  -1 bgS  0.000 cS 19.762
+G  0  911          AQVYGAPQL  AQVYGAPQL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  4.022 bgG  -1 bgS  0.000 cS  4.022
+G  0  912          AMGVNLTSM  AMGVNLTSM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  6.054 bgG  -1 bgS  0.000 cS  6.054
+G  0  913          RSIKNVTEL  RSIKNVTEL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 12.203 bgG  -1 bgS  0.000 cS 12.203
+G  0  914          AIVERAAQL  AIVERAAQL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 11.380 bgG  -1 bgS  0.000 cS 11.380
+G  0  915          VRVPFFAKL  VRVPFFAKL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 14.141 bgG  -1 bgS  0.000 cS 14.141
+G  0  916          SILSLVTKI  SILSLVTKI o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  7.345 bgG  -1 bgS  0.000 cS  7.345
+G  0  917          ERLPLYLRL  ERLPLYLRL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  3.850 bgG  -1 bgS  0.000 cS  3.850
+G  0  918          TSLGFLERT  TSLGFLERT o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  7.510 bgG  -1 bgS  0.000 cS  7.510
+G  0  919          SLPKRLALL  SLPKRLALL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  8.124 bgG  -1 bgS  0.000 cS  8.124
+G  0  920          FTFTRGLPV  FTFTRGLPV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  2.139 bgG  -1 bgS  0.000 cS  2.139
+G  0  921          VILSFENHV  VILSFENHV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 12.678 bgG  -1 bgS  0.000 cS 12.678
+G  0  922          VNWEKHVLI  VNWEKHVLI o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  9.948 bgG  -1 bgS  0.000 cS  9.948
+G  0  923          AAVENVSEL  AAVENVSEL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 14.394 bgG  -1 bgS  0.000 cS 14.394
+G  0  924          AIVQFTRTF  AIVQFTRTF o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 11.696 bgG  -1 bgS  0.000 cS 11.696
+G  0  925          TNYGSFGHL  TNYGSFGHL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  8.323 bgG  -1 bgS  0.000 cS  8.323
+G  0  926          SMEPVVRRL  SMEPVVRRL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  5.491 bgG  -1 bgS  0.000 cS  5.491
+G  0  927          VIAPLTQKV  VIAPLTQKV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  6.643 bgG  -1 bgS  0.000 cS  6.643
+G  0  928          AILERFPTI  AILERFPTI o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 11.340 bgG  -1 bgS  0.000 cS 11.340
+G  0  929          GGVVNMYHM  GGVVNMYHM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  7.414 bgG  -1 bgS  0.000 cS  7.414
+G  0  930          SSIVNKEGL  SSIVNKEGL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 16.855 bgG  -1 bgS  0.000 cS 16.855
+G  0  931          SNYQHITNF  SNYQHITNF o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 19.653 bgG  -1 bgS  0.000 cS 19.653
+G  0  932          AFYQFVNNL  AFYQFVNNL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 15.173 bgG  -1 bgS  0.000 cS 15.173
+G  0  933          SIAAFIQRL  SIAAFIQRL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 15.159 bgG  -1 bgS  0.000 cS 15.159
+G  0  934          KIYEFRLMM  KIYEFRLMM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 15.598 bgG  -1 bgS  0.000 cS 15.598
+G  0  935          VNFIKENLL  VNFIKENLL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  9.117 bgG  -1 bgS  0.000 cS  9.117
+G  0  936          VWYWRRITM  VWYWRRITM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 15.526 bgG  -1 bgS  0.000 cS 15.526
+G  0  937          SRIVFIPLL  SRIVFIPLL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 10.292 bgG  -1 bgS  0.000 cS 10.292
+G  0  938          IRQSELQLL  IRQSELQLL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  0.596 bgG  -1 bgS  0.000 cS  0.596
+G  0  939          ATYSYKEAL  ATYSYKEAL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 14.701 bgG  -1 bgS  0.000 cS 14.701
+G  0  940          ESYSFEARM  ESYSFEARM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 17.644 bgG  -1 bgS  0.000 cS 17.644
+G  0  941          VSHIFETRV  VSHIFETRV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 13.773 bgG  -1 bgS  0.000 cS 13.773
+G  0  942          AQLAKKDYL  AQLAKKDYL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  7.239 bgG  -1 bgS  0.000 cS  7.239
+G  0  943          VGVKYVNKL  VGVKYVNKL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 11.746 bgG  -1 bgS  0.000 cS 11.746
+G  0  944          RQFPNRDAL  RQFPNRDAL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 11.334 bgG  -1 bgS  0.000 cS 11.334
+G  0  945          RIVELFRNL  RIVELFRNL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 11.886 bgG  -1 bgS  0.000 cS 11.886
+G  0  946          VVYIYKEHF  VVYIYKEHF o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 15.113 bgG  -1 bgS  0.000 cS 15.113
+G  0  947          SLIEFFNKM  SLIEFFNKM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 17.772 bgG  -1 bgS  0.000 cS 17.772
+G  0  948          MCPEEYPHL  MCPEEYPHL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 10.202 bgG  -1 bgS  0.000 cS 10.202
+G  0  949          SWAGREVLM  SWAGREVLM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  3.645 bgG  -1 bgS  0.000 cS  3.645
+G  0  950          QGPEYIERL  QGPEYIERL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 19.231 bgG  -1 bgS  0.000 cS 19.231
+G  0  951          VSYPHLVLL  VSYPHLVLL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 16.540 bgG  -1 bgS  0.000 cS 16.540
+G  0  952          VTDLRVTGM  VTDLRVTGM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  4.982 bgG  -1 bgS  0.000 cS  4.982
+G  0  953          TVFSHAQTV  TVFSHAQTV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  7.316 bgG  -1 bgS  0.000 cS  7.316
+G  0  954          VSYWFDQRF  VSYWFDQRF o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 20.412 bgG  -1 bgS  0.000 cS 20.412
+G  0  955          AAITNKYQL  AAITNKYQL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 13.039 bgG  -1 bgS  0.000 cS 13.039
+G  0  956          VALDFEQEM  VALDFEQEM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 16.639 bgG  -1 bgS  0.000 cS 16.639
+G  0  957          INYDYVHEL  INYDYVHEL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 14.654 bgG  -1 bgS  0.000 cS 14.654
+G  0  958          SNYEFHNRV  SNYEFHNRV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 25.018 bgG  -1 bgS  0.000 cS 25.018
+G  0  959          KTPDLSVQL  KTPDLSVQL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 10.672 bgG  -1 bgS  0.000 cS 10.672
+G  0  960          VNYDFEEEF  VNYDFEEEF o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 18.839 bgG  -1 bgS  0.000 cS 18.839
+G  0  961          RSPDGYLQI  RSPDGYLQI o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  8.216 bgG  -1 bgS  0.000 cS  8.216
+G  0  962          SQLSMKASL  SQLSMKASL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  8.859 bgG  -1 bgS  0.000 cS  8.859
+G  0  963          IHSENFQTL  IHSENFQTL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 13.183 bgG  -1 bgS  0.000 cS 13.183
+G  0  964          SAFRFAVQL  SAFRFAVQL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 17.240 bgG  -1 bgS  0.000 cS 17.240
+G  0  965          NSPNTYMKV  NSPNTYMKV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  3.380 bgG  -1 bgS  0.000 cS  3.380
+G  0  966          VNVAKLRYM  VNVAKLRYM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 12.237 bgG  -1 bgS  0.000 cS 12.237
+G  0  967          VSFWFGTRF  VSFWFGTRF o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 17.192 bgG  -1 bgS  0.000 cS 17.192
+G  0  968          VLIPKLPQL  VLIPKLPQL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 11.492 bgG  -1 bgS  0.000 cS 11.492
+G  0  969          VHLKFSAKL  VHLKFSAKL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 10.573 bgG  -1 bgS  0.000 cS 10.573
+G  0  970          GTILYTMRL  GTILYTMRL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  7.222 bgG  -1 bgS  0.000 cS  7.222
+G  0  971          VNIRFIGGL  VNIRFIGGL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 12.932 bgG  -1 bgS  0.000 cS 12.932
+G  0  972          VILEYFTRL  VILEYFTRL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 20.869 bgG  -1 bgS  0.000 cS 20.869
+G  0  973          YSPEFKGQI  YSPEFKGQI o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 13.788 bgG  -1 bgS  0.000 cS 13.788
+G  0  974          KIVVLLQRL  KIVVLLQRL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 10.977 bgG  -1 bgS  0.000 cS 10.977
+G  0  975          NTISRGSPM  NTISRGSPM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  5.775 bgG  -1 bgS  0.000 cS  5.775
+G  0  976          VWEVKTNQM  VWEVKTNQM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  9.692 bgG  -1 bgS  0.000 cS  9.692
+G  0  977          GQIQNKEVL  GQIQNKEVL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 11.003 bgG  -1 bgS  0.000 cS 11.003
+G  0  978          FTPNNIKQV  FTPNNIKQV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  7.675 bgG  -1 bgS  0.000 cS  7.675
+G  0  979          KIFEFKETL  KIFEFKETL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS 19.601 bgG  -1 bgS  0.000 cS 19.601
+G  0  980          VVFGGWARM  VVFGGWARM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  5.898 bgG  -1 bgS  0.000 cS  5.898
+G  0  981          SLNLRETNL  SLNLRETNL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  4.118 bgG  -1 bgS  0.000 cS  4.118
+G  0  982          AVSTFVNRM  AVSTFVNRM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  8.851 bgG  -1 bgS  0.000 cS  8.851
+G  0  983          IGPRYSSVF  IGPRYSSVF o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  7.334 bgG  -1 bgS  0.000 cS  7.334
+G  0  984          GIIRFLIGF  GIIRFLIGF o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  5.250 bgG  -1 bgS  0.000 cS  5.250
+G  0  985          VTREYTINI  VTREYTINI o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  7.829 bgG  -1 bgS  0.000 cS  7.829
+G  0  986          YGLVSKEFL  YGLVSKEFL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  1.586 bgG  -1 bgS  0.000 cS  1.586
+G  0  987          NGVINAAFM  NGVINAAFM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  5.121 bgG  -1 bgS  0.000 cS  5.121
+G  0  988          VIDKKLRNL  VIDKKLRNL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  6.637 bgG  -1 bgS  0.000 cS  6.637
+G  0  989          FQRDYYDRM  FQRDYYDRM o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  9.624 bgG  -1 bgS  0.000 cS  9.624
+G  0  990          RWLADLPKL  RWLADLPKL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  4.887 bgG  -1 bgS  0.000 cS  4.887
+G  0  991          KIGYNPDTV  KIGYNPDTV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  2.206 bgG  -1 bgS  0.000 cS  2.206
+G  0  992          IMAERNVLL  IMAERNVLL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  2.850 bgG  -1 bgS  0.000 cS  2.850
+G  0  993          FQAMNKELI  FQAMNKELI o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  1.565 bgG  -1 bgS  0.000 cS  1.565
+G  0  994          ESYSVYVYK  ESYSVYVYK o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  2.302 bgG  -1 bgS  0.000 cS  2.302
+G  0  995          YQLLLKDFL  YQLLLKDFL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  1.528 bgG  -1 bgS  0.000 cS  1.528
+G  0  996          RGPVRGISI  RGPVRGISI o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  1.235 bgG  -1 bgS  0.000 cS  1.235
+G  0  997          HFDWLYERL  HFDWLYERL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  2.108 bgG  -1 bgS  0.000 cS  2.108
+G  0  998          IHISKKWGF  IHISKKWGF o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  1.825 bgG  -1 bgS  0.000 cS  1.825
+G  0  999          SLGINPHVL  SLGINPHVL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  1.780 bgG  -1 bgS  0.000 cS  1.780
+G  0 1000          YGIRNSLLI  YGIRNSLLI o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  1.267 bgG  -1 bgS  0.000 cS  1.267
+G  0 1001          IRFPDILRV  IRFPDILRV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  1.521 bgG  -1 bgS  0.000 cS  1.521
+G  0 1002          ESYSIYVYK  ESYSIYVYK o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  2.176 bgG  -1 bgS  0.000 cS  2.176
+G  0 1003          TVVNLNTPF  TVVNLNTPF o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  0.479 bgG  -1 bgS  0.000 cS  0.479
+G  0 1004          GMKLNLDYL  GMKLNLDYL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  1.806 bgG  -1 bgS  0.000 cS  1.806
+G  0 1005          GVIRYVIGV  GVIRYVIGV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  0.108 bgG  -1 bgS  0.000 cS  0.108
+G  0 1006          FAHIDGDHL  FAHIDGDHL o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  0.184 bgG  -1 bgS  0.000 cS  0.184
+G  0 1007          NSTQHLGPV  NSTQHLGPV o  0 ip -99 il -99 dp -99 dl -99    Peplist sS  0.210 bgG  -1 bgS  0.000 cS  0.210
+## Trash cluster (131 outliers)
+#Trash1                 LEAEIATYR	Peplist
+#Trash2                 ELTARISQL	Peplist
+#Trash3                 HFGKAPGTP	Peplist
+#Trash4                 PAGTLPNPL	Peplist
+#Trash5                 TPVISGGPY	Peplist
+#Trash6                 DVDLEFLAK	Peplist
+#Trash7                 KDWYDVKAP	Peplist
+#Trash8                 TVAVGVIKA	Peplist
+#Trash9                 IGFPWSEIR	Peplist
+#Trash10                HSSVGHTPI	Peplist
+#Trash11                VELQELNDR	Peplist
+#Trash12                KPPSTSQVH	Peplist
+#Trash13                LGGNEQVTR	Peplist
+#Trash14                VPENNSPGA	Peplist
+#Trash15                IAFAITAIK	Peplist
+#Trash16                VWQVTIGTR	Peplist
+#Trash17                GASLLFLNI	Peplist
+#Trash18                DAPVTERAK	Peplist
+#Trash19                GINEAGISR	Peplist
+#Trash20                TGSNPQNTI	Peplist
+#Trash21                LFIDEVHML	Peplist
+#Trash22                HWGGNVLGP	Peplist
+#Trash23                KDEKCPELK	Peplist
+#Trash24                LGLKTVEEV	Peplist
+#Trash25                SDGLRPPYP	Peplist
+#Trash26                TDPVTIENK	Peplist
+#Trash27                YRPGTVALR	Peplist
+#Trash28                HVFSPKYTK	Peplist
+#Trash29                HVITDMFKN	Peplist
+#Trash30                PADFSEWSK	Peplist
+#Trash31                HQQLYWSHP	Peplist
+#Trash32                FEDENFILK	Peplist
+#Trash33                VMRLIENRI	Peplist
+#Trash34                YDENWFYTR	Peplist
+#Trash35                FASFPTTKT	Peplist
+#Trash36                TVLNGDFIV	Peplist
+#Trash37                HPRKFGQGS	Peplist
+#Trash38                EPVTGLDAK	Peplist
+#Trash39                GDSVIVVLR	Peplist
+#Trash40                TLSDYNIQK	Peplist
+#Trash41                PFKVSSSLP	Peplist
+#Trash42                GGGYTIRNV	Peplist
+#Trash43                VNFTVDQIR	Peplist
+#Trash44                LSNIFVIGK	Peplist
+#Trash45                LNRSGFSSV	Peplist
+#Trash46                HLDFNQSHS	Peplist
+#Trash47                VHNVKELEV	Peplist
+#Trash48                TVAALEAKI	Peplist
+#Trash49                AELNEFLTR	Peplist
+#Trash50                EQGVLSFWR	Peplist
+#Trash51                KVFLYYADP	Peplist
+#Trash52                PLYVALAQR	Peplist
+#Trash53                SDDVSYELK	Peplist
+#Trash54                FTNTMRVVP	Peplist
+#Trash55                QISAGYAPV	Peplist
+#Trash56                PAYHSSLMD	Peplist
+#Trash57                PALQLCQVI	Peplist
+#Trash58                LGDPCLKDL	Peplist
+#Trash59                GDYPLEAVR	Peplist
+#Trash60                QTPAGPAGP	Peplist
+#Trash61                IAGYALFII	Peplist
+#Trash62                LAGNEQVTR	Peplist
+#Trash63                AVKAGVVGP	Peplist
+#Trash64                VRAGRGFSL	Peplist
+#Trash65                SLFRGFAAT	Peplist
+#Trash66                LLLPGELAK	Peplist
+#Trash67                TLNPAHGRQ	Peplist
+#Trash68                EIIDLVLDR	Peplist
+#Trash69                SGVSLAALK	Peplist
+#Trash70                AALQELLSK	Peplist
+#Trash71                AQTLANVYL	Peplist
+#Trash72                YLTVAAVFR	Peplist
+#Trash73                ISMARKIGA	Peplist
+#Trash74                AGLQFPVGR	Peplist
+#Trash75                DQIYDIFQK	Peplist
+#Trash76                GHLGEFQVK	Peplist
+#Trash77                GTTITLVLK	Peplist
+#Trash78                AELELELGR	Peplist
+#Trash79                FAVGIVIGR	Peplist
+#Trash80                DAEDWFFSK	Peplist
+#Trash81                PFKVSSSIP	Peplist
+#Trash82                TPKFDQTFS	Peplist
+#Trash83                QIFLGGVDK	Peplist
+#Trash84                APFDLFENR	Peplist
+#Trash85                AFEKIPEFI	Peplist
+#Trash86                ISVYARSKP	Peplist
+#Trash87                LFLQFGAQG	Peplist
+#Trash88                YYTHYSSAI	Peplist
+#Trash89                IVVVTAGVR	Peplist
+#Trash90                EHLELFWSR	Peplist
+#Trash91                TEIIILATR	Peplist
+#Trash92                TSGDPTLPQ	Peplist
+#Trash93                EYQDLLNVK	Peplist
+#Trash94                IWTNHKFNV	Peplist
+#Trash95                NSYLEVLLK	Peplist
+#Trash96                LYCLKIYGL	Peplist
+#Trash97                YDGIILPGK	Peplist
+#Trash98                SYIGSPRAV	Peplist
+#Trash99                INKVAGHPL	Peplist
+#Trash100               NSYLVPGMT	Peplist
+#Trash101               TDPVTAKEV	Peplist
+#Trash102               YIITEFMAK	Peplist
+#Trash103               EGPVTEQVK	Peplist
+#Trash104               SRIKLGLKS	Peplist
+#Trash105               ALSDLHAHK	Peplist
+#Trash106               SLGGPFPKV	Peplist
+#Trash107               VRDISEASV	Peplist
+#Trash108               QTVAVGVIK	Peplist
+#Trash109               LGKGNFGSV	Peplist
+#Trash110               AVSGLWGKV	Peplist
+#Trash111               LLQDFFNGK	Peplist
+#Trash112               LRQEELESV	Peplist
+#Trash113               LLQDFFNGR	Peplist
+#Trash114               FGVDESNAK	Peplist
+#Trash115               QDIAFAYQR	Peplist
+#Trash116               IIGNILKNF	Peplist
+#Trash117               VSELITKAV	Peplist
+#Trash118               IHAMGHCHI	Peplist
+#Trash119               LSLELEVAR	Peplist
+#Trash120               HLYLRGGAG	Peplist
+#Trash121               AVFPSIVGR	Peplist
+#Trash122               ISFDLSLAR	Peplist
+#Trash123               VLDELTLAR	Peplist
+#Trash124               ELPQLVTLP	Peplist
+#Trash125               TSPSGRFLK	Peplist
+#Trash126               NYDRGYSNL	Peplist
+#Trash127               AASYYAPVR	Peplist
+#Trash128               FAFQAEVNR	Peplist
+#Trash129               NHLSKGIGM	Peplist
+#Trash130               NKVAFWLEL	Peplist
+#Trash131               SSHGLGGGF	Peplist
+# group 0, size 1008: Final KLD sum after 227800 epochs - 11.813374
+# Trash cluster: removed 131 outliers
+#
+# Final number of non-empty clusters: 1
+
+### Final KLD sum after 227800 iterations: 11.813374
