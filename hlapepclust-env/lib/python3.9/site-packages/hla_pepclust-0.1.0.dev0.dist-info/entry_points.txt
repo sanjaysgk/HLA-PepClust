@@ -1,0 +1,2 @@
+[console_scripts]
+clust-search = cli.main:main
