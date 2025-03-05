@@ -306,7 +306,7 @@ class ClusterSearch:
             with self.console.status(f"Processing {n_clusters} clusters") as status:
                 for filename1 in os.listdir(gibbs_matrix_folder):
                     if filename1.endswith(f"of{n_clusters}.mat"):
-                        print(filename1)
+                        # print(filename1)
                         for filename2 in os.listdir(human_reference_folder):
                             if (
                                 hla_list is None
@@ -323,7 +323,10 @@ class ClusterSearch:
                                     spinner="squish",
                                     spinner_style="yellow",
                                 )
-
+                    else:
+                        self.console.log(
+                            f"Skipping {filename1} as it does not have {n_clusters} clusters"
+                        )
         else:
             self.console.log(
                 f"Given n_clusters param {n_clusters} is invalid. Proceeding with 'all' clusters"
@@ -602,15 +605,16 @@ class ClusterSearch:
         """
         # Check if correlation_dict is empty
         if not self.correlation_dict:
+            
             raise ValueError(
-                "correlation_dict is empty. Cannot generate heatmap.")
+                "correlation_dict is empty. Cannot generate heatmap.[Tip: try running without --n_clusters flag or check your gibbs output files]")
 
         rows = sorted(set(key[0] for key in self.correlation_dict.keys()))
         cols = sorted(set(key[1] for key in self.correlation_dict.keys()))
 
         # Create an empty DataFrame with the given rows and columns
         matrix = pd.DataFrame(index=rows, columns=cols, dtype=float)
-
+        # matrix.to_csv(os.path.join(self._outfolder, 'corr-data', 'corr_matrix.csv'),index=False)
         # Fill the matrix with the correlation values
         for (row, col), value in self.correlation_dict.items():
             matrix.loc[row, col] = value
@@ -621,7 +625,7 @@ class ClusterSearch:
         # Check if the matrix is empty after filling NaN values
         if matrix.empty or matrix.isnull().all().all():
             raise ValueError(
-                "Matrix is empty or filled with NaN values. Cannot generate heatmap.")
+                "Matrix is empty or filled with NaN values. Cannot generate heatmap.(This for calcualting Hihest correaltion)[Tip: try running without --n_clusters flag]")
 
         custom_cmap = LinearSegmentedColormap.from_list(
             "CustomColours",
@@ -1028,7 +1032,7 @@ class ClusterSearch:
         <div class="row">
             <div class="col">
             <div class="card">
-                <h5 style="text-align: center;">Co-relation</h5>
+                <h5 style="text-align: center;">Correlation</h5>
                 <div id="{{correlation_chart_id}}"></div>
             </div>
             </div>
@@ -1036,16 +1040,16 @@ class ClusterSearch:
             <div class="card">
                 <h5 style="text-align: center;">Identified Best Cluster</h5>
                 <div class="card">
-                {% if best_cluster_img %}
+                {% if best_cluster_img and best_cluster_img != "None" %}
                 <img src="{{ best_cluster_img }}" class="bd-placeholder-img card-img" width="100%" height="260" alt="No Image">
                 {% else %}
-                <div id="no-image"></div>
+                <div class="no-img" width="100%" height="260"></div>
                 {% endif %}
                 <div style="position: absolute; top: 5px; right: 10px;">
                     <i class="bi bi-three-dots-vertical" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false"></i>
                     <div class="dropdown-menu">
                     <h6 class="dropdown-header">Download</h6>
-                    {% if best_cluster_img %}
+                    {% if best_cluster_img and best_cluster_img != "None" %}
                     <a class="dropdown-item" href="{{ best_cluster_img }}">png</a>
                     {% endif %}
                     </div>
@@ -1057,16 +1061,16 @@ class ClusterSearch:
             <div class="card">
                 <h5 style="text-align: center;">Naturally presented {{ hla_name }}</h5>
                 <div class="card">
-                {% if naturally_presented_img %}
+                {% if naturally_presented_img and naturally_presented_img != "None" %}
                 <img src="{{ naturally_presented_img }}" class="bd-placeholder-img card-img" width="100%" height="260" alt="No Image">
                 {% else %}
-                <div id="no-image"></div>
+                <div class="no-img"></div>
                 {% endif %}
                 <div style="position: absolute; top: 5px; right: 10px;">
                     <i class="bi bi-three-dots-vertical" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false"></i>
                     <div class="dropdown-menu">
                     <h6 class="dropdown-header">Download</h6>
-                    {% if naturally_presented_img %}
+                    {% if naturally_presented_img and naturally_presented_img != "None" %}
                     <a class="dropdown-item" href="{{ naturally_presented_img }}">Download</a>
                     {% endif %}
                     </div>
@@ -1090,6 +1094,51 @@ class ClusterSearch:
         df = df.reset_index(drop=True)
         df = df[['Cluster', 'HLA', 'Correlation']]
         return df
+    
+    def make_heatmap(self,correlation_dict,threshold=0.5):
+        df = self.make_datatable(correlation_dict)
+        # print(df)
+        try:
+            df.to_csv(os.path.join(self._outfolder, 'corr-data', 'corr_matrix.csv'),index=False)
+        except Exception as e:
+            self.console.log(f"Failed to save the correlation matrix: {str(e)}")
+        try:
+
+            chart_h = alt.Chart(df,width="container").mark_rect().encode(
+    alt.X("HLA:O").title("HLA").axis(labelAngle=-45),
+    alt.Y("Cluster:O").title("Cluster"),
+    alt.Color(
+        "Correlation",
+        scale=alt.Scale(
+            domain=[df["Correlation"].min(), threshold, df["Correlation"].max()],
+            range=["#d3d3d3", "#add8e6", "#ff4500"],  # Low values fade, high values bright
+        ),
+        legend=None
+    ),
+    tooltip=[
+        alt.Tooltip("HLA", title="HLA"),
+        alt.Tooltip("Cluster", title="Cluster"),
+        alt.Tooltip("Correlation", title="Correlation"),
+    ],
+).configure_view(
+    step=13,
+    strokeWidth=0
+).configure_axis(
+    domain=False
+)
+            chart_h.save(f"{os.path.join(self._outfolder,'corr-data')}/correlation_heatmap.json")
+            chart_h.save(f"{os.path.join(self._outfolder,'corr-data')}/correlation_heatmap.png")
+            return True
+        # rows = sorted(set(key[0] for key in correlation_dict.keys()))
+        # cols = sorted(set(key[1] for key in correlation_dict.keys()))
+        except Exception as e:
+            self.console.log(f"Failed to save the correlation heatmap: {str(e)}")
+            return False
+        
+        return False
+        
+        
+        
     
     def make_datatable_html(self,correlation_dict,df=None,threshold=0.5):
         if df is None:
@@ -1213,16 +1262,20 @@ class ClusterSearch:
       });
     });
   });
-      const placeholderSVG = `
-      <svg class="bd-placeholder-img card-img" width="100%" height="260" xmlns="http://www.w3.org/2000/svg"
-        role="img" aria-label="Placeholder: No Image" preserveAspectRatio="xMidYMid slice" focusable="false">
-        <title>Placeholder</title>
-        <rect width="100%" height="100%" fill="#868e96" />
-        <text x="50%" y="50%" fill="#dee2e6" dy=".3em">No image found</text>
-      </svg>
+  document.addEventListener("DOMContentLoaded", function () {
+    const noImgDivs = document.querySelectorAll(".no-img"); // Select all elements with class "no-img"
+    const placeholderSVG = `
+        <svg class="bd-placeholder-img card-img" width="100%" height="260" xmlns="http://www.w3.org/2000/svg"
+            role="img" aria-label="Placeholder: No Image" preserveAspectRatio="xMidYMid slice" focusable="false">
+            <title>Placeholder</title>
+            <rect width="100%" height="100%" fill="#868e96" />
+            <text x="50%" y="50%" fill="#dee2e6" dy=".3em" text-anchor="middle">No image found \n check your gibbs output</text>
+        </svg>
     `;
-    
-    document.getElementById('no-img').innerHTML = placeholderSVG;
+    noImgDivs.forEach(div => {
+        div.innerHTML = placeholderSVG; // Add placeholder to each "no-img" div
+    });
+});
 </script>
 
 <script>
@@ -1242,8 +1295,33 @@ class ClusterSearch:
 </body>
 </html>
 """
+        heatmap_js = """
 
+            fetch('corr-data/correlation_heatmap.json')
+                        .then(response => response.json())
+                        .then(data => {
+                        console.log(data);
+                        // Process the data as needed
+                        var opt = {"renderer": "canvas", "actions": false};
+                        vegaEmbed("#correlation_heatmap", data, opt);
+                        })
+                        .catch(error => console.error('Error fetching the JSON data:', error));
 
+"""
+        heatmap_div = """
+            <div class="row">
+            <div class="col">
+                <div class="card">
+                    <h5 style="text-align: center;">Correlation Matrix</h5>
+                    <div class="row">
+                    <div id="correlation_heatmap"></div>
+                    </div>
+                </div>
+            </div>
+            </div>
+            """
+
+        heatmap_json = self.make_heatmap(correlation_dict)
 
         # script_js = ""
         df_corr_html = self.make_datatable_html(correlation_dict)
@@ -1299,9 +1377,17 @@ class ClusterSearch:
             
             immunolyser_out += rows_list
             immunolyser_out_js += plot_js
-        html_create += br_tag + df_corr_html + br_tag + body_end_1 + body_end_2
+            
+        if heatmap_json:
+            body_end_1 += heatmap_js
+            immunolyser_out_js += heatmap_js
+        else:
+            heatmap_div = ""
+            heatmap_js =""
+            
+        html_create += br_tag + df_corr_html + br_tag + heatmap_div + body_end_1 + body_end_2
         
-        immunolyser_out += br_tag + br_tag + df_corr_html
+        immunolyser_out += br_tag + br_tag +  df_corr_html + heatmap_div
         with open(os.path.join(self._outfolder, "clust-search-result.html"), "w") as file:
             file.write(html_create)
             
@@ -1472,13 +1558,14 @@ def run_cluster_search(args):
     # run_cluster_search(
     #     argparse.Namespace(
     #         credits=False,
-    #         gibbs_folder="data/D90_HLA_3844874",
+    #         gibbs_folder="data/9mersonly",
     #         species="mouse",
     #         hla_types="H2_Db,H2_Dd,H2_Dq,H2_Kb,H2_Kd,H2_Kk",
     #         log=False,
     #         n_clusters="5",
     #         output="data/outputMouseTest",
     #         processes=4,
-    #         version=False
+    #         version=False,
+    #         immunolyser=False
     #     )
     # )
