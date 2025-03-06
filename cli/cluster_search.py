@@ -402,7 +402,7 @@ class ClusterSearch:
                                 mat_path,
                             )
                             status.update(
-                                status=f"[bold blue] Compute correlation between {gibbs_f} and {str(mat_path).split('/')[0]} with correlation {correlation:.4f}",
+                                status=f"[bold blue] Compute correlation between {gibbs_f} and {str(mat_path).split('/')[-1]} with correlation {correlation:.4f}",
                                 spinner="squish",
                                 spinner_style="yellow",
                             )
@@ -416,7 +416,7 @@ class ClusterSearch:
                                 mat_path,
                             )
                             status.update(
-                                status=f"[bold blue] Compute correlation between {gibbs_f} and {str(mat_path).split('/')[0]} with correlation {correlation:.4f}",
+                                status=f"[bold blue] Compute correlation between {gibbs_f} and {str(mat_path).split('/')[-1]} with correlation {correlation:.4f}",
                                 spinner="squish",
                                 spinner_style="yellow",
                             )
@@ -443,7 +443,7 @@ class ClusterSearch:
                                 mat_path,
                             )
                             status.update(
-                                status=f"[bold blue] Compute correlation between {gibbs_f} and {str(mat_path).split('/')[0]} with correlation {correlation:.4f}",
+                                status=f"[bold blue] Compute correlation between {gibbs_f} and {str(mat_path).split('/')[-1]} with correlation {correlation:.4f}",
                                 spinner="squish",
                                 spinner_style="yellow",
                             )
@@ -463,7 +463,7 @@ class ClusterSearch:
                                     mat_path,
                                 )
                                 status.update(
-                                    status=f"[bold blue] Compute correlation between {gibbs_f} and {str(mat_path).split('/')[0]} with correlation {correlation:.4f}",
+                                    status=f"[bold blue] Compute correlation between {gibbs_f} and {str(mat_path).split('/')[-1]} with correlation {correlation:.4f}",
                                     spinner="squish",
                                     spinner_style="yellow",
                                 )
@@ -1023,6 +1023,29 @@ class ClusterSearch:
         ''')
         return script_template.render(script_data_path=script_data_path, div_id=div_id)
     
+    
+    def insert_script_png_json(self, script_data_path, img_fallback_path, div_id):
+        script_template = Template('''
+            fetch('{{ script_data_path }}')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("JSON fetch failed");
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log("Loaded JSON:", '{{ script_data_path }}', data);
+                    var opt = {"renderer": "canvas", "actions": false};
+                    vegaEmbed("#{{ div_id }}", data, opt);
+                })
+                .catch(error => {
+                    console.error("Error fetching JSON, loading fallback image instead:", error);
+                    document.getElementById("{{ div_id }}").innerHTML = `<img src="{{ img_fallback_path }}" alt="Fallback Image" width="100%">`;
+                });
+        ''')
+
+        return script_template.render(script_data_path=script_data_path, img_fallback_path=img_fallback_path, div_id=div_id)
+    
     def render_hla_section(self,hla_name, correlation_chart_id, best_cluster_img, naturally_presented_img):
         template = Template('''
         <div class="row" style="border: 2px solid #007bff;">
@@ -1296,16 +1319,24 @@ class ClusterSearch:
 </html>
 """
         heatmap_js = """
-
-            fetch('corr-data/correlation_heatmap.json')
-                        .then(response => response.json())
-                        .then(data => {
-                        console.log(data);
-                        // Process the data as needed
-                        var opt = {"renderer": "canvas", "actions": false};
-                        vegaEmbed("#correlation_heatmap", data, opt);
-                        })
-                        .catch(error => console.error('Error fetching the JSON data:', error));
+                // heatmap json or PNG loading
+                fetch('corr-data/correlation_heatmap.json')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("JSON fetch failed");
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log("Loaded JSON:", 'corr-data/correlation_heatmap.json', data);
+                    var opt = {"renderer": "canvas", "actions": false};
+                    vegaEmbed("#correlation_heatmap", data, opt);
+                })
+                .catch(error => {
+                    console.error("Error fetching JSON, loading fallback image instead:", error);
+                    document.getElementById("correlation_heatmap").innerHTML = `<img src="corr-data/correlation_heatmap.png" alt="Fallback Image" width="100%">`;
+                });
+        
 
 """
         heatmap_div = """
@@ -1372,7 +1403,8 @@ class ClusterSearch:
                 # return float('nan')
             rows_list = self.render_hla_section(hla, f"correlation_chart_{str(row).split('/')[-1].split('.')[1]}", str(output_dict[str(row).split("/")[-1].split('.')[1]]['gibbs_img']).replace(f"{self._outfolder}/",''), str(output_dict[str(row).split("/")[-1].split('.')[1]]['nat_img']).replace(f"{self._outfolder}/",''))
             html_create += rows_list
-            plot_js = self.insert_script_hla_section(str(output_dict[str(row).split("/")[-1].split('.')[1]]['corr_json']).replace(f"{self._outfolder}/",''), f"correlation_chart_{str(row).split('/')[-1].split('.')[1]}")
+            # plot_js = self.insert_script_hla_section(str(output_dict[str(row).split("/")[-1].split('.')[1]]['corr_json']).replace(f"{self._outfolder}/",''), f"correlation_chart_{str(row).split('/')[-1].split('.')[1]}")
+            plot_js = self.insert_script_png_json(str(output_dict[str(row).split("/")[-1].split('.')[1]]['corr_json']).replace(f"{self._outfolder}/",''),str(output_dict[str(row).split("/")[-1].split('.')[1]]['corr_plot']).replace(f"{self._outfolder}/",''),f"correlation_chart_{str(row).split('/')[-1].split('.')[1]}")
             body_end_1  += plot_js
             
             immunolyser_out += rows_list

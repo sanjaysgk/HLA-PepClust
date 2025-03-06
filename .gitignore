@@ -7,7 +7,6 @@ data/out*
 data/*html
 !data/ref_data/
 output/*
-
 .DS_Store
 cli/*__pycache__
 test_output
