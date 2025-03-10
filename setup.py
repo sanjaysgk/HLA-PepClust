@@ -1,4 +1,5 @@
 from setuptools import setup, find_packages
+import os
 
 setup(
     name="HLA-PEPCLUST",
@@ -24,3 +25,4 @@ setup(
         ],
     },
 )
+data_path = os.getenv('GLODBA_DATA_PATH', 'data/')

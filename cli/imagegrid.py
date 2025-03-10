@@ -57,7 +57,6 @@ def imagelayout(conf, reportsizes=False, imagefiles=[], outputfile=''):
     wd = conf.get('inputdir', os.getcwd())
     
     # set up image list
-    
     imgdata = conf['images']
     
     for imgid in imgdata:

@@ -37,6 +37,7 @@ class ClusterSearch:
         self.console = CONSOLE
         self.species = None
         self.uhla = None
+        self.data_dir= None
 
     def generate_unique_random_ids(self, count: int) -> list:
         """
@@ -65,8 +66,9 @@ class ClusterSearch:
         if not os.path.exists(os.path.join(db_path, f'{str(species).lower()}.db')):
             raise FileNotFoundError(f"Database file {db_path} does not exist.")
         else:
+            self.data_dir = db_path
             self.species = str(species).lower()
-            
+    
         return pd.read_csv(os.path.join(db_path, f'{species}.db'))
 
     def parse_gibbs_output(self, gibbs_path: str, n_clusters: int) -> pd.DataFrame:
@@ -229,6 +231,12 @@ class ClusterSearch:
         :param hla_list: List of HLA types to process (optional, default is all available types)
         """
         gibbs_matrix_folder = os.path.join(gibbs_folder, "matrices")
+        if os.path.exists(gibbs_matrix_folder) and any(".mat" in file for file in os.listdir(gibbs_matrix_folder)):
+            self.console.log(
+                f"Found Gibbs matrices in {gibbs_matrix_folder}")
+        else:
+            raise FileNotFoundError(
+                f"No Gibbs matrices found in {gibbs_matrix_folder}")
         # print(db.head())
         self._outfolder = self._make_dir(
             output_path, self.generate_unique_random_ids(6)[0]
@@ -254,7 +262,8 @@ class ClusterSearch:
         # breakpoint()
 
         start_time = time.time()
-
+        cluster_found = []
+        
         if n_clusters == "all":
             self.console.log("Processing all clusters")
             with self.console.status("Processing all clusters") as status:
@@ -307,6 +316,7 @@ class ClusterSearch:
                 for filename1 in os.listdir(gibbs_matrix_folder):
                     if filename1.endswith(f"of{n_clusters}.mat"):
                         # print(filename1)
+                        cluster_found.append(filename1)
                         for filename2 in os.listdir(human_reference_folder):
                             if (
                                 hla_list is None
@@ -325,8 +335,9 @@ class ClusterSearch:
                                 )
                     else:
                         self.console.log(
-                            f"Skipping {filename1} as it does not have {n_clusters} clusters"
+                            f"Skipping {filename1} as it does not from {n_clusters} clusters"
                         )
+            
         else:
             self.console.log(
                 f"Given n_clusters param {n_clusters} is invalid. Proceeding with 'all' clusters"
@@ -372,6 +383,12 @@ class ClusterSearch:
         :param hla_list: List of HLA types to process (optional, default is all available types)
         """
         gibbs_result_matrix = os.path.join(gibbs_results, "matrices")
+        if os.path.exists(gibbs_result_matrix) and any(".mat" in file for file in os.listdir(gibbs_result_matrix)):
+            self.console.log(
+                f"Found Gibbs matrices in {gibbs_result_matrix}")
+        else:
+            raise FileNotFoundError(
+                f"No Gibbs matrices found in {gibbs_result_matrix}")
         # print(db.head())
         self._outfolder = self._make_dir(
             output_path, self.generate_unique_random_ids(6)[0]
@@ -386,7 +403,7 @@ class ClusterSearch:
             # self.console.log("Processing all available HLA types.")
 
         start_time = time.time()
-
+        cluster_found = []
         if n_clusters == "all":
             self.console.log("Processing all clusters", style="blue")
             with self.console.status("Processing all clusters") as status:
@@ -453,6 +470,7 @@ class ClusterSearch:
             with self.console.status(f"Processing {n_clusters} clusters") as status:
                 for gibbs_f in os.listdir(gibbs_result_matrix):
                     if gibbs_f.endswith(f"of{n_clusters}.mat"):
+                        cluster_found.append(gibbs_f)
                         for mat_path in db['matrices_path']:
                             if (
                                 hla_list is not None
@@ -467,7 +485,6 @@ class ClusterSearch:
                                     spinner="squish",
                                     spinner_style="yellow",
                                 )
-
         else:
             self.console.log(
                 f"Given n_clusters param {n_clusters} is invalid. Proceeding with 'all' clusters"
@@ -494,6 +511,11 @@ class ClusterSearch:
         self.console.log(
             f"Cluster Search Preprocess completed in {elapsed_time:.2f} seconds."
         )
+        
+        if len(cluster_found) == 0:
+                self.console.log(
+                    f"No cluster files found for {n_clusters} clusters exiting({cluster_found})")
+                sys.exit(1)
 
     def _compute_and_log_correlation(
         self,
@@ -557,7 +579,7 @@ class ClusterSearch:
             # breakpoint()
             # Format input data
             m1 = self.format_input_gibbs(gibbs_f)
-            m2 = self.format_input_gibbs(ref_mat)
+            m2 = self.format_input_gibbs(os.path.join(self.data_dir,ref_mat))
 
             # Align amino acid order
             m1, m2 = self.amino_acid_order_identical(m1, m2)
@@ -1471,7 +1493,7 @@ def run_cluster_search(args):
             f"Species provided: [bold yellow]{args.species}", style="bold green")
         CONSOLE.log(
             f"Loading reference databse for [bold yellow]{args.species}", style="bold green")
-        db = cluster_search._db_loader("data/ref_data/", args.species)
+        db = cluster_search._db_loader(args.reference_folder, args.species)
         CONSOLE.log(f"Reference database loaded successfully.",
                     style="bold green")
     else:

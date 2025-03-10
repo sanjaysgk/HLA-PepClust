@@ -13,18 +13,18 @@ def _prase_config_file(config_file):
         CONSOLE.log("Using default configuration", style="blue")
         default_config ={
             "human":{
-                "path": "data/ref_data/Gibbs_motifs_human",
-                "matrix": "/matrices",
-                "motif": "/motif",
-                "allotypes": "/allotypes/hla_data.csv",
+                "path": "Gibbs_motifs_human",
+                "matrix": "matrices",
+                "motif": "motif",
+                "allotypes": "allotypes/hla_data.csv",
                 "ref_data": "data/ref_data"
             },
 
             "mouse" :{
-                "path": "data/ref_data/Gibbs_motifs_mouse",
-                "matrix": "/matrices",
-                "motif": "/motif",
-                "allotypes": "/allotypes/mhc_data.csv",
+                "path": "Gibbs_motifs_mouse",
+                "matrix": "matrices",
+                "motif": "motif",
+                "allotypes": "allotypes/mhc_data.csv",
                 "ref_data": "data/ref_data"
             }
         }
@@ -38,26 +38,29 @@ def _prase_config_file(config_file):
 
 def _check_ref_files(config):
     for species in config:
-        if not os.path.exists(config[species]["path"]):
-            # sys.exit(f"Path {config[species]['path']} does not exist")
-            CONSOLE.log(f"Path {config[species]['path']} does not exist")
+        if not os.path.exists(os.path.join(config[species]["ref_data"], config[species]["path"])):
+            # sys.exit(f"Path {os.path.join(config[species]['ref_data'], config[species]['path'])} does not exist")
+            # print("Path", config[species]["path"])
+            # print("Ref data", config[species]["ref_data"])
+            # print("Join", os.path.join(config[species]["ref_data"], config[species]["path"].lstrip('/')))
+            CONSOLE.log(f"Path {os.path.join(config[species]['ref_data'],config[species]['path'])} does not exist. Check the path.", style="red")
             sys.exit(1)
-        if not os.path.exists(config[species]["path"] + config[species]["matrix"]):
+        if not os.path.exists(os.path.join(config[species]["ref_data"],config[species]["path"],config[species]["matrix"])):
             # sys.exit(f"Matrix path {config[species]['path'] + config[species]['matrix']} does not exist")
-            CONSOLE.log(f"Matrix path {config[species]['path'] + config[species]['matrix']} does not exist")
+            CONSOLE.log(f"Matrix path {os.path.join(config[species]["ref_data"],config[species]["path"],config[species]["matrix"])} does not exist")
             sys.exit(1)
-        if not os.path.exists(config[species]["path"] + config[species]["motif"]):
+        if not os.path.exists(os.path.join(config[species]["ref_data"],config[species]["path"] ,config[species]["motif"])):
             # sys.exit(f"Motif path {config[species]['path'] + config[species]['motif']} does not exist")
-            CONSOLE.log(f"Motif path {config[species]['path'] + config[species]['motif']} does not exist")
+            CONSOLE.log(f"Motif path {os.path.join(config[species]["ref_data"],config[species]["path"] ,config[species]["motif"])} does not exist")
             sys.exit(1)
-        if not os.path.exists(config[species]["ref_data"] + config[species]["allotypes"]):
+        if not os.path.exists(os.path.join(config[species]["ref_data"], config[species]["allotypes"])):
             # sys.exit(f"Allotype path {config[species]['path'] + config[species]['allotypes']} does not exist")
-            CONSOLE.log(f"Allotype path {config[species]['ref_data'] + config[species]['allotypes']} does not exist")
+            CONSOLE.log(f"Allotype path {os.path.join(config[species]["ref_data"], config[species]["allotypes"])} does not exist")
             sys.exit(1)
 
 def _HLA_liist(config):
     for species in config:
-        allotype_file = config[species]["ref_data"] + config[species]["allotypes"]
+        allotype_file = os.path.join(config[species]["ref_data"], config[species]["allotypes"])
         allotypes = pd.read_csv(allotype_file)
         if species == "human":
             allotypes.rename(columns={ "formatted_HLA":"formatted_allotypes","HLA":"allotypes"}, inplace=True)
@@ -75,7 +78,7 @@ def _HLA_liist(config):
         allotypes['matrices_path'] = ""
         for motifs in allotypes['motif']:
             CONSOLE.log(f"[yellow]{species}[/yellow] {config[species]['path']}/motif/{motifs}", style="blue")
-            if not os.path.exists(f"{config[species]['path']}/motif/{motifs}"):
+            if not os.path.exists(f"{config[species]['ref_data']}/{config[species]['path']}/motif/{motifs}"):
                 # sys.exit(f"Motif {motifs} does not exist")
                 CONSOLE.log(f"Motif {motifs} does not exist")
                 sys.exit(1)
@@ -128,13 +131,13 @@ def Database_gen(config_file):
                             )
         sys.exit(0)
     
-# Database_gen("config.json")
-# if __name__ == "__main__":
-#     config_file = "config.json"
-#     config = _prase_config_file(config_file)
-#     _check_ref_files(config)
-#     hla_list = _HLA_liist(config)
-#     # print(hla_list)
-#     # print(config)
-#     CONSOLE.log("Config file parsed successfully")
-#     sys.exit(0)
+Database_gen("config.json")
+if __name__ == "__main__":
+    config_file = "config.json"
+    config = _prase_config_file(config_file)
+    _check_ref_files(config)
+    hla_list = _HLA_liist(config)
+    # print(hla_list)
+    # print(config)
+    CONSOLE.log("Config file parsed successfully")
+    sys.exit(0)

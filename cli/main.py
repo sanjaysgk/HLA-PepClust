@@ -178,12 +178,16 @@ def main():
         db = Database_gen(args.database)
         sys.exit(0)
         
+    # if args.processes > 1:
+    #     with Pool(args.processes) as pool:
+    #         pool.map(run_cluster_search, [(args.gibbs_folder, args.reference_folder, args.threshold, args.species, args.hla_types, args.n_clusters, args.best_KL, args.output, args.log, args.immunolyser)])
+    # else:
+    #     run_cluster_search(args.gibbs_folder, args.reference_folder, args.threshold, args.species, args.hla_types, args.n_clusters, args.best_KL, args.output, args.log, args.immunolyser)
+    
     if args.processes > 1:
         with Pool(args.processes) as pool:
             pool.map(run_cluster_search, [args])
     else:
         run_cluster_search(args)
-
-
 if __name__ == "__main__":
     main()
