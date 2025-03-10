@@ -577,9 +577,10 @@ class ClusterSearch:
         )
         
         if len(cluster_found) == 0:
-                self.console.log(
-                    f"No cluster files found for {n_clusters} clusters exiting({cluster_found})")
-                sys.exit(1)
+            self.console.log(
+            f"No cluster files found for {n_clusters} clusters exiting({cluster_found})"
+            )
+            return 
 
     def _compute_and_log_correlation(
         self,
@@ -1056,36 +1057,41 @@ class ClusterSearch:
         df1['Position'] = df1.index +1
         df2['Position'] = df2.index +1
         
-        df1_melted = df1.melt(id_vars='Position', var_name='Amino Acid', value_name='PWM1')
-        df2_melted = df2.melt(id_vars='Position', var_name='Amino Acid', value_name='PWM2')
+        df1_melted = df1.melt(id_vars='Position', var_name='Amino Acid', value_name='Cluster')
+        df2_melted = df2.melt(id_vars='Position', var_name='Amino Acid', value_name='Reference')
 
         # Merge the two dataframes
         df_merged = pd.merge(df1_melted, df2_melted, on=['Position', 'Amino Acid'])
         
         # Create the base chart
         base = alt.Chart(df_merged,width="container").mark_circle().encode(
-            x='PWM1',
-            y='PWM2',
+            x='Cluster',
+            y='Reference',
             color='Amino Acid',
-            tooltip=['Amino Acid', 'PWM1', 'PWM2','Position']
+            tooltip=['Amino Acid', 'Cluster', 'Reference','Position']
         )
         # Calculate the correlation coefficient
-        corr_coef = df_merged[['PWM1', 'PWM2']].corr().iloc[0, 1]
+        corr_coef = df_merged[['Cluster', 'Reference']].corr().iloc[0, 1]
+        # corr_coef = df_merged['Cluster'].corrwith(df_merged['Reference']).iloc[0]
+        # corr_coef = pd.Series(df_merged['Cluster']).corr(pd.Series(df_merged['Reference']))
+
+
+        # corrwith
 
         # Create the regression line
-        regression_line = base.transform_regression('PWM1', 'PWM2').mark_line(opacity=0.50,shape='mark').transform_fold(
+        regression_line = base.transform_regression('Cluster', 'Reference').mark_line(opacity=0.50,shape='mark').transform_fold(
             ["reg-line"], 
             as_=["Regression", "y"]
         ).encode(alt.Color("Regression:N"))
         
         # Add the correlation coefficient as text
         corr_text = alt.Chart(pd.DataFrame({
-            'PWM1': [df_merged['PWM1'].min()],
-            'PWM2': [df_merged['PWM2'].max()],
+            'Cluster': [df_merged['Cluster'].min()],
+            'Reference': [df_merged['Reference'].max()],
             'text': [f'Correlation: {corr_coef:.2f}']
         })).mark_text(align='left', baseline='top', dx=8, dy=-5).encode(
-            x='PWM1:Q',
-            y='PWM2:Q',
+            x='Cluster:Q',
+            y='Reference:Q',
             text='text:N'
         )
         # Combine the charts
