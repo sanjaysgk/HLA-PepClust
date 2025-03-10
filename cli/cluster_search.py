@@ -38,6 +38,7 @@ class ClusterSearch:
         self.species = None
         self.uhla = None
         self.data_dir= None
+        self.threshold = 0.5
 
     def generate_unique_random_ids(self, count: int) -> list:
         """
@@ -375,6 +376,7 @@ class ClusterSearch:
         n_clusters: str,
         output_path: str,
         hla_list: str = None,
+        threshold: float = 0.5,
     ) -> None:
         """
         Compute correlations between test and reference Gibbs matrices.
@@ -383,6 +385,7 @@ class ClusterSearch:
         :param human_reference_folder: Path to reference matrices
         :param hla_list: List of HLA types to process (optional, default is all available types)
         """
+        self.threshold = threshold
         gibbs_result_matrix = os.path.join(gibbs_results, "matrices")
         should_process = False
         if os.path.exists(gibbs_result_matrix) and any(".mat" in file for file in os.listdir(gibbs_result_matrix)):
@@ -1201,9 +1204,10 @@ class ClusterSearch:
         df = df[['Cluster', 'HLA', 'Correlation']]
         return df
     
-    def make_heatmap(self,correlation_dict,threshold=0.5):
+    def make_heatmap(self,correlation_dict):
         df = self.make_datatable(correlation_dict)
         # print(df)
+        
         try:
             df.to_csv(os.path.join(self._outfolder, 'corr-data', 'corr_matrix.csv'),index=False)
         except Exception as e:
@@ -1216,7 +1220,7 @@ class ClusterSearch:
     alt.Color(
         "Correlation",
         scale=alt.Scale(
-            domain=[df["Correlation"].min(), threshold, df["Correlation"].max()],
+            domain=[df["Correlation"].min(), self.threshold, df["Correlation"].max()],
             range=["#d3d3d3", "#add8e6", "#ff4500"],  # Low values fade, high values bright
         ),
         legend=None
@@ -1246,7 +1250,7 @@ class ClusterSearch:
         
         
     
-    def make_datatable_html(self,correlation_dict,df=None,threshold=0.5):
+    def make_datatable_html(self,correlation_dict,df=None):
         if df is None:
             df = self.make_datatable(correlation_dict)
             table_start  =     """
@@ -1265,7 +1269,7 @@ class ClusterSearch:
               """
             tr = ""
             for i in range(len(df)):
-                if df['Correlation'][i] >= threshold:
+                if df['Correlation'][i] >= self.threshold:
                     tr += f"""
                     <tr class="table-success">
                         <td>{i+1}</td>
@@ -1275,7 +1279,7 @@ class ClusterSearch:
                         <td>0.0</td>
                     </tr>
                     """
-                if df['Correlation'][i] >= 0.5 and df['Correlation'][i] < threshold:
+                if df['Correlation'][i] >= 0.5 and df['Correlation'][i] < self.threshold:
                     tr += f"""
                     <tr class="table-warning">
                         <td>{i+1}</td>
@@ -1560,7 +1564,18 @@ def run_cluster_search(args):
     else:
         raise ValueError(
             "Invalid species provided. Please provide a valid species. refer only. [Human or Mouse]")
-
+    if args.threshold:
+        
+        CONSOLE.log(
+            f"Threshold provided: [bold yellow]{args.threshold}", style="bold green")
+        if args.threshold > 1 or args.threshold < 0:
+            raise ValueError(
+                "Invalid threshold provided. Please provide a valid threshold between 0 and 1")
+    else:
+        args.threshold = 0.5
+        CONSOLE.log(
+            f"No threshold provided. Using default threshold of 0.5", style="bold yellow")
+    
     if args.hla_types:
         CONSOLE.log(
             f"HLA/MHC allotypes types provided: [bold yellow]{args.hla_types}", style="bold green")
@@ -1605,6 +1620,7 @@ def run_cluster_search(args):
         args.n_clusters,
         args.output,
         args.hla_types,
+        args.threshold
     )
 
     # cluster_search.generate_image_grid(cluster_search.correlation_dict,db)
