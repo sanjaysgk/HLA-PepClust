@@ -1,120 +1,99 @@
-# HLA-PepClust
-![CI Status Ubuntu](https://github.com/Sanpme66/HLA-PepClust/actions/workflows/python-package.yml/badge.svg)
-![MultiOS](https://github.com/Sanpme66/HLA-PepClust/actions/workflows/matrix.yml/badge.svg)
-![test-hla-pepclust](https://github.com/Sanpme66/HLA-PepClust/actions/workflows/test-hla-pepclust.yml/badge.svg)
+# HLA-PEPCLUST
 
-## Introduction
+HLA Motif Finder for Immunopeptidomics Data
 
-HLA-PepClust `CLI` module is designed for identifying HLA type by clustering peptide sequences based on their
-## Prerequisites
+## Overview
 
-Ensure you have the following installed on your system:
-- Python 3.9 or higher
-- `pip` (Python package installer)
+HLA-PEPCLUST is a command-line tool designed to identify human leukocyte antigen (HLA) or major histocompatibility complex (MHC) binding motifs in immunopeptidomic data. The pipeline compares clustering results from GibbsCluster with a database of known HLA/MHC binding motifs to identify the best matches.
 
-## Download or Clone the Git Repository
+## Installation
 
 ```bash
+# Clone the repository
 git clone https://github.com/Sanpme66/HLA-PepClust.git
+cd HLA-PepClust
+
+# Create and activate a virtual environment (optional but recommended)
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+
+# Install dependencies
+pip install -r requirements.txt
 ```
 
+## Usage
 
-## Setting Up the Python Environment
+### Database Generation
 
-1. **Create a virtual environment**:
-    ```bash
-    python3 -m venv hlapepclust-env
-    ```
+Before running the cluster search, you need to generate the reference database:
 
-2. **Activate the virtual environment**:
-    - On macOS and Linux:
-      ```bash
-      source hlapepclust-env/bin/activate
-      ```
-    - On Windows:
-      ```bash
-      .\hlapepclust-env\Scripts\activate
-      ```
-
-3. **Upgrade `pip`**:
-    ```bash
-    pip install --upgrade pip
-    ```
-
-## Installing Dependencies
-
-1. **Navigate to the project directory**:
-    ```bash
-    cd HLA-PepClust/
-    ```
-
-<!-- 2. **Install the required packages**:
-    ```bash
-    pip install -r requirements.txt
-    ``` -->
-
-2. **Install the HLA-pepClust packages**
-    ```bash
-    pip install .
-    ``` 
-
-## Running HLA-PepClust
-
-1. **Run the main script**:
-
-    <!--     
-
-    ```bash
-    python CLI/cluster_search.py <input_data_path> <reference_data_path> --hla_types <hla_types> --n_clusters <number_of_clusters> --output <output_path>
-    ```
-     -->
-     ## clust-search Help 
-    ```bash
-    clust-search -h      
-    ```
-    ## Example Output
-
-    Here is an example of the output you might see after running the `clust-search` command:
-
-    ![Example Output](assets/img/CLI-help.png)
-
-    ## clust-search main input params
-     ```bash
-    clust-search <input_data_path> <reference_data_path> --hla_types <hla_types> --n_clusters <number_of_clusters> --output <output_path>
-    ```
-
-    ### Command Line Arguments
-
-    The `cluster_search.py` script accepts the following command line arguments:
-
-    - `gibbs_folder` (str): Path to the test folder containing matrices.
-    - `reference_folder` (str): Path to the human reference folder containing matrices.
-    - `--output_folder` (str, optional): Path to the output folder. Default is "output".
-    - `--hla_types` (list, optional): List of HLA types to search (defaults to all if none specified).
-    - `--processes` (int, optional): Number of processes to use. Default is 4.
-    - `--n_clusters` (str, optional): Number of clusters to search for. Default is "all".
-    - `--best_KL` (bool, optional): Find the best KL divergence only. Default is False.
-    - `--output` (str, optional): Path to the output folder. Default is "output".
-
-    Example usage:
-    ```bash
-    clust-search data/D90_HLA_3844874 data/ref_data/Gibbs_motifs_human/output_matrices_human --hla_types A0201,A0101,B1302,B3503,C0401 --n_clusters 6 --output test_results --processes 4
-    ```
-
-    ## Example Output
-
-    Here is an example of the output you might see after running the `clust-search` command:
-
-    ![Example Output](assets/img/search-results.png)
-    
-
-## Deactivating the Virtual Environment
-
-After you are done, you can deactivate the virtual environment by running:
 ```bash
-deactivate
+python -m cli.main -db path/to/config.json
 ```
 
-## Conclusion
+### Cluster Search
 
-More detailed instruction comming soon......!!!!!!
+To run the cluster search, use the following command:
+
+```bash
+python -m cli.main path/to/gibbs_results path/to/reference_folder -o output/path -s species -hla HLA1,HLA2 -n num_clusters
+```
+
+#### Parameters:
+
+- `gibbs_folder`: Path to the folder containing GibbsCluster results
+- `reference_folder`: Path to the reference database folder
+- `-o, --output`: Path to save output (default: "output")
+- `-s, --species`: Species to search (human or mouse, default: human)
+- `-hla, --hla_types`: List of HLA/MHC allotypes to search (comma-separated, defaults to all)
+- `-n, --n_clusters`: Number of clusters to search for (default: "all")
+- `-t, --threshold`: Threshold for motif similarity (default: 0.5)
+- `-p, --processes`: Number of parallel processes to use (default: 4)
+- `-im, --immunolyser`: Enable immunolyser output
+- `-l, --log`: Enable logging
+- `-c, --credits`: Show detailed credits and citations
+- `-v, --version`: Show the version of the pipeline
+
+### Example
+
+```bash
+python -m cli.main data/gibbs_output data/ref_data -o output/results -p 6 -hla A0101,A0201,B0702 -s human -n 6 --log -im
+```
+
+## Output
+
+HLA-PEPCLUST generates the following outputs:
+
+- HTML report visualizing the correlation between clusters and reference motifs
+- Heatmap of correlation values
+- Interactive plots of amino acid correlations
+- Tables of matching scores
+- Log files (if logging is enabled)
+
+## Citation
+
+If you use HLA-PEPCLUST in your research, please cite:
+
+Sanjay Krishna, Nathon Craft & Chen Li et al. bioRxiv (2024)
+
+## Dependencies
+
+- pandas
+- numpy
+- matplotlib
+- seaborn
+- altair
+- Pillow
+- jinja2
+- rich
+
+## License
+
+MIT License
+
+## Contact
+
+For questions or issues, please contact:
+- Sanjay Krishna (sanjay.krishna@monash.edu)
+- Chen Li (chen.li@monash.edu)
+- Prithvi
