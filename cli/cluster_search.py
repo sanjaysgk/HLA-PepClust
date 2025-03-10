@@ -63,6 +63,7 @@ class ClusterSearch:
         :param db_path: Path to the database file
         :return: DataFrame containing the database
         """
+        self.db_path = db_path
         if not os.path.exists(os.path.join(db_path, f'{str(species).lower()}.db')):
             raise FileNotFoundError(f"Database file {db_path} does not exist.")
         else:
@@ -383,6 +384,7 @@ class ClusterSearch:
         :param hla_list: List of HLA types to process (optional, default is all available types)
         """
         gibbs_result_matrix = os.path.join(gibbs_results, "matrices")
+        should_process = False
         if os.path.exists(gibbs_result_matrix) and any(".mat" in file for file in os.listdir(gibbs_result_matrix)):
             self.console.log(
                 f"Found Gibbs matrices in {gibbs_result_matrix}")
@@ -402,6 +404,7 @@ class ClusterSearch:
             hla_list = None
             # self.console.log("Processing all available HLA types.")
 
+
         start_time = time.time()
         cluster_found = []
         if n_clusters == "all":
@@ -410,10 +413,13 @@ class ClusterSearch:
                 for gibbs_f in os.listdir(gibbs_result_matrix):
                     for mat_path in db['matrices_path']:
                         # print(filename1, filename2,"####"*100)
+                        # Extract HLA ID from matrix path
+
                         if (
                             hla_list is not None
-                            or self.formate_HLA_DB(str(mat_path).split('/')[0]) in hla_list
+                            and self.formate_HLA_DB(str(mat_path).split('/')[0]) in hla_list
                         ):
+ 
                             correlation = self._compute_and_log_correlation_V2(
                                 os.path.join(gibbs_result_matrix, gibbs_f),
                                 mat_path,
@@ -426,7 +432,7 @@ class ClusterSearch:
                             # print(correlation)
                         if (
                             hla_list is None
-                            and self.formate_HLA_DB(str(mat_path).split('/')[0]) in hla_list
+                            
                         ):
                             correlation = self._compute_and_log_correlation_V2(
                                 os.path.join(gibbs_result_matrix, gibbs_f),
@@ -453,7 +459,7 @@ class ClusterSearch:
                     for mat_path in db['matrices_path']:
                         if (
                             hla_list is not None
-                            or self.formate_HLA_DB(str(mat_path).split('/')[0]) in hla_list
+                            and self.formate_HLA_DB(str(mat_path).split('/')[0]) in hla_list
                         ):
                             correlation = self._compute_and_log_correlation_V2(
                                 os.path.join(gibbs_result_matrix, gibbs_f),
@@ -464,8 +470,27 @@ class ClusterSearch:
                                 spinner="squish",
                                 spinner_style="yellow",
                             )
-
+                        if (
+                            hla_list is None
+                            
+                        ):
+                            correlation = self._compute_and_log_correlation_V2(
+                                os.path.join(gibbs_result_matrix, gibbs_f),
+                                mat_path,
+                            )
+                            status.update(
+                                status=f"[bold blue] Compute correlation between {gibbs_f} and {str(mat_path).split('/')[-1]} with correlation {correlation:.4f}",
+                                spinner="squish",
+                                spinner_style="yellow",
+                            )
+                        
+                        else:
+                            self.console.log(
+                                f"Skipping {str(mat_path).split('/')[0]} as it is not in the provided HLA list"
+                            )
+   
         elif n_clusters.isdigit() and 0 < int(n_clusters) <= 6:
+
             self.console.log(f"Processing for {n_clusters} clusters")
             with self.console.status(f"Processing {n_clusters} clusters") as status:
                 for gibbs_f in os.listdir(gibbs_result_matrix):
@@ -474,7 +499,7 @@ class ClusterSearch:
                         for mat_path in db['matrices_path']:
                             if (
                                 hla_list is not None
-                                or self.formate_HLA_DB(str(mat_path).split('/')[0]) in hla_list
+                                and self.formate_HLA_DB(str(mat_path).split('/')[0]) in hla_list
                             ):
                                 correlation = self._compute_and_log_correlation_V2(
                                     os.path.join(gibbs_result_matrix, gibbs_f),
@@ -484,6 +509,24 @@ class ClusterSearch:
                                     status=f"[bold blue] Compute correlation between {gibbs_f} and {str(mat_path).split('/')[-1]} with correlation {correlation:.4f}",
                                     spinner="squish",
                                     spinner_style="yellow",
+                                )
+                            if (
+                            hla_list is None
+                            
+                        ):
+                                correlation = self._compute_and_log_correlation_V2(
+                                    os.path.join(gibbs_result_matrix, gibbs_f),
+                                    mat_path,
+                                )
+                                status.update(
+                                    status=f"[bold blue] Compute correlation between {gibbs_f} and {str(mat_path).split('/')[-1]} with correlation {correlation:.4f}",
+                                    spinner="squish",
+                                    spinner_style="yellow",
+                                )
+                        
+                            else:
+                                self.console.log(
+                                    f"Skipping {str(mat_path).split('/')[0]} as it is not in the provided HLA list"
                                 )
         else:
             self.console.log(
@@ -506,6 +549,24 @@ class ClusterSearch:
                                 spinner="squish",
                                 spinner_style="yellow",
                             )
+                        if (
+                            hla_list is None
+                            
+                        ):
+                                correlation = self._compute_and_log_correlation_V2(
+                                    os.path.join(gibbs_result_matrix, gibbs_f),
+                                    mat_path,
+                                )
+                                status.update(
+                                    status=f"[bold blue] Compute correlation between {gibbs_f} and {str(mat_path).split('/')[-1]} with correlation {correlation:.4f}",
+                                    spinner="squish",
+                                    spinner_style="yellow",
+                                )
+                        
+                        else:
+                            self.console.log(
+                                    f"Skipping {str(mat_path).split('/')[0]} as it is not in the provided HLA list"
+                                )
         end_time = time.time()
         elapsed_time = end_time - start_time
         self.console.log(
@@ -1405,12 +1466,12 @@ class ClusterSearch:
             nat_path = db[db['formatted_allotypes'] == hla]['motif_path'].values[0]
             
             if nat_path:
-                shutil.copy(nat_path, os.path.join(self._outfolder, 'allotypes-img', f"{str(nat_path).split('/')[-1]}"))
+                shutil.copy(os.path.join(self.db_path,nat_path), os.path.join(self._outfolder, 'allotypes-img', f"{str(nat_path).split('/')[-1]}"))
                 output_dict[str(row).split("/")[-1].split('.')[1]]['nat_img'] = os.path.join(self._outfolder, 'allotypes-img', f"{str(nat_path).split('/')[-1]}")
             
             try:
                 gibbs_mt = self.format_input_gibbs(row)
-                nat_mat = self.format_input_gibbs(col)
+                nat_mat = self.format_input_gibbs(os.path.join(self.db_path,col))
 
                 # Align amino acid order
                 gibbs_mt, nat_mat = self.amino_acid_order_identical(gibbs_mt, nat_mat)
@@ -1420,7 +1481,7 @@ class ClusterSearch:
                 output_dict[str(row).split("/")[-1].split('.')[1]]['corr_json'] = f"{os.path.join(self._outfolder,'corr-data')}/amino_acids_comparison_with_correlation_{mat_motif}.json"
             except Exception as e:
                 self.console.print(
-                    f"Failed to compute correlation between {row} and {col}: {str(e)}"
+                    f"Failed to compute correlation plot between {row} and {col}: {str(e)}"
                 )
                 # return float('nan')
             rows_list = self.render_hla_section(hla, f"correlation_chart_{str(row).split('/')[-1].split('.')[1]}", str(output_dict[str(row).split("/")[-1].split('.')[1]]['gibbs_img']).replace(f"{self._outfolder}/",''), str(output_dict[str(row).split("/")[-1].split('.')[1]]['nat_img']).replace(f"{self._outfolder}/",''))
