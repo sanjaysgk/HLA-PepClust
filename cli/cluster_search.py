@@ -65,12 +65,30 @@ class ClusterSearch:
         db_file = os.path.join(db_path, f'{species}.db')
         
         if not os.path.exists(db_file):
+            self.console.log(f"Database file {db_file} does not exist.", style="bold red")
             raise FileNotFoundError(f"Database file {db_file} does not exist.")
         
         self.data_dir = db_path
         self.species = species
         
-        return pd.read_csv(db_file)
+        # Load and verify the database
+        db = pd.read_csv(db_file)
+        
+        # Check for required columns
+        required_columns = ['formatted_allotypes', 'matrices_path', 'motif_path']
+        for col in required_columns:
+            if col not in db.columns:
+                self.console.log(f"Missing required column '{col}' in database", style="bold red")
+                raise ValueError(f"Database file {db_file} is missing required column: {col}")
+        
+        # Verify that paths in the database exist
+        for idx, row in db.iterrows():
+            matrix_path = os.path.join(db_path, row['matrices_path'])
+            if not os.path.exists(matrix_path):
+                self.console.log(f"Warning: Matrix file {matrix_path} not found", style="yellow")
+        
+        self.console.log(f"Loaded {len(db)} allotypes from {db_file}", style="green")
+        return db
 
     def _make_dir(self, path: str) -> str:
         """
@@ -215,10 +233,11 @@ class ClusterSearch:
                         should_process = True
                     
                     if should_process:
-                        correlation = self._compute_and_log_correlation_V2(
-                            os.path.join(gibbs_matrix_dir, gibbs_f),
-                            mat_path,
-                        )
+                        correlation =                 # Using the correct path structure by not duplicating the species path
+                self._compute_and_log_correlation_V2(
+                    os.path.join(gibbs_matrix_dir, gibbs_f),
+                    mat_path,  # This is a relative path, so we don't need to include the species folder again
+                )
                         status.update(
                             status=f"[bold blue] Compute correlation between {gibbs_f} and {str(mat_path).split('/')[-1]} with correlation {correlation:.4f}",
                             spinner="squish",
@@ -311,7 +330,7 @@ class ClusterSearch:
 
         Args:
             gibbs_f (str): Path to the Gibbs matrix file
-            ref_mat (str): Path to the reference matrix
+            ref_mat (str): Path to the reference matrix (relative path from data_dir)
             
         Returns:
             float: Correlation value or NaN if an error occurs
@@ -322,7 +341,12 @@ class ClusterSearch:
             
             # Format input data
             m1 = format_input_gibbs(gibbs_f)
-            m2 = format_input_gibbs(os.path.join(self.data_dir, ref_mat))
+            
+            # Construct the correct absolute path to the reference matrix
+            ref_mat_path = os.path.join(self.data_dir, ref_mat)
+            self.console.log(f"Loading reference matrix: {ref_mat_path}", style="blue")
+            
+            m2 = format_input_gibbs(ref_mat_path)
 
             # Align amino acid order
             m1, m2 = amino_acid_order_identical(m1, m2)

@@ -70,9 +70,15 @@ def process_allotype_data(config: Dict[str, Any]) -> None:
                 CONSOLE.log(f"Matrix {motif.replace('.png', '.txt')} does not exist at {matrix_path}", style="red")
                 sys.exit(1)
             else:
-                # Update paths in dataframe
-                allotypes.loc[allotypes['motif'] == motif, 'motif_path'] = f"{species_config['path']}/motif/{motif}"
-                allotypes.loc[allotypes['motif'] == motif, 'matrices_path'] = f"{species_config['path']}/matrices/{motif.replace('.png', '.txt')}"
+                # Update paths in dataframe - store absolute paths to ensure consistent access
+                motif_path = os.path.join(species_config['path'], 'motif', motif)
+                matrix_path = os.path.join(species_config['path'], 'matrices', motif.replace('.png', '.txt'))
+                
+                # Store these paths - important to use consistent path format
+                allotypes.loc[allotypes['motif'] == motif, 'motif_path'] = motif_path
+                allotypes.loc[allotypes['motif'] == motif, 'matrices_path'] = matrix_path
+                
+                CONSOLE.log(f"[green]✓[/green] Registered {motif} with matrix at {matrix_path}", style="dim")
         
         # Save database
         db_path = os.path.join(species_config['ref_data'], f"{species}.db")

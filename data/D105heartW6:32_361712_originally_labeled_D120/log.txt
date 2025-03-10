@@ -1,0 +1,106 @@
+#Call: /tools/src/gibbscluster-2.0/GibbsCluster-2.0e_WEB.pl -H /home/ctools/opt/R-4.3.1/bin/R -G /home/ctools/mhcmotifdecon-1.2/bin/seq2logo-2.1/Seq2Logo.py -k 5 -Z 50000 -f /var/www/webface/tmp/server/GibbsCluster/67CE443B00169081FA7AC610/file.0 -C -g 1-6 -l 9 -t 1.5 -i 10 -n 20 -D 4 -I 1 -s 100 -r 20 -u 10 -T -j 2 -b 0.8 -q 5 -S 5 -P D105heart -c 0 -z 1
+#Mon Mar 10 02:45:33 2025
+#Session ID: 361712
+#Run name: D105heart_361712
+#Read 19860 unique sequences
+##### Settings: #####
+#No shift moves, cluster move at every iteration
+#Number of clusters: 1 - 6
+#Motif length: 9
+#Initial MC temperture: 1.5
+#Number of temperature steps: 20
+#Number of iterations x Sequence x Tstep: 10
+#Max insertion length: 1
+#Max deletion length: 4
+#Interval between Indel moves: 10
+#Number of initial seeds: 5
+#Penalty lambda: 0.8
+#Weight on small clusters: 5
+#Sequence weighting type: 0
+#Use trash cluster to remove outliers: 1
+#Threshold for trash cluster: 2
+#### Running Gibbs clustering...
+#Clustering with 1 groups, seed number 1
+#Clustering with 1 groups, seed number 2
+#Clustering with 1 groups, seed number 3
+#Clustering with 1 groups, seed number 4
+#Clustering with 1 groups, seed number 5
+#Clustering with 2 groups, seed number 1
+#Clustering with 2 groups, seed number 2
+#Clustering with 2 groups, seed number 3
+#Clustering with 2 groups, seed number 4
+#Clustering with 2 groups, seed number 5
+#Clustering with 3 groups, seed number 1
+#Clustering with 3 groups, seed number 2
+#Clustering with 3 groups, seed number 3
+#Clustering with 3 groups, seed number 4
+#Clustering with 3 groups, seed number 5
+#Clustering with 4 groups, seed number 1
+#Clustering with 4 groups, seed number 2
+#Clustering with 4 groups, seed number 3
+#Clustering with 4 groups, seed number 4
+#Clustering with 4 groups, seed number 5
+#Clustering with 5 groups, seed number 1
+#Clustering with 5 groups, seed number 2
+#Clustering with 5 groups, seed number 3
+#Clustering with 5 groups, seed number 4
+#Clustering with 5 groups, seed number 5
+#Clustering with 6 groups, seed number 1
+#Clustering with 6 groups, seed number 2
+#Clustering with 6 groups, seed number 3
+#Clustering with 6 groups, seed number 4
+#Clustering with 6 groups, seed number 5
+#Clustering complete!
+### Determining seeds with highest KLD...
+#Best 1 groups, seed 4
+#Best 2 groups, seed 2
+#Best 3 groups, seed 3
+#Best 4 groups, seed 3
+#Best 5 groups, seed 1
+#Best 6 groups, seed 1
+###Parsing result files...
+#RESULTS for 1 CLUSTERS
+#1 Final Average KLD: 8.283640
+#1	1	16918	8.284
+#Outliers: 2942
+#
+#RESULTS for 2 CLUSTERS
+#2 Final Average KLD: 10.706453
+#2	1	8969	12.068
+#2	2	9405	9.408
+#Outliers: 1486
+#
+#RESULTS for 3 CLUSTERS
+#3 Final Average KLD: 12.223305
+#3	1	8405	12.348
+#3	2	4908	11.118
+#3	3	5576	13.007
+#Outliers: 971
+#
+#RESULTS for 4 CLUSTERS
+#4 Final Average KLD: 12.500954
+#4	1	5227	13.229
+#4	2	4199	11.381
+#4	3	3350	10.331
+#4	4	6358	13.785
+#Outliers: 726
+#
+#RESULTS for 5 CLUSTERS
+#5 Final Average KLD: 11.358132
+#5	1	3401	10.326
+#5	2	3497	10.492
+#5	3	3082	9.930
+#5	4	5148	13.342
+#5	5	4079	11.537
+#Outliers: 653
+#
+#RESULTS for 6 CLUSTERS
+#6 Final Average KLD: 11.268628
+#6	1	3041	11.159
+#6	2	3634	11.486
+#6	3	2710	10.074
+#6	4	2435	9.404
+#6	5	4967	13.413
+#6	6	2550	9.964
+#Outliers: 523
+#

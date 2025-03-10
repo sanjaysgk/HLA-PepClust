@@ -38,6 +38,9 @@ To run the cluster search, use the following command:
 ```bash
 python -m cli.main path/to/gibbs_results path/to/reference_folder -o output/path -s species -hla HLA1,HLA2 -n num_clusters
 ```
+```bash
+python -m cli.main data/D105heartW6:32_361712_originally_labeled_D120/ data/ref_data/Gibbs_motifs_human -o output/resultsD105 -s human -n 6
+```
 
 #### Parameters:
 

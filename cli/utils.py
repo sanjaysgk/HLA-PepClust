@@ -122,24 +122,33 @@ def amino_acid_order_identical(df1: pd.DataFrame, df2: pd.DataFrame) -> Tuple[pd
     return df1, df2
 
 
-def find_file_by_pattern(directory: str, pattern: str) -> str:
+def find_file_by_pattern(directory: str, pattern: str, verbose: bool = False) -> str:
     """
     Find a file in a directory that matches the given pattern.
     
     Args:
         directory (str): Directory to search in.
         pattern (str): Pattern to match in filenames.
+        verbose (bool): If True, print debugging information.
         
     Returns:
         str: Full path to the matched file, or None if not found.
     """
     if not os.path.exists(directory):
+        if verbose:
+            print(f"Directory does not exist: {directory}")
         return None
+    
+    if verbose:
+        print(f"Searching for '{pattern}' in {directory}")
+        print(f"Directory contents: {os.listdir(directory)}")
     
     for filename in os.listdir(directory):
         if pattern in filename:
             return os.path.join(directory, filename)
     
+    if verbose:
+        print(f"No file matching '{pattern}' found in {directory}")
     return None
 
 
