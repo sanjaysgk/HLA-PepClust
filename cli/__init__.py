@@ -1,15 +1,16 @@
-__version__ = "0.0.1-dev"
-
-
+# This file is part of the HLA-PEPCLUST software package.
 from warnings import filterwarnings
 from rich.traceback import install
 
 install(show_locals=True)  # type: ignore
 
-# mzmlb is not used, so hdf5plugin is not needed
-filterwarnings(
-    "ignore",
-    message="hdf5plugin is missing",
-    category=UserWarning,
-    module="psims.mzmlb",
-)
+"""
+HLA-PEPCLUST - HLA Motif Finder for Immunopeptidomic Data
+
+A Python package for identifying peptide motifs in immunopeptidomic data 
+and matching them to known HLA/MHC allotypes.
+"""
+
+__version__ = "1.0.0-dev"
+__author__ = "Sanjay Krishna,Prithvi Munday,Chen Li"
+__email__ = "sanjay.sondekoppagopalakrishna@monash.edu"

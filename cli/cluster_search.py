@@ -1,360 +1,131 @@
-from cli.imagegrid import imagelayout
-from cli.logger import *
-from cli.html_config import *
+"""
+Cluster Search module for HLA-PEPCLUST.
+
+This module handles the core functionality of comparing peptide clusters with
+reference HLA/MHC motifs to identify the best matches.
+"""
+
 import os
+import sys
+import time
+import re
+import shutil
 import pandas as pd
+import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
-import numpy as np
-from matplotlib.colors import LinearSegmentedColormap, to_hex
-import logging
-import argparse
-from multiprocessing import Pool
-from PIL import Image, ImageDraw, ImageFont
-import os
-import re
-import time
-from rich.traceback import install
-from jinja2 import Template
-import sys
 import altair as alt
+from typing import Dict, List, Tuple, Union, Optional
+from PIL import Image, ImageDraw, ImageFont
+from matplotlib.colors import LinearSegmentedColormap
+from jinja2 import Template
 
-# import HTML
-import shutil
+from cli.logger import CONSOLE, display_search_results, save_console_log
+from cli.html_config import html_content, body_start
+from cli.utils import (
+    generate_unique_random_ids, 
+    ensure_directory_exists,
+    format_hla_name,
+    amino_acid_order_identical,
+    format_input_gibbs,
+    find_file_by_pattern,
+    create_output_directories
+)
 
 
-install(show_locals=True)
-
-
-# Configure logging
-# logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
-# logging = CONSOLE
-# _logConfig(logSave=True)
 class ClusterSearch:
+    """
+    Class for searching and correlating peptide clusters with reference HLA/MHC motifs.
+    """
+    
     def __init__(self):
+        """Initialize the ClusterSearch class."""
         self.correlation_dict = {}
         self.valid_HLA = []
         self.console = CONSOLE
         self.species = None
-        self.uhla = None
-
-    def generate_unique_random_ids(self, count: int) -> list:
-        """
-        Generate a list of unique 6-digit random IDs.
-
-        :param count: Number of unique random IDs to generate
-        :return: List of unique 6-digit random IDs
-        """
-        start = 100000
-        end = 999999
-        if count > (end - start + 1):
-            raise ValueError(
-                "Count is larger than the range of unique IDs available.")
-
-        return np.random.choice(
-            range(start, end + 1), size=count, replace=False
-        ).tolist()
+        self.data_dir = None
+        self._outfolder = None
 
     def _db_loader(self, db_path: str, species: str) -> pd.DataFrame:
         """
         Load the database file.
 
-        :param db_path: Path to the database file
-        :return: DataFrame containing the database
-        """
-        if not os.path.exists(os.path.join(db_path, f'{str(species).lower()}.db')):
-            raise FileNotFoundError(f"Database file {db_path} does not exist.")
-        else:
-            self.species = str(species).lower()
+        Args:
+            db_path (str): Path to the database file
+            species (str): Species name ('human' or 'mouse')
             
-        return pd.read_csv(os.path.join(db_path, f'{species}.db'))
-
-    def parse_gibbs_output(self, gibbs_path: str, n_clusters: int) -> pd.DataFrame:
+        Returns:
+            pd.DataFrame: DataFrame containing the database
+            
+        Raises:
+            FileNotFoundError: If database file doesn't exist
         """
-        Parse the Gibbs output files.
+        species = str(species).lower()
+        db_file = os.path.join(db_path, f'{species}.db')
+        
+        if not os.path.exists(db_file):
+            raise FileNotFoundError(f"Database file {db_file} does not exist.")
+        
+        self.data_dir = db_path
+        self.species = species
+        
+        return pd.read_csv(db_file)
 
-        :param files_path: Path to the Gibbs output files
-        :param n_clusters: Number of clusters
-        :return: DataFrame with parsed data
+    def _make_dir(self, path: str) -> str:
         """
-        res_path = os.path.join(gibbs_path, "res")
-        if not os.path.exists(res_path):
-            raise FileNotFoundError(f"Directory {res_path} does not exist.")
+        Create output directory for results.
 
-        for c_file in os.listdir(res_path):
-            if f'{n_clusters}g.ds' in c_file:
-                file_path = os.path.join(res_path, c_file)
-                df = pd.read_csv(file_path, sep='\s+')
-                # output_path = f'data/sampledata_701014/res_{n_clusters}g.csv'
-                # df.to_csv(output_path, index=False)
-                logging.info(f"Data parsed for No clusters {n_clusters}")
-                return df
-
-        raise FileNotFoundError(
-            f"No cluster file found for {n_clusters} clusters.")
-
-    def _make_dir(self, path: str, rand_ids: int) -> None:
+        Args:
+            path (str): Base path for the output directory
+            
+        Returns:
+            str: Path to the created output directory
         """
-        Make a directory if it does not exist.
-
-        :param path: Path to the directory
-        """
-        # if not os.path.exists(os.path.join(path, f'clust_result_{rand_ids}')):
-        #     os.makedirs(os.path.join(path, f'clust_result_{rand_ids}'))
-
-        if not os.path.exists(os.path.join(path, f'clust_result')):
-            os.makedirs(os.path.join(path, f'clust_result'))
-        # return os.path.join(path, f'clust_result_{rand_ids}')
-
+        output_dir = os.path.join(path, 'clust_result')
+        ensure_directory_exists(output_dir)
+        
         self.console.log(
-            f"Output directory created {os.path.join(path, f'clust_result')}", style="blue")
-
-        return os.path.join(path, f'clust_result')
-
-    def _check_HLA_DB(self, HLA_list: list, ref_folder: str) -> bool:
-        """
-        Check if the HLA type is in the list.
-
-        :param HLA_list: List of HLA types
-        :param ref_folder: Reference folder containing HLA Matrix files
-        :return: True if HLA type is in the list, False otherwise
-        """
-        if not HLA_list:
-            # logging.warning("No HLA types provided. Using all available HLA types from the reference folder.")
-            self.console.log(
-                "No HLA types provided. Using all available HLA types from the reference folder."
-            )
-            return True
-
-        DB_hla_list = [
-            self.formate_HLA_DB(filename) for filename in os.listdir(ref_folder)
-        ]
-        # breakpoint()
-
-        for HLA in self.formate_HLA_user_in(HLA_list):
-            if self.formate_HLA_DB(HLA) not in DB_hla_list:
-                # logging.error(f"HLA type {HLA} not found in the reference folder.")
-                self.console.log(
-                    f"HLA type {HLA} not found in the reference folder.")
-                # logging.error(f"Available HLA types: {DB_hla_list}")
-                self.console.log(f"Available HLA types: {DB_hla_list}")
-                return False
-            else:
-                self.valid_HLA.append(HLA)
-
-        return True
-
-    @staticmethod
-    def format_input_gibbs(gibbs_matrix: str) -> pd.DataFrame:
-        """
-        Format the Gibbs output matrix.
-
-        :param gibbs_matrix: Path to the Gibbs matrix file
-        :return: Processed DataFrame
-        """
-        df = pd.read_csv(gibbs_matrix)
-        amino_acids = df.iloc[0, 0].split()
-        df.iloc[:, 0] = df.iloc[:, 0].str.replace(
-            r"^\d+\s\w\s", "", regex=True)
-        new_df = pd.DataFrame(df.iloc[1:, 0].str.split(
-            expand=True).values, columns=amino_acids)
-        new_df.reset_index(drop=True, inplace=True)
-        new_df = new_df.apply(pd.to_numeric, errors='coerce')
-        return new_df
-
-    @staticmethod
-    def amino_acid_order_identical(df1: pd.DataFrame, df2: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame]:
-        if list(df1.columns) != list(df2.columns):
-            logging.warning(
-                "The amino acid column order is different. Reordering columns.")
-            df2 = df2[df1.columns]
-        return df1, df2
-
-    @staticmethod
-    def formate_HLA_DB(HLA: str) -> str:
-        """
-        Format the HLA database file name to extract meaningful parts.
-
-        :param HLA: HLA file name
-        :return: Formatted HLA type
-        """
-        return HLA.replace("HLA_", "").replace("*", "").replace("txt", "")
-
-    def check_HLA_DB(self, HLA_list: list, ref_folder: str) -> bool:
-        """
-        Check if the HLA type is in the list.
-
-        :param HLA_list: List of HLA types
-        :param ref_folder: Reference folder containing HLA files
-        :return: True if HLA type is in the list, False otherwise
-        """
-        if not HLA_list:
-            # logging.warning("No HLA types provided. Using all available HLA types from the reference folder.")
-            self.console.log(
-                "No HLA types provided. Using all available HLA types from the reference folder."
-            )
-            return True
-
-        DB_hla_list = [
-            self.formate_HLA_DB(filename) for filename in os.listdir(ref_folder)
-        ]
-
-        for HLA in HLA_list:
-            if self.formate_HLA_DB(HLA) not in DB_hla_list:
-                # logging.error(f"HLA type {HLA} not found in the reference folder.")
-                self.console.print(
-                    f"HLA type {HLA} not found in the reference folder.")
-                # logging.error(f"Available HLA types: {DB_hla_list}")
-                # self.console.print(f"Available HLA types: {DB_hla_list}")
-                return False
-            else:
-                self.valid_HLA.append(HLA)
-
-        return True
-
-    def compute_correlations(
-        self,
-        db: pd.DataFrame,
-        gibbs_folder: str,
-        human_reference_folder: str,
-        n_clusters: str,
-        output_path: str,
-        hla_list: str = None,
-    ) -> None:
-        """
-        Compute correlations between test and reference Gibbs matrices.
-
-        :param gibbs_folder: Path to test matrices
-        :param human_reference_folder: Path to reference matrices
-        :param hla_list: List of HLA types to process (optional, default is all available types)
-        """
-        gibbs_matrix_folder = os.path.join(gibbs_folder, "matrices")
-        # print(db.head())
-        self._outfolder = self._make_dir(
-            output_path, self.generate_unique_random_ids(6)[0]
-        )  # self.generate_unique_random_ids(6)[0]
-
-        if hla_list:
-            hla_list = hla_list[0].split(
-                ","
-            )  # Split if comma-separated string is passed
-            assert isinstance(
-                hla_list, list), "HLA types must be provided as a list."
-            self.console.log(f"Processing specific HLA types: {hla_list}")
-        else:
-            hla_list = None
-            self.console.log("Processing all available HLA types.")
-
-        # Check for valid HLA types in the reference folder
-        if not self.check_HLA_DB(hla_list, human_reference_folder):
-            self.console.log(
-                "Invalid or missing HLA types. Aborting correlation computation."
-            )
-            return None
-        # breakpoint()
-
-        start_time = time.time()
-
-        if n_clusters == "all":
-            self.console.log("Processing all clusters")
-            with self.console.status("Processing all clusters") as status:
-                for filename1 in os.listdir(gibbs_matrix_folder):
-                    for filename2 in os.listdir(human_reference_folder):
-                        # print(filename1, filename2,"####"*100)
-                        if (
-                            hla_list is None
-                            or self.formate_HLA_DB(filename2) in hla_list
-                        ):
-                            correlation = self._compute_and_log_correlation(
-                                gibbs_matrix_folder,
-                                human_reference_folder,
-                                filename1,
-                                filename2,
-                            )
-                            status.update(
-                                status=f"[bold blue] Compute correlation between {filename1} and {filename2} with correlation {correlation:.4f}",
-                                spinner="squish",
-                                spinner_style="yellow",
-                            )
-                            # print(correlation)
-
-        elif n_clusters == "best_KL":
-            self.console.log("Processing for best KL divergence clusters")
-            with self.console.status(
-                "Processing best KL divergence clusters"
-            ) as status:
-                for filename1 in os.listdir(gibbs_matrix_folder):
-                    for filename2 in os.listdir(human_reference_folder):
-                        if (
-                            hla_list is None
-                            or self.formate_HLA_DB(filename2) in hla_list
-                        ):
-                            correlation = self._compute_and_log_correlation(
-                                gibbs_matrix_folder,
-                                human_reference_folder,
-                                filename1,
-                                filename2,
-                            )
-                            status.update(
-                                status=f"[bold blue] Compute correlation between {filename1} and {filename2} with correlation {correlation:.4f}",
-                                spinner="squish",
-                                spinner_style="yellow",
-                            )
-
-        elif n_clusters.isdigit() and 0 < int(n_clusters) <= 6:
-            self.console.log(f"Processing for {n_clusters} clusters")
-            with self.console.status(f"Processing {n_clusters} clusters") as status:
-                for filename1 in os.listdir(gibbs_matrix_folder):
-                    if filename1.endswith(f"of{n_clusters}.mat"):
-                        # print(filename1)
-                        for filename2 in os.listdir(human_reference_folder):
-                            if (
-                                hla_list is None
-                                or self.formate_HLA_DB(filename2) in hla_list
-                            ):
-                                correlation = self._compute_and_log_correlation(
-                                    gibbs_matrix_folder,
-                                    human_reference_folder,
-                                    filename1,
-                                    filename2,
-                                )
-                                status.update(
-                                    status=f"[bold blue] Compute correlation between {filename1} and {filename2} with correlation {correlation:.4f}",
-                                    spinner="squish",
-                                    spinner_style="yellow",
-                                )
-                    else:
-                        self.console.log(
-                            f"Skipping {filename1} as it does not have {n_clusters} clusters"
-                        )
-        else:
-            self.console.log(
-                f"Given n_clusters param {n_clusters} is invalid. Proceeding with 'all' clusters"
-            )
-            with self.console.status("Processing all clusters") as status:
-                for filename1 in os.listdir(gibbs_matrix_folder):
-                    for filename2 in os.listdir(human_reference_folder):
-                        if (
-                            hla_list is None
-                            or self.formate_HLA_DB(filename2) in hla_list
-                        ):
-                            correlation = self._compute_and_log_correlation(
-                                gibbs_matrix_folder,
-                                human_reference_folder,
-                                filename1,
-                                filename2,
-                            )
-                            status.update(
-                                status=f"[bold blue] Compute correlation between {filename1} and {filename2} with correlation {correlation:.4f}",
-                                spinner="squish",
-                                spinner_style="yellow",
-                            )
-
-        end_time = time.time()
-        elapsed_time = end_time - start_time
-        self.console.log(
-            f"Cluster Search Preprocess completed in {elapsed_time:.2f} seconds."
+            f"Output directory created: {output_dir}", 
+            style="blue"
         )
+        
+        return output_dir
+
+    def check_HLA_DB(self, HLA_list: List[str], ref_folder: str) -> bool:
+        """
+        Check if the provided HLA types exist in the reference database.
+
+        Args:
+            HLA_list (List[str]): List of HLA types to check
+            ref_folder (str): Path to the reference folder
+            
+        Returns:
+            bool: True if all HLA types are valid, False otherwise
+        """
+        if not HLA_list:
+            self.console.log(
+                "No HLA types provided. Using all available HLA types from the reference folder."
+            )
+            return True
+
+        # Get list of available HLA types from reference folder
+        DB_hla_list = [
+            format_hla_name(filename) for filename in os.listdir(ref_folder)
+        ]
+
+        # Check each provided HLA type
+        for HLA in HLA_list:
+            formatted_hla = format_hla_name(HLA)
+            if formatted_hla not in DB_hla_list:
+                self.console.print(
+                    f"HLA type {HLA} not found in the reference folder."
+                )
+                return False
+            else:
+                self.valid_HLA.append(HLA)
+
+        return True
 
     def compute_correlations_v2(
         self,
@@ -362,271 +133,276 @@ class ClusterSearch:
         gibbs_results: str,
         n_clusters: str,
         output_path: str,
-        hla_list: str = None,
+        hla_list: Optional[List[str]] = None,
     ) -> None:
         """
         Compute correlations between test and reference Gibbs matrices.
 
-        :param gibbs_folder: Path to test matrices
-        :param human_reference_folder: Path to reference matrices
-        :param hla_list: List of HLA types to process (optional, default is all available types)
+        Args:
+            db (pd.DataFrame): Database DataFrame
+            gibbs_results (str): Path to Gibbs results
+            n_clusters (str): Number of clusters to use ('all', 'best_KL', or specific number)
+            output_path (str): Path to save results
+            hla_list (List[str], optional): List of HLA types to process
         """
+        # Check for Gibbs matrices
         gibbs_result_matrix = os.path.join(gibbs_results, "matrices")
-        # print(db.head())
-        self._outfolder = self._make_dir(
-            output_path, self.generate_unique_random_ids(6)[0]
-        )  # self.generate_unique_random_ids(6)[0]
+        if not (os.path.exists(gibbs_result_matrix) and 
+                any(".mat" in file for file in os.listdir(gibbs_result_matrix))):
+            raise FileNotFoundError(f"No Gibbs matrices found in {gibbs_result_matrix}")
+            
+        # Create output directory
+        self._outfolder = self._make_dir(output_path)
 
+        # Log HLA types being processed
         if hla_list:
-            assert isinstance(
-                hla_list, list), "HLA types must be provided as a list [Check main]."
+            if not isinstance(hla_list, list):
+                raise TypeError("HLA types must be provided as a list [Check main].")
             self.console.log(f"Processing specific HLA types: {hla_list}")
         else:
             hla_list = None
-            # self.console.log("Processing all available HLA types.")
 
+        # Start timing the process
         start_time = time.time()
-
+        cluster_found = []
+        
+        # Process clusters based on requested number
         if n_clusters == "all":
-            self.console.log("Processing all clusters", style="blue")
-            with self.console.status("Processing all clusters") as status:
-                for gibbs_f in os.listdir(gibbs_result_matrix):
-                    for mat_path in db['matrices_path']:
-                        # print(filename1, filename2,"####"*100)
-                        if (
-                            hla_list is not None
-                            or self.formate_HLA_DB(str(mat_path).split('/')[0]) in hla_list
-                        ):
-                            correlation = self._compute_and_log_correlation_V2(
-                                os.path.join(gibbs_result_matrix, gibbs_f),
-                                mat_path,
-                            )
-                            status.update(
-                                status=f"[bold blue] Compute correlation between {gibbs_f} and {str(mat_path).split('/')[0]} with correlation {correlation:.4f}",
-                                spinner="squish",
-                                spinner_style="yellow",
-                            )
-                            # print(correlation)
-                        if (
-                            hla_list is None
-                            and self.formate_HLA_DB(str(mat_path).split('/')[0]) in hla_list
-                        ):
-                            correlation = self._compute_and_log_correlation_V2(
-                                os.path.join(gibbs_result_matrix, gibbs_f),
-                                mat_path,
-                            )
-                            status.update(
-                                status=f"[bold blue] Compute correlation between {gibbs_f} and {str(mat_path).split('/')[0]} with correlation {correlation:.4f}",
-                                spinner="squish",
-                                spinner_style="yellow",
-                            )
-                        
-                        else:
-                            self.console.log(
-                                f"Skipping {str(mat_path).split('/')[0]} as it is not in the provided HLA list"
-                            )
-                         
-                            
+            self._process_all_clusters(gibbs_result_matrix, db, hla_list)
         elif n_clusters == "best_KL":
-            self.console.log("Processing for best KL divergence clusters")
-            with self.console.status(
-                "Processing best KL divergence clusters"
-            ) as status:
-                for gibbs_f in os.listdir(gibbs_result_matrix):
-                    for mat_path in db['matrices_path']:
-                        if (
-                            hla_list is not None
-                            or self.formate_HLA_DB(str(mat_path).split('/')[0]) in hla_list
-                        ):
-                            correlation = self._compute_and_log_correlation_V2(
-                                os.path.join(gibbs_result_matrix, gibbs_f),
-                                mat_path,
-                            )
-                            status.update(
-                                status=f"[bold blue] Compute correlation between {gibbs_f} and {str(mat_path).split('/')[0]} with correlation {correlation:.4f}",
-                                spinner="squish",
-                                spinner_style="yellow",
-                            )
-
+            self._process_best_kl_clusters(gibbs_result_matrix, db, hla_list)
         elif n_clusters.isdigit() and 0 < int(n_clusters) <= 6:
-            self.console.log(f"Processing for {n_clusters} clusters")
-            with self.console.status(f"Processing {n_clusters} clusters") as status:
-                for gibbs_f in os.listdir(gibbs_result_matrix):
-                    if gibbs_f.endswith(f"of{n_clusters}.mat"):
-                        for mat_path in db['matrices_path']:
-                            if (
-                                hla_list is not None
-                                or self.formate_HLA_DB(str(mat_path).split('/')[0]) in hla_list
-                            ):
-                                correlation = self._compute_and_log_correlation_V2(
-                                    os.path.join(gibbs_result_matrix, gibbs_f),
-                                    mat_path,
-                                )
-                                status.update(
-                                    status=f"[bold blue] Compute correlation between {gibbs_f} and {str(mat_path).split('/')[0]} with correlation {correlation:.4f}",
-                                    spinner="squish",
-                                    spinner_style="yellow",
-                                )
-
+            self._process_specific_clusters(gibbs_result_matrix, db, n_clusters, hla_list, cluster_found)
         else:
             self.console.log(
                 f"Given n_clusters param {n_clusters} is invalid. Proceeding with 'all' clusters"
             )
-            with self.console.status("Processing all clusters") as status:
-                for gibbs_f in os.listdir(gibbs_result_matrix):
-                    for mat_path in db['matrices_path']:
-                        # print(filename1, filename2,"####"*100)
-                        if (
-                            hla_list is not None
-                            or self.formate_HLA_DB(str(mat_path).split('/')[0]) in hla_list
-                        ):
-                            correlation = self._compute_and_log_correlation_V2(
-                                os.path.join(gibbs_result_matrix, gibbs_f),
-                                mat_path,
-                            )
-                            status.update(
-                                status=f"[bold blue] Compute correlation between {gibbs_f} and {str(mat_path).split('/')[0]} with correlation {correlation:.4f}",
-                                spinner="squish",
-                                spinner_style="yellow",
-                            )
+            self._process_all_clusters(gibbs_result_matrix, db, hla_list)
+
+        # Report processing time
         end_time = time.time()
         elapsed_time = end_time - start_time
         self.console.log(
-            f"Cluster Search Preprocess completed in {elapsed_time:.2f} seconds."
+            f"Cluster Search process completed in {elapsed_time:.2f} seconds."
         )
+        
+        # Check if any clusters were found (for specific cluster number)
+        if n_clusters.isdigit() and 0 < int(n_clusters) <= 6 and len(cluster_found) == 0:
+            self.console.log(
+                f"No cluster files found for {n_clusters} clusters. Exiting.")
+            sys.exit(1)
 
-    def _compute_and_log_correlation(
-        self,
-        gibbs_matrix_folder: str,
-        human_reference_folder: str,
-        filename1: str,
-        filename2: str,
-    ) -> None:
+    def _process_all_clusters(self, gibbs_matrix_dir: str, db: pd.DataFrame, hla_list: Optional[List[str]]) -> None:
         """
-        Compute and log the correlation between two Gibbs matrices (test and reference).
-
-        :param gibbs_matrix_folder: Path to test matrices folder
-        :param human_reference_folder: Path to reference matrices folder
-        :param filename1: File name of the test Gibbs matrix
-        :param filename2: File name of the reference Gibbs matrix
+        Process all clusters in the Gibbs matrix directory.
+        
+        Args:
+            gibbs_matrix_dir (str): Directory containing Gibbs matrices
+            db (pd.DataFrame): Database DataFrame
+            hla_list (List[str], optional): List of HLA types to process
         """
-        try:
-            # Construct full paths to the files
-            file1 = os.path.join(gibbs_matrix_folder, filename1)
-            file2 = os.path.join(human_reference_folder, filename2)
-            # breakpoint()
-            # Format input data
-            m1 = self.format_input_gibbs(file1)
-            m2 = self.format_input_gibbs(file2)
+        self.console.log("Processing all clusters", style="blue")
+        with self.console.status("Processing all clusters") as status:
+            for gibbs_f in os.listdir(gibbs_matrix_dir):
+                for mat_path in db['matrices_path']:
+                    # Check if we should process this matrix
+                    should_process = False
+                    if hla_list is not None:
+                        hla_id = format_hla_name(str(mat_path).split('/')[0])
+                        if hla_id in hla_list:
+                            should_process = True
+                    else:
+                        should_process = True
+                    
+                    if should_process:
+                        correlation = self._compute_and_log_correlation_V2(
+                            os.path.join(gibbs_matrix_dir, gibbs_f),
+                            mat_path,
+                        )
+                        status.update(
+                            status=f"[bold blue] Compute correlation between {gibbs_f} and {str(mat_path).split('/')[-1]} with correlation {correlation:.4f}",
+                            spinner="squish",
+                            spinner_style="yellow",
+                        )
+                    else:
+                        self.console.log(
+                            f"Skipping {str(mat_path).split('/')[0]} as it is not in the provided HLA list"
+                        )
 
-            # Align amino acid order
-            m1, m2 = self.amino_acid_order_identical(m1, m2)
+    def _process_best_kl_clusters(self, gibbs_matrix_dir: str, db: pd.DataFrame, hla_list: Optional[List[str]]) -> None:
+        """
+        Process clusters with best KL divergence.
+        
+        Args:
+            gibbs_matrix_dir (str): Directory containing Gibbs matrices
+            db (pd.DataFrame): Database DataFrame
+            hla_list (List[str], optional): List of HLA types to process
+        """
+        self.console.log("Processing for best KL divergence clusters")
+        with self.console.status("Processing best KL divergence clusters") as status:
+            for gibbs_f in os.listdir(gibbs_matrix_dir):
+                for mat_path in db['matrices_path']:
+                    # Check if we should process this matrix
+                    should_process = False
+                    if hla_list is not None:
+                        hla_id = format_hla_name(str(mat_path).split('/')[0])
+                        if hla_id in hla_list:
+                            should_process = True
+                    else:
+                        should_process = True
+                    
+                    if should_process:
+                        correlation = self._compute_and_log_correlation_V2(
+                            os.path.join(gibbs_matrix_dir, gibbs_f),
+                            mat_path,
+                        )
+                        status.update(
+                            status=f"[bold blue] Compute correlation between {gibbs_f} and {str(mat_path).split('/')[-1]} with correlation {correlation:.4f}",
+                            spinner="squish",
+                            spinner_style="yellow",
+                        )
 
-            # Calculate correlation
-            correlation = m1.corrwith(m2, axis=1).mean()
-
-            # Log the correlation
-            # logging.info(f"Correlation between {filename1} and {filename2}: {correlation:.4f}")
-            # Store the result in the correlation dictionary
-            self.correlation_dict[(filename1, filename2)] = correlation
-            return correlation
-
-        except Exception as e:
-            # logging.error(f"Failed to compute correlation between {filename1} and {filename2}: {str(e)}")
-            self.console.print(
-                f"Failed to compute correlation between {filename1} and {filename2}: {str(e)}"
-            )
-            return float('nan')
+    def _process_specific_clusters(self, gibbs_matrix_dir: str, db: pd.DataFrame, 
+                                 n_clusters: str, hla_list: Optional[List[str]], 
+                                 cluster_found: List[str]) -> None:
+        """
+        Process clusters for a specific number of clusters.
+        
+        Args:
+            gibbs_matrix_dir (str): Directory containing Gibbs matrices
+            db (pd.DataFrame): Database DataFrame
+            n_clusters (str): Number of clusters to use
+            hla_list (List[str], optional): List of HLA types to process
+            cluster_found (List[str]): List to collect found cluster files
+        """
+        self.console.log(f"Processing for {n_clusters} clusters")
+        with self.console.status(f"Processing {n_clusters} clusters") as status:
+            for gibbs_f in os.listdir(gibbs_matrix_dir):
+                if gibbs_f.endswith(f"of{n_clusters}.mat"):
+                    cluster_found.append(gibbs_f)
+                    for mat_path in db['matrices_path']:
+                        # Check if we should process this matrix
+                        should_process = False
+                        if hla_list is not None:
+                            hla_id = format_hla_name(str(mat_path).split('/')[0])
+                            if hla_id in hla_list:
+                                should_process = True
+                        else:
+                            should_process = True
+                        
+                        if should_process:
+                            correlation = self._compute_and_log_correlation_V2(
+                                os.path.join(gibbs_matrix_dir, gibbs_f),
+                                mat_path,
+                            )
+                            status.update(
+                                status=f"[bold blue] Compute correlation between {gibbs_f} and {str(mat_path).split('/')[-1]} with correlation {correlation:.4f}",
+                                spinner="squish",
+                                spinner_style="yellow",
+                            )
 
     def _compute_and_log_correlation_V2(
         self,
         gibbs_f: str,
         ref_mat: str,
-    ) -> None:
+    ) -> float:
         """
-        Compute and log the correlation between two Gibbs matrices (test and reference).
+        Compute correlation between a Gibbs matrix and a reference matrix.
 
-        :param gibbs_matrix_folder: Path to test matrices folder
-        :param human_reference_folder: Path to reference matrices folder
-        :param filename1: File name of the test Gibbs matrix
-        :param filename2: File name of the reference Gibbs matrix
+        Args:
+            gibbs_f (str): Path to the Gibbs matrix file
+            ref_mat (str): Path to the reference matrix
+            
+        Returns:
+            float: Correlation value or NaN if an error occurs
         """
         try:
-            if not os.path.exists(os.path.join(self._outfolder,'corr-data')):
-                os.makedirs(os.path.join(self._outfolder,'corr-data'))
-            # breakpoint()
+            # Create output directory if it doesn't exist
+            ensure_directory_exists(os.path.join(self._outfolder, 'corr-data'))
+            
             # Format input data
-            m1 = self.format_input_gibbs(gibbs_f)
-            m2 = self.format_input_gibbs(ref_mat)
+            m1 = format_input_gibbs(gibbs_f)
+            m2 = format_input_gibbs(os.path.join(self.data_dir, ref_mat))
 
             # Align amino acid order
-            m1, m2 = self.amino_acid_order_identical(m1, m2)
+            m1, m2 = amino_acid_order_identical(m1, m2)
             
-            # print(m1, m2)
-            
-
             # Calculate correlation
             correlation = m1.corrwith(m2, axis=1).mean()
-            # print(correlation)
-            # breakpoint()
-
-            # Log the correlation
-            # logging.info(f"Correlation between {filename1} and {filename2}: {correlation:.4f}")
-            # Store the result in the correlation dictionary
-            # self.correlation_dict[(str(gibbs_f).split(
-            #     '/')[-1], str(ref_mat).split('/')[-1])] = correlation
             
-            self.correlation_dict[(gibbs_f),(ref_mat)] = correlation
-                        
+            # Store the result in the correlation dictionary
+            self.correlation_dict[(gibbs_f), (ref_mat)] = correlation
+            
             return correlation
 
         except Exception as e:
-            # logging.error(f"Failed to compute correlation between {filename1} and {filename2}: {str(e)}")
             self.console.print(
                 f"Failed to compute correlation between {gibbs_f} and {ref_mat}: {str(e)}"
             )
             return float('nan')
 
-    def _find_highest_correlation(self) -> tuple[str, str, float]:
+    def find_highest_correlation_for_each_row(self, correlation_dict: Dict) -> Dict:
         """
-        Find the highest correlation in the correlation dictionary.
+        Find the highest correlation for each cluster matrix.
 
-        :return: Tuple containing the highest correlation pair and the correlation value
+        Args:
+            correlation_dict (Dict): Dictionary of correlation values
+            
+        Returns:
+            Dict: Dictionary mapping each cluster to its best match and correlation
         """
-        max_correlation = max(self.correlation_dict.values())
-        max_correlation_pair = max(
-            self.correlation_dict, key=self.correlation_dict.get)
+        rows = sorted(set(key[0] for key in correlation_dict.keys()))
+        cols = sorted(set(key[1] for key in correlation_dict.keys()))
+
+        # Create a DataFrame to store correlation values
+        matrix = pd.DataFrame(index=rows, columns=cols, dtype=float)
+
+        # Populate the correlation matrix
+        for (row, col), value in correlation_dict.items():
+            matrix.loc[row, col] = value
+
+        highest_corr_per_row = {}
+
+        # Find column with highest correlation for each row
+        for row in matrix.index:
+            highest_col = matrix.loc[row].idxmax()  # Find column with highest correlation for the row
+            highest_corr = matrix.loc[row, highest_col]  # Get the highest correlation value
+
+            highest_corr_per_row[row] = (highest_col, highest_corr)
+
+        return highest_corr_per_row
+
+    def plot_heatmap(self, output_path: str) -> None:
+        """
+        Generate a heatmap visualization of correlation values.
         
-        return max_correlation_pair[0], max_correlation_pair[1], max_correlation
-
-    def plot_heatmap(self, output_path) -> None:
-        """
-        Plot a heatmap for the computed correlation dictionary.
+        Args:
+            output_path (str): Path to save the heatmap
         """
         # Check if correlation_dict is empty
         if not self.correlation_dict:
-            
             raise ValueError(
-                "correlation_dict is empty. Cannot generate heatmap.[Tip: try running without --n_clusters flag or check your gibbs output files]")
+                "correlation_dict is empty. Cannot generate heatmap. [Tip: try running without --n_clusters flag or check your gibbs output files]")
 
         rows = sorted(set(key[0] for key in self.correlation_dict.keys()))
         cols = sorted(set(key[1] for key in self.correlation_dict.keys()))
 
         # Create an empty DataFrame with the given rows and columns
         matrix = pd.DataFrame(index=rows, columns=cols, dtype=float)
-        # matrix.to_csv(os.path.join(self._outfolder, 'corr-data', 'corr_matrix.csv'),index=False)
+        
         # Fill the matrix with the correlation values
         for (row, col), value in self.correlation_dict.items():
             matrix.loc[row, col] = value
 
-        # Handle NaN values by filling them with 0 or a suitable value
+        # Handle NaN values by filling them with 0
         matrix.fillna(0, inplace=True)
 
         # Check if the matrix is empty after filling NaN values
         if matrix.empty or matrix.isnull().all().all():
             raise ValueError(
-                "Matrix is empty or filled with NaN values. Cannot generate heatmap.(This for calcualting Hihest correaltion)[Tip: try running without --n_clusters flag]")
+                "Matrix is empty or filled with NaN values. Cannot generate heatmap. [Tip: try running without --n_clusters flag]")
 
+        # Create custom colormap
         custom_cmap = LinearSegmentedColormap.from_list(
             "CustomColours",
             [
@@ -635,6 +411,7 @@ class ClusterSearch:
             ],
         )
 
+        # Count HLA types for dividing lines
         HLA_A_count = sum(col.startswith("HLA_A") for col in matrix.columns)
         HLA_B_count = sum(col.startswith("HLA_B") for col in matrix.columns)
 
@@ -661,13 +438,14 @@ class ClusterSearch:
         plt.ylabel("Input Samples")
         plt.xticks(rotation=90, ha="center")
 
+        # Add division lines for different HLA types
         ax.vlines(HLA_A_count, y_min, y_max, color="k")
         ax.vlines(HLA_A_count + HLA_B_count, y_min, y_max, color="k")
 
+        # Add division lines for different sample clusters
         unique_names = matrix.index.unique()
-        base_names = unique_names.str.replace(r"_gibbs\..*", "", regex=True)
-        occurrence_counts = {base: unique_names.str.startswith(
-            base).sum() for base in base_names}
+        base_names = pd.Series([re.sub(r"_gibbs\..*", "", str(name)) for name in unique_names])
+        occurrence_counts = {base: sum(base_names.str.startswith(base)) for base in base_names.unique()}
 
         starting_horizontal = 0
         for count in occurrence_counts.values():
@@ -681,294 +459,26 @@ class ClusterSearch:
                 linestyles="--",
             )
 
-        # Finalize and save the heatmap
+        # Save the heatmap
         plt.tight_layout()
         plt.savefig(f"{self._outfolder}/heatmap.png")
         plt.close()
 
-    ##### From here on, Logo comapre module #####
-
-    def find_highest_correlation_for_each_row(self, correlation_dict) -> dict:
+    def _make_correlation_plot(self, gibbs_df: pd.DataFrame, motif_df: pd.DataFrame, mat_motif: str) -> None:
         """
-        Find the highest correlation for each row in the matrix, i.e., the column with the highest correlation
-        for each input sample (row) to the reference HLA type (column).
-
-        :return: A dictionary where each key is the row (cluster/sample) and the value is a tuple
-                containing the column (HLA reference) with the highest correlation and the correlation value.
+        Create a correlation plot comparing amino acid frequencies.
+        
+        Args:
+            gibbs_df (pd.DataFrame): Gibbs matrix DataFrame
+            motif_df (pd.DataFrame): Reference motif DataFrame
+            mat_motif (str): Identifier for the output file
         """
-        rows = sorted(set(key[0] for key in correlation_dict.keys()))
-        cols = sorted(set(key[1] for key in correlation_dict.keys()))
-
-        # Create a DataFrame to store correlation values
-        matrix = pd.DataFrame(index=rows, columns=cols, dtype=float)
-
-        # Populate the correlation matrix
-        for (row, col), value in correlation_dict.items():
-            matrix.loc[row, col] = value
-
-        highest_corr_per_row = {}
-
-        # Iterate over each row and find the column with the highest correlation
-        for row in matrix.index:
-            highest_col = matrix.loc[
-                row
-            ].idxmax()  # Find column with highest correlation for the row
-            highest_corr = matrix.loc[
-                row, highest_col
-            ]  # Get the highest correlation value for the row
-
-            highest_corr_per_row[row] = (highest_col, highest_corr)
-            # logging.info(f"Highest correlation for {row} is with {highest_col} with a value of {highest_corr}")
-
-        return highest_corr_per_row
-
-    def add_title(self, img, title, position=(0, 0), font_size=50):
-        """
-        Add a title to the image at the specified position with an optional font size.
-        """
-        draw = ImageDraw.Draw(img)
-
-        try:
-            font = ImageFont.truetype("arial.ttf", font_size)
-        except IOError:
-            font = ImageFont.load_default()
-
-        draw.text(position, title, fill="black", font=font)
-
-        return img
-
-    def _find_gibbs_image_path(self, matrix_name, image_folder):
-        """
-        Find all image paths in the specified folder.
-        """
-        # print("#####"*100)
-        # print(matrix_name)
-        for filename in os.listdir(image_folder):
-            if filename.endswith(".png") and matrix_name in filename:
-                return os.path.join(image_folder, filename)
-            elif filename.endswith(".jpg") and matrix_name in filename:
-                return os.path.join(image_folder, filename)
-            # else:
-            #     logging.warning(f"No image found for matrix {matrix_name}")
-        return None
-
-    def formate_HLA_DB(self, HLA: str) -> str:
-        """
-        Format the HLA database file name to extract meaningful parts.
-
-        :param HLA: HLA file name
-        :return: Formatted HLA type
-        """
-        return (
-            HLA.replace("HLA_", "").replace(
-                "*", "").replace("txt", "").replace(".", "")
-        )
-
-    def formate_HLA_user_in(self, HLA: str) -> str:
-        """
-        Format the HLA database file name to extract meaningful parts.
-
-        :param HLA: HLA file name
-        :return: Formatted HLA type
-        """
-        assert isinstance(HLA, str), "HLA type must be a string."
-
-        if isinstance(HLA, str):
-            HLA = HLA.split(",")
-            HLA = [
-                x.replace("HLA_", "")
-                .replace("*", "")
-                .replace("txt", "")
-                .replace(".", "")
-                for x in HLA
-            ]
-            return HLA
-        else:
-            return (
-                HLA.replace("HLA_", "")
-                .replace("*", "")
-                .replace("txt", "")
-                .replace(".", "")
-            )
-
-    def _naturally_presented_log(self, HLA_name, DB_image_folder):
-        """
-        Find all image paths in the specified folder.
-        """
-        for filename in os.listdir(DB_image_folder):
-            if filename.endswith(".png") and HLA_name in filename:
-                return os.path.join(DB_image_folder, filename)
-        logging.warning(f"No image found for HLA name {HLA_name}")
-        return None
-    
-    def _naturally_presented_log_V2(self, HLA, path):
-        """
-        Find all image paths in the specified folder.
-        """
-        if os.path.exists(os.path.join(path, f'{HLA}.png')):
-            return os.path.join(path, f'{HLA}.png')
-        return None
-
-    def create_image_grid(
-        self,
-        correlation_dict,
-        image_folder,
-        DB_image_folder,
-        output_path,
-        columns=3,
-        HLA_list=[],
-    ):
-        """
-        Create an image grid where each row corresponds to comparing two images side by side.
-
-        :param correlation_dict: Dictionary of correlations
-        :param image_folder: Path to the folder containing the images
-        :param DB_image_folder: Path to the folder containing the HLA images
-        :param output_path: Path to save the final image grid
-        :param columns: Number of columns in the image grid (default is 2 for side-by-side comparison)
-        :param HLA_list: List of HLA names provided by the user
-        """
-        # Get the highest correlation for each row (cluster)
-        highest_corr_per_row = self.find_highest_correlation_for_each_row(
-            correlation_dict
-        )
-        # print(highest_corr_per_row)
-        display_search_results(highest_corr_per_row, 0.8)
-
-        sorted_HLA_list = sorted(
-            HLA_list,
-            key=lambda x: (
-                x[0],
-                int(re.sub(r"\D", "", x)),
-            ),  # Sort by the first letter and then by numeric part
-        )
-        # Prepare images
-        images = []
-        titles = []
-        highest_corr_per_row_sorted = sorted(
-            highest_corr_per_row.items(),
-            key=lambda x: x[1][0]
-            .split("_")[1]
-            # Extract the part after "HLA_" and before ".txt"
-            .replace(".txt", ""),
-        )
-
-        # print(highest_corr_per_row_sorted)
-        for row, (col, corr) in highest_corr_per_row_sorted:
-            # Generate title based on row and column
-            title = f"{row} -> {col}: {corr:.2f}"
-            # title2 = f"naturally presented logo of{self.formate_HLA_DB(col)} -> {row}: {corr:.2f}"
-            title2 = f"naturally presented logo of {self.formate_HLA_DB(col)} -> {row}: {corr:.2f}"
-
-            # Find the image paths
-            image_path = self._find_gibbs_image_path(
-                row.split(".")[1], image_folder)
-            nat_img = self._naturally_presented_log(
-                self.formate_HLA_DB(col), DB_image_folder
-            )
-            logging.info(
-                f"Cluster matrix {row.split('.')[1]} best allotype match {self.formate_HLA_DB(col)} with correlation {corr:.2f}"
-            )
-
-            # Check if the column HLA is in the user provided list, if not find another image or empty
-            if self.formate_HLA_DB(col.replace(".", "")) not in HLA_list:
-                # Find a user provided HLA alternative if available
-                u_hla = [
-                    u_hla
-                    for u_hla in HLA_list
-                    if u_hla.startswith(self.formate_HLA_DB(col)[0])
-                ]
-                if u_hla:
-                    u_hla_nat_img = self._naturally_presented_log(
-                        self.formate_HLA_DB(u_hla[0]), DB_image_folder
-                    )
-                    title3 = (
-                        f"{self.formate_HLA_DB(u_hla[0])} -> {row}: {corr:.2f}"
-                        if u_hla
-                        else "Provided HLA type found"
-                    )
-                else:
-                    u_hla_nat_img = None
-                    title3 = "Provided HLA type found"
-            else:
-                u_hla_nat_img = None
-                title3 = "Provided HLA type found"
-
-            # Open the images
-            if image_path and nat_img:
-                img1 = Image.open(image_path)
-                img2 = Image.open(nat_img)
-                # title3 = f"{formate_HLA_DB(u_hla[0])} -> {row}: {corr:.2f}" if u_hla else "Provided HLA type found"
-
-                if u_hla_nat_img:
-                    img3 = Image.open(u_hla_nat_img)
-                else:
-                    img3 = Image.new(
-                        "RGB", (img1.width, img1.height), color=(255, 255, 255)
-                    )  # Empty image
-
-                img1 = self.add_title(
-                    img1, title, position=(img1.width // 4, 5), font_size=60
-                )  # Increased font size
-                img2 = self.add_title(
-                    img2, title2, position=(img2.width // 4, 5), font_size=60
-                )  # Increased font size
-                img3 = self.add_title(
-                    img3, title3, position=(img2.width // 4, 5), font_size=60
-                )  # Increased font size
-
-                # Append both images
-                images.append(img1)
-                images.append(img2)
-                images.append(img3)
-        if not images:
-            self.console.log(
-                "Error: No images were found to create a grid.", style="bold red")
-            return
-        # Calculate grid dimensions
-        rows = (len(images) + columns - 1) // columns
-        width = images[0].width * columns
-        height = images[0].height * rows
-
-        grid_image = Image.new("RGB", (width, height))
-
-        # Paste the images into the grid, 2 images per row
-        for i, img in enumerate(images):
-            row = i // columns
-            col = i % columns
-            grid_image.paste(img, (col * img.width, row * img.height))
-
-        # Save the final image grid
-        grid_image.save(f"{self._outfolder}/compare_allotypes.png")
-        # logging.info(f"Output saved in {self._outfolder}")
-        self.console.log(f"Output saved in {self._outfolder}")
-
-    # New Image Grid Module
-    def generate_image_grid(self, correlation_dict):
-        """
-        Generate an image grid for the correlation results.
-        """
-        highest_corr_per_row = self.find_highest_correlation_for_each_row(
-            correlation_dict
-        )
-        # print(highest_corr_per_row)
-        display_search_results(highest_corr_per_row, 0.8)
-        # print(highest_corr_per_row)
-        # config_dict = {
-        #     "image_folder": "data/ref_data/Gibbs_motifs_human/logos",
-        #     "DB_image_folder": "data/ref_data/Gibbs_motifs_human/images",
-        #     "output_path": "data/output",
-        #     "columns": 3,
-        #     "HLA_list": [],
-        # }
-
-        # imagelayout()
-    def _make_correlation_plot(self, gibbs_df, motif_df,mat_motif):
+        # Prepare DataFrames
         df1 = pd.DataFrame(gibbs_df)
         df2 = pd.DataFrame(motif_df)
         
-        df1['Position'] = df1.index +1
-        df2['Position'] = df2.index +1
+        df1['Position'] = df1.index + 1
+        df2['Position'] = df2.index + 1
         
         df1_melted = df1.melt(id_vars='Position', var_name='Amino Acid', value_name='PWM1')
         df2_melted = df2.melt(id_vars='Position', var_name='Amino Acid', value_name='PWM2')
@@ -977,17 +487,18 @@ class ClusterSearch:
         df_merged = pd.merge(df1_melted, df2_melted, on=['Position', 'Amino Acid'])
         
         # Create the base chart
-        base = alt.Chart(df_merged,width="container").mark_circle().encode(
+        base = alt.Chart(df_merged, width="container").mark_circle().encode(
             x='PWM1',
             y='PWM2',
             color='Amino Acid',
-            tooltip=['Amino Acid', 'PWM1', 'PWM2','Position']
+            tooltip=['Amino Acid', 'PWM1', 'PWM2', 'Position']
         )
+        
         # Calculate the correlation coefficient
         corr_coef = df_merged[['PWM1', 'PWM2']].corr().iloc[0, 1]
 
         # Create the regression line
-        regression_line = base.transform_regression('PWM1', 'PWM2').mark_line(opacity=0.50,shape='mark').transform_fold(
+        regression_line = base.transform_regression('PWM1', 'PWM2').mark_line(opacity=0.50, shape='mark').transform_fold(
             ["reg-line"], 
             as_=["Regression", "y"]
         ).encode(alt.Color("Regression:N"))
@@ -1002,28 +513,68 @@ class ClusterSearch:
             y='PWM2:Q',
             text='text:N'
         )
+        
         # Combine the charts
         chart = base + regression_line + corr_text
-        if not os.path.exists(os.path.join(self._outfolder,'corr-data')):
-                os.makedirs(os.path.join(self._outfolder,'corr-data'))
+        
+        # Ensure the output directory exists
+        ensure_directory_exists(os.path.join(self._outfolder, 'corr-data'))
+        
+        # Save as JSON and PNG
         chart.save(f"{os.path.join(self._outfolder,'corr-data')}/amino_acids_comparison_with_correlation_{mat_motif}.json")
         chart.save(f"{os.path.join(self._outfolder,'corr-data')}/amino_acids_comparison_with_correlation_{mat_motif}.png")
 
-    def insert_script_hla_section(self,script_data_path,div_id):
+    def insert_script_png_json(self, script_data_path: str, img_fallback_path: str, div_id: str) -> str:
+        """
+        Generate JavaScript for loading a Vega visualization with PNG fallback.
+        
+        Args:
+            script_data_path (str): Path to the JSON data file
+            img_fallback_path (str): Path to the fallback image
+            div_id (str): HTML div ID for the visualization
+            
+        Returns:
+            str: JavaScript code
+        """
         script_template = Template('''
-        fetch('{{ script_data_path }}')
-            .then(response => response.json())
-            .then(data => {
-            console.log(data);
-            // Process the data as needed
-            var opt = {"renderer": "canvas", "actions": false};
-            vegaEmbed("#{{ div_id }}", data, opt);
-            })
-            .catch(error => console.error('Error fetching the JSON data:', error));
+            fetch('{{ script_data_path }}')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("JSON fetch failed");
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log("Loaded JSON:", '{{ script_data_path }}', data);
+                    var opt = {"renderer": "canvas", "actions": false};
+                    vegaEmbed("#{{ div_id }}", data, opt);
+                })
+                .catch(error => {
+                    console.error("Error fetching JSON, loading fallback image instead:", error);
+                    document.getElementById("{{ div_id }}").innerHTML = `<img src="{{ img_fallback_path }}" alt="Fallback Image" width="100%">`;
+                });
         ''')
-        return script_template.render(script_data_path=script_data_path, div_id=div_id)
-    
-    def render_hla_section(self,hla_name, correlation_chart_id, best_cluster_img, naturally_presented_img):
+
+        return script_template.render(
+            script_data_path=script_data_path, 
+            img_fallback_path=img_fallback_path, 
+            div_id=div_id
+        )
+
+    def render_hla_section(self, hla_name: str, correlation_chart_id: str, 
+                          best_cluster_img: str, naturally_presented_img: str) -> str:
+        """
+        Generate HTML for an HLA section.
+        
+        Args:
+            hla_name (str): Name of the HLA
+            correlation_chart_id (str): ID for the correlation chart
+            best_cluster_img (str): Path to the best cluster image
+            naturally_presented_img (str): Path to the naturally presented image
+            
+        Returns:
+            str: HTML code for the section
+        """
         template = Template('''
         <div class="row" style="border: 2px solid #007bff;">
         <div class="row">
@@ -1081,144 +632,174 @@ class ClusterSearch:
         </div>
         </div>
         ''')
-        return template.render(hla_name=hla_name, correlation_chart_id=correlation_chart_id, best_cluster_img=best_cluster_img, naturally_presented_img=naturally_presented_img)
+        
+        return template.render(
+            hla_name=hla_name, 
+            correlation_chart_id=correlation_chart_id, 
+            best_cluster_img=best_cluster_img, 
+            naturally_presented_img=naturally_presented_img
+        )
 
-    
-    def make_datatable(self,correlation_dict):
+    def make_datatable(self, correlation_dict: Dict) -> pd.DataFrame:
+        """
+        Convert correlation dictionary to a DataFrame.
+        
+        Args:
+            correlation_dict (Dict): Dictionary of correlation values
+            
+        Returns:
+            pd.DataFrame: Formatted DataFrame
+        """
         df = pd.DataFrame(correlation_dict.items(), columns=['HLA', 'Correlation'])
         df['Cluster'] = df['HLA'].apply(lambda x: x[0].split('/')[-1].split('.')[1])    
         df['HLA'] = df['HLA'].apply(lambda x: x[1])
-        df['HLA'] = df['HLA'].apply(lambda x: x.split('/')[-1].replace('.txt',''))
+        df['HLA'] = df['HLA'].apply(lambda x: x.split('/')[-1].replace('.txt', ''))
         df['Correlation'] = df['Correlation'].apply(lambda x: round(x, 2))
         df = df.sort_values(by='Correlation', ascending=False)
         df = df.reset_index(drop=True)
         df = df[['Cluster', 'HLA', 'Correlation']]
         return df
-    
-    def make_heatmap(self,correlation_dict,threshold=0.5):
-        df = self.make_datatable(correlation_dict)
-        # print(df)
-        try:
-            df.to_csv(os.path.join(self._outfolder, 'corr-data', 'corr_matrix.csv'),index=False)
-        except Exception as e:
-            self.console.log(f"Failed to save the correlation matrix: {str(e)}")
-        try:
 
-            chart_h = alt.Chart(df,width="container").mark_rect().encode(
-    alt.X("HLA:O").title("HLA").axis(labelAngle=-45),
-    alt.Y("Cluster:O").title("Cluster"),
-    alt.Color(
-        "Correlation",
-        scale=alt.Scale(
-            domain=[df["Correlation"].min(), threshold, df["Correlation"].max()],
-            range=["#d3d3d3", "#add8e6", "#ff4500"],  # Low values fade, high values bright
-        ),
-        legend=None
-    ),
-    tooltip=[
-        alt.Tooltip("HLA", title="HLA"),
-        alt.Tooltip("Cluster", title="Cluster"),
-        alt.Tooltip("Correlation", title="Correlation"),
-    ],
-).configure_view(
-    step=13,
-    strokeWidth=0
-).configure_axis(
-    domain=False
-)
+    def make_heatmap(self, correlation_dict: Dict, threshold: float = 0.5) -> bool:
+        """
+        Generate an interactive heatmap visualization.
+        
+        Args:
+            correlation_dict (Dict): Dictionary of correlation values
+            threshold (float): Threshold for color scaling
+            
+        Returns:
+            bool: True if successful, False otherwise
+        """
+        df = self.make_datatable(correlation_dict)
+        
+        try:
+            # Save CSV
+            df.to_csv(os.path.join(self._outfolder, 'corr-data', 'corr_matrix.csv'), index=False)
+            
+            # Create heatmap chart
+            chart_h = alt.Chart(df, width="container").mark_rect().encode(
+                alt.X("HLA:O").title("HLA").axis(labelAngle=-45),
+                alt.Y("Cluster:O").title("Cluster"),
+                alt.Color(
+                    "Correlation",
+                    scale=alt.Scale(
+                        domain=[df["Correlation"].min(), threshold, df["Correlation"].max()],
+                        range=["#d3d3d3", "#add8e6", "#ff4500"],  # Low values fade, high values bright
+                    ),
+                    legend=None
+                ),
+                tooltip=[
+                    alt.Tooltip("HLA", title="HLA"),
+                    alt.Tooltip("Cluster", title="Cluster"),
+                    alt.Tooltip("Correlation", title="Correlation"),
+                ],
+            ).configure_view(
+                step=13,
+                strokeWidth=0
+            ).configure_axis(
+                domain=False
+            )
+            
+            # Save the chart
             chart_h.save(f"{os.path.join(self._outfolder,'corr-data')}/correlation_heatmap.json")
             chart_h.save(f"{os.path.join(self._outfolder,'corr-data')}/correlation_heatmap.png")
             return True
-        # rows = sorted(set(key[0] for key in correlation_dict.keys()))
-        # cols = sorted(set(key[1] for key in correlation_dict.keys()))
+            
         except Exception as e:
             self.console.log(f"Failed to save the correlation heatmap: {str(e)}")
             return False
+
+    def make_datatable_html(self, correlation_dict: Dict, df: Optional[pd.DataFrame] = None, threshold: float = 0.5) -> str:
+        """
+        Generate HTML table for correlation data.
         
-        return False
-        
-        
-        
-    
-    def make_datatable_html(self,correlation_dict,df=None,threshold=0.5):
+        Args:
+            correlation_dict (Dict): Dictionary of correlation values
+            df (pd.DataFrame, optional): Pre-processed DataFrame
+            threshold (float): Threshold for highlighting high correlations
+            
+        Returns:
+            str: HTML table code
+        """
         if df is None:
             df = self.make_datatable(correlation_dict)
-            table_start  =     """
-            <table id="correlation_table"  class="table table-bordered">
-              <thead class="thead-dark">
-                <tr>
-                  <th scope="col">ID's</th>
-                  <th scope="col">Cluster</th>
-                  <th scope="col">Best HLA/MHC Match</th>
-                  <th scope="col">Score</th>
-                  <th scope="col">KLD Score</th>
+            
+        table_start = """
+        <table id="correlation_table" class="table table-bordered">
+          <thead class="thead-dark">
+            <tr>
+              <th scope="col">ID's</th>
+              <th scope="col">Cluster</th>
+              <th scope="col">Best HLA/MHC Match</th>
+              <th scope="col">Score</th>
+              <th scope="col">KLD Score</th>
+            </tr>
+          </thead>
+          <tbody>
+        """
+        
+        tr = ""
+        for i in range(len(df)):
+            if df['Correlation'][i] >= threshold:
+                tr += f"""
+                <tr class="table-success">
+                    <td>{i+1}</td>
+                    <td>{df['Cluster'][i]}</td>
+                    <td>{df['HLA'][i]}</td>
+                    <td>{df['Correlation'][i]}</td>
+                    <td>0.0</td>
                 </tr>
-              </thead>
-              <tbody>
+                """
+            elif df['Correlation'][i] >= 0.5 and df['Correlation'][i] < threshold:
+                tr += f"""
+                <tr class="table-warning">
+                    <td>{i+1}</td>
+                    <td>{df['Cluster'][i]}</td>
+                    <td>{df['HLA'][i]}</td>
+                    <td>{df['Correlation'][i]}</td>
+                    <td>0.0</td>
+                </tr>
+                """
+            else:
+                tr += f"""
+                <tr class="table-danger">
+                    <td>{i+1}</td>
+                    <td>{df['Cluster'][i]}</td>
+                    <td>{df['HLA'][i]}</td>
+                    <td>{df['Correlation'][i]}</td>
+                    <td>0.0</td>
+                </tr>
+                """
                 
-              """
-            tr = ""
-            for i in range(len(df)):
-                if df['Correlation'][i] >= threshold:
-                    tr += f"""
-                    <tr class="table-success">
-                        <td>{i+1}</td>
-                        <td>{df['Cluster'][i]}</td>
-                        <td>{df['HLA'][i]}</td>
-                        <td>{df['Correlation'][i]}</td>
-                        <td>0.0</td>
-                    </tr>
-                    """
-                if df['Correlation'][i] >= 0.5 and df['Correlation'][i] < threshold:
-                    tr += f"""
-                    <tr class="table-warning">
-                        <td>{i+1}</td>
-                        <td>{df['Cluster'][i]}</td>
-                        <td>{df['HLA'][i]}</td>
-                        <td>{df['Correlation'][i]}</td>
-                        <td>0.0</td>
-                    </tr>
-                    """
-                if df['Correlation'][i] < 0.5:
-                    tr += f"""
-                    <tr class="table-danger">
-                        <td>{i+1}</td>
-                        <td>{df['Cluster'][i]}</td>
-                        <td>{df['HLA'][i]}</td>
-                        <td>{df['Correlation'][i]}</td>
-                        <td>0.0</td>
-                    </tr>
-                    """
-                
-            table_end = """
-               </tbody>
-            </table>
-            """
+        table_end = """
+           </tbody>
+        </table>
+        """
+        
         return table_start + tr + table_end
-              
-              
-            # return df.to_html(classes='table table-striped', index=False, table_id='correlation_table')
-    
-    def generate_html_layout(self, correlation_dict, db, gibbs_out,immunolyser=False):
-        """
-        Generate an image grid for the correlation results.
-        """
-        highest_corr_per_row = self.find_highest_correlation_for_each_row(
-            correlation_dict
-        )
-        # print(highest_corr_per_row)
-        display_search_results(highest_corr_per_row, 0.8)
-        # print(highest_corr_per_row)
-        
 
-        if not os.path.exists(os.path.join(self._outfolder,'cluster-img')):
-            os.makedirs(os.path.join(self._outfolder,'cluster-img'))
-        if not os.path.exists(os.path.join(self._outfolder,'allotypes-img')):
-            os.makedirs(os.path.join(self._outfolder, 'allotypes-img'))
-        output_dict = {
-        }
+    def generate_html_layout(self, correlation_dict: Dict, db: pd.DataFrame, gibbs_out: str, immunolyser: bool = False) -> None:
+        """
+        Generate HTML report layout with all visualization components.
         
+        Args:
+            correlation_dict (Dict): Dictionary of correlation values
+            db (pd.DataFrame): Database DataFrame
+            gibbs_out (str): Path to Gibbs output
+            immunolyser (bool): Whether to generate immunolyser output
+        """
+        # Find highest correlation for each cluster
+        highest_corr_per_row = self.find_highest_correlation_for_each_row(correlation_dict)
+        display_search_results(highest_corr_per_row, 0.8)
+
+        # Create output directories
+        dirs = create_output_directories(self._outfolder)
+        
+        output_dict = {}
         html_create = html_content + body_start
+        
+        # JavaScript for end of body
         body_end_1 = """
 </div>
 </div>
@@ -1230,15 +811,15 @@ class ClusterSearch:
     crossorigin="anonymous"></script>
   <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
   <script src="https://cdn.datatables.net/2.2.2/js/dataTables.js"></script>
-  <script src ="https://cdn.datatables.net/2.2.2/js/dataTables.bootstrap5.js"></script>
+  <script src="https://cdn.datatables.net/2.2.2/js/dataTables.bootstrap5.js"></script>
 
 <footer class="text-body-secondary py-5">
     <div class="container">
       <p class="float-end mb-1">
         <a href="#">Back to top</a>
       </p>
-      <p class="mb-1"> Purcell Lab, Monash University&copy; 2025,please refere git repo</p>
-      <p class="mb-0">Plese visit github <a href="/">Visit git hub the homepage</a> or read our <a
+      <p class="mb-1"> Purcell Lab, Monash University&copy; 2025, please refer to git repo</p>
+      <p class="mb-0">Please visit our <a href="https://github.com/Sanpme66/HLA-PepClust">GitHub repository</a> or read our <a
           href="https://github.com/Sanpme66/HLA-PepClust">getting started guide</a>.</p>
     </div>
   </footer>
@@ -1279,35 +860,42 @@ class ClusterSearch:
 </script>
 
 <script>
-
-
 """
 
+        # Line break tag
         br_tag = """
         <br>
 """
 
+        # End of HTML document
         body_end_2 = """
 </script>
-
-
-    
 </body>
 </html>
 """
+
+        # JavaScript for heatmap
         heatmap_js = """
+                // heatmap json or PNG loading
+                fetch('corr-data/correlation_heatmap.json')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("JSON fetch failed");
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log("Loaded JSON:", 'corr-data/correlation_heatmap.json', data);
+                    var opt = {"renderer": "canvas", "actions": false};
+                    vegaEmbed("#correlation_heatmap", data, opt);
+                })
+                .catch(error => {
+                    console.error("Error fetching JSON, loading fallback image instead:", error);
+                    document.getElementById("correlation_heatmap").innerHTML = `<img src="corr-data/correlation_heatmap.png" alt="Fallback Image" width="100%">`;
+                });
+        """
 
-            fetch('corr-data/correlation_heatmap.json')
-                        .then(response => response.json())
-                        .then(data => {
-                        console.log(data);
-                        // Process the data as needed
-                        var opt = {"renderer": "canvas", "actions": false};
-                        vegaEmbed("#correlation_heatmap", data, opt);
-                        })
-                        .catch(error => console.error('Error fetching the JSON data:', error));
-
-"""
+        # HTML for heatmap div
         heatmap_div = """
             <div class="row">
             <div class="col">
@@ -1321,169 +909,209 @@ class ClusterSearch:
             </div>
             """
 
+        # Generate heatmap JSON
         heatmap_json = self.make_heatmap(correlation_dict)
-
-        # script_js = ""
+        
+        # Generate HTML table
         df_corr_html = self.make_datatable_html(correlation_dict)
-        # print(df_corr_html)
-        # print(df_co)
+        
+        # Prepare immunolyser output 
         immunolyser_out = ""
         immunolyser_out_js = ""
+        
+        # Process each cluster and its best match
         for row, (col, corr) in highest_corr_per_row.items():
-
-            output_dict[str(row).split("/")[-1].split('.')[1]] = {
+            # Extract cluster ID from full path
+            cluster_id = str(row).split("/")[-1].split('.')[1]
+            
+            # Initialize dictionary entry for this cluster
+            output_dict[cluster_id] = {
                 'cluster': str(row).split("/")[-1],
-                'HLA': str(col).split('/')[-1].replace('.txt',''),
+                'HLA': str(col).split('/')[-1].replace('.txt', ''),
                 'correlation': corr,
                 'gibbs_img': None,
                 'nat_img': None,
                 'corr_plot': None,
                 'corr_json': None
             }
-            gibbs_img = self._find_gibbs_image_path(str(row).split("/")[-1].split('.')[1], os.path.join(gibbs_out, 'logos'))
-
+            
+            # Find and copy cluster image
+            gibbs_img = find_file_by_pattern(os.path.join(gibbs_out, 'logos'), cluster_id)
             if gibbs_img:
-                shutil.copy(gibbs_img, os.path.join(self._outfolder, 'cluster-img', f"{str(gibbs_img).split('/')[-1]}"))
-                output_dict[str(row).split("/")[-1].split('.')[1]]['gibbs_img'] = os.path.join(self._outfolder, 'cluster-img', f"{str(gibbs_img).split('/')[-1]}")
+                dest_path = os.path.join(self._outfolder, 'cluster-img', f"{os.path.basename(gibbs_img)}")
+                shutil.copy(gibbs_img, dest_path)
+                output_dict[cluster_id]['gibbs_img'] = dest_path
+            
+            # Extract HLA ID based on species
             if self.species == 'human':
-                hla = str(col).split('/')[-1].replace('.txt','').split('_')[1]
+                hla = str(col).split('/')[-1].replace('.txt', '').split('_')[1]
             else:
-                hla = str(col).split('/')[-1].replace('.txt','')
+                hla = str(col).split('/')[-1].replace('.txt', '')
+                
+            # Find and copy motif image
             nat_path = db[db['formatted_allotypes'] == hla]['motif_path'].values[0]
-            
             if nat_path:
-                shutil.copy(nat_path, os.path.join(self._outfolder, 'allotypes-img', f"{str(nat_path).split('/')[-1]}"))
-                output_dict[str(row).split("/")[-1].split('.')[1]]['nat_img'] = os.path.join(self._outfolder, 'allotypes-img', f"{str(nat_path).split('/')[-1]}")
+                dest_path = os.path.join(self._outfolder, 'allotypes-img', f"{os.path.basename(nat_path)}")
+                shutil.copy(nat_path, dest_path)
+                output_dict[cluster_id]['nat_img'] = dest_path
             
+            # Generate correlation plot
             try:
-                gibbs_mt = self.format_input_gibbs(row)
-                nat_mat = self.format_input_gibbs(col)
+                gibbs_mt = format_input_gibbs(row)
+                nat_mat = format_input_gibbs(col)
 
                 # Align amino acid order
-                gibbs_mt, nat_mat = self.amino_acid_order_identical(gibbs_mt, nat_mat)
-                mat_motif = str(row).split("/")[-1].split('.')[1]+"_"+str(col).split('/')[-1].replace('.txt','')
-                self._make_correlation_plot(gibbs_mt, nat_mat,mat_motif)
-                output_dict[str(row).split("/")[-1].split('.')[1]]['corr_plot'] = f"{os.path.join(self._outfolder,'corr-data')}/amino_acids_comparison_with_correlation_{mat_motif}.png"
-                output_dict[str(row).split("/")[-1].split('.')[1]]['corr_json'] = f"{os.path.join(self._outfolder,'corr-data')}/amino_acids_comparison_with_correlation_{mat_motif}.json"
+                gibbs_mt, nat_mat = amino_acid_order_identical(gibbs_mt, nat_mat)
+                
+                # Create a unique identifier for this comparison
+                mat_motif = f"{cluster_id}_{str(col).split('/')[-1].replace('.txt', '')}"
+                
+                # Generate the correlation plot
+                self._make_correlation_plot(gibbs_mt, nat_mat, mat_motif)
+                
+                # Store paths to plot files
+                output_dict[cluster_id]['corr_plot'] = f"{os.path.join(self._outfolder,'corr-data')}/amino_acids_comparison_with_correlation_{mat_motif}.png"
+                output_dict[cluster_id]['corr_json'] = f"{os.path.join(self._outfolder,'corr-data')}/amino_acids_comparison_with_correlation_{mat_motif}.json"
             except Exception as e:
                 self.console.print(
-                    f"Failed to compute correlation between {row} and {col}: {str(e)}"
+                    f"Failed to generate correlation plot for {row} and {col}: {str(e)}"
                 )
-                # return float('nan')
-            rows_list = self.render_hla_section(hla, f"correlation_chart_{str(row).split('/')[-1].split('.')[1]}", str(output_dict[str(row).split("/")[-1].split('.')[1]]['gibbs_img']).replace(f"{self._outfolder}/",''), str(output_dict[str(row).split("/")[-1].split('.')[1]]['nat_img']).replace(f"{self._outfolder}/",''))
-            html_create += rows_list
-            plot_js = self.insert_script_hla_section(str(output_dict[str(row).split("/")[-1].split('.')[1]]['corr_json']).replace(f"{self._outfolder}/",''), f"correlation_chart_{str(row).split('/')[-1].split('.')[1]}")
-            body_end_1  += plot_js
             
+            # Generate HTML for this HLA section
+            rows_list = self.render_hla_section(
+                hla, 
+                f"correlation_chart_{cluster_id}", 
+                str(output_dict[cluster_id]['gibbs_img']).replace(f"{self._outfolder}/", ''), 
+                str(output_dict[cluster_id]['nat_img']).replace(f"{self._outfolder}/", '')
+            )
+            
+            # Add to main HTML
+            html_create += rows_list
+            
+            # Add JavaScript for the correlation chart
+            plot_js = self.insert_script_png_json(
+                str(output_dict[cluster_id]['corr_json']).replace(f"{self._outfolder}/", ''),
+                str(output_dict[cluster_id]['corr_plot']).replace(f"{self._outfolder}/", ''),
+                f"correlation_chart_{cluster_id}"
+            )
+            body_end_1 += plot_js
+            
+            # If immunolyser output is requested, add to those variables too
             immunolyser_out += rows_list
             immunolyser_out_js += plot_js
-            
+        
+        # Add heatmap if available
         if heatmap_json:
             body_end_1 += heatmap_js
             immunolyser_out_js += heatmap_js
         else:
             heatmap_div = ""
-            heatmap_js =""
-            
+            heatmap_js = ""
+        
+        # Complete the HTML
         html_create += br_tag + df_corr_html + br_tag + heatmap_div + body_end_1 + body_end_2
         
-        immunolyser_out += br_tag + br_tag +  df_corr_html + heatmap_div
-        with open(os.path.join(self._outfolder, "clust-search-result.html"), "w") as file:
-            file.write(html_create)
-            
+        # If immunolyser output is requested, generate those files
         if immunolyser:
+            immunolyser_out += br_tag + br_tag + df_corr_html + heatmap_div
             with open(os.path.join(self._outfolder, "immunolyser-out.html"), "w") as file:
                 file.write(immunolyser_out)
             with open(os.path.join(self._outfolder, "immunolyser-out.js"), "w") as file:
                 file.write(immunolyser_out_js)
-        self.console.log(f"HTML layout saved in {os.path.join(self._outfolder, 'clust-search-result.html')}", style="bold green")
         
-        
-            # image_path = self._find_gibbs_image_path(row.split(".")[1], image_folder)
-            # nat_img = self._naturally_presented_log(self.formate_HLA_DB(col), DB_image_folder)
-        #     if gibbs_img and nat_path:
-        #         html_content += f"""
-        #         <div>
-        #             <img src="{output_dict[str(row).split("/")[-1].split('.')[1]]['gibbs_img']}" alt="{row}">
-        #             <p>{row} -> {col}: {corr:.2f}</p>
-        #         </div>
-        #         <div>
-        #             <img src="{output_dict[str(row).split("/")[-1].split('.')[1]]['nat_img']}" alt="{col}">
-        #             <p>naturally presented logo of {self.formate_HLA_DB(col)} -> {row}: {corr:.2f}</p>
-        #         </div>
-        #         """
-
-        # html_content += """
-        #     </div>
-        # </body>
-        # </html>
-        # """
-
-        # with open(os.path.join(self._outfolder, "clust-search-result.html"), "w") as file:
-        #     file.write(html_content)
-        # self.console.log(f"HTML layout saved in {os.path.join(self._outfolder, 'clust-search-result.html')}")
-        
+        # Save the main HTML file
+        with open(os.path.join(self._outfolder, "clust-search-result.html"), "w") as file:
+            file.write(html_create)
+            
+        self.console.log(f"HTML report saved to {os.path.join(self._outfolder, 'clust-search-result.html')}", style="bold green")
 
 
 def run_cluster_search(args):
-    # if args.output_folder is None:
-    #     os.makedirs("output", exist_ok=True)
-    #     output_folder = "output"
+    """
+    Main function to run the cluster search pipeline.
+    
+    Args:
+        args: Command-line arguments from argparse
+    """
+    # Initialize ClusterSearch
     cluster_search = ClusterSearch()
+    
+    # Stage 1: Data processing
     cluster_search.console.rule(
         "[bold red]Stage 1/2: Data processing for correlation matrices."
     )
-    # print(args.species)
+    
+    # Validate species
     if str(args.species).lower() in ["mouse", "human"]:
         CONSOLE.log(
             f"Species provided: [bold yellow]{args.species}", style="bold green")
         CONSOLE.log(
-            f"Loading reference databse for [bold yellow]{args.species}", style="bold green")
-        db = cluster_search._db_loader("data/ref_data/", args.species)
+            f"Loading reference database for [bold yellow]{args.species}", style="bold green")
+        
+        # Load database
+        db = cluster_search._db_loader(args.reference_folder, args.species)
         CONSOLE.log(f"Reference database loaded successfully.",
                     style="bold green")
     else:
         raise ValueError(
-            "Invalid species provided. Please provide a valid species. refer only. [Human or Mouse]")
+            "Invalid species provided. Please provide a valid species. [Human or Mouse]")
 
+    # Process HLA types if provided
     if args.hla_types:
         CONSOLE.log(
-            f"HLA/MHC allotypes types provided: [bold yellow]{args.hla_types}", style="bold green")
+            f"HLA/MHC allotypes provided: [bold yellow]{args.hla_types}", style="bold green")
         u_hla_list = []
-        with CONSOLE.status("Checking HLA/MHC in databse") as status:
+        
+        with CONSOLE.status("Checking HLA/MHC in database") as status:
             status.update(
-                status=f"[bold blue] Loading HLA/MHC in databse",
+                status=f"[bold blue] Loading HLA/MHC in database",
                 spinner="squish",
                 spinner_style="yellow",
             )
-            for u_hla in str(args.hla_types).split(','):
+            
+            # If args.hla_types is a string, split it
+            if isinstance(args.hla_types, str):
+                hla_types = args.hla_types.split(',')
+            else:
+                # If it's already a list or other iterable, join and split to ensure proper format
+                hla_types = ','.join(args.hla_types).split(',')
+                
+            # Check each HLA type against the database
+            for u_hla in hla_types:
                 if u_hla in db['formatted_allotypes'].values:
                     status.update(
-                        status=f"[bold blue] HLA/MHC {u_hla} found in databse",
+                        status=f"[bold blue] HLA/MHC {u_hla} found in database",
                         spinner="squish",
                         spinner_style="yellow",
                     )
                     u_hla_list.append(u_hla)
                     CONSOLE.log(
-                        f"HLA/MHC [bold yellow]{u_hla}[yellow] found in databse", style="bold green")
+                        f"HLA/MHC [bold yellow]{u_hla}[yellow] found in database", style="bold green")
                 else:
                     status.update(
-                        status=f"[bold blue] HLA/MHC {u_hla} not found in databse",
+                        status=f"[bold blue] HLA/MHC {u_hla} not found in database",
                         spinner="squish",
                         spinner_style="yellow",
                     )
                     CONSOLE.log(
-                        f"HLA/MHC [bold yellow]{u_hla} not found in databse", style="bold red")
+                        f"HLA/MHC [bold yellow]{u_hla} not found in database", style="bold red")
+        
+        # Use validated HLA list
         if len(u_hla_list) > 0:
             CONSOLE.log(
-                f"Valid HLA/MHC allotypes types provided: [bold yellow]{u_hla_list}", style="bold green")
+                f"Valid HLA/MHC allotypes provided: [bold yellow]{u_hla_list}", style="bold green")
             args.hla_types = u_hla_list
+        else:
+            args.hla_types = None
+            CONSOLE.log(
+                f"No valid HLA/MHC allotypes found. Using all available types.", style="bold yellow")
     else:
         args.hla_types = None
         CONSOLE.log(
-            f"No HLA/MHC allotypes types provided. Using all available HLA types from the reference folder.", style="bold yellow")
+            f"No HLA/MHC allotypes provided. Using all available types from the reference folder.", style="bold yellow")
 
-    CONSOLE.log(f"calculating compute_correlations.", style="bold blue")
+    # Compute correlations
+    CONSOLE.log("Calculating correlations between matrices...", style="bold blue")
     cluster_search.compute_correlations_v2(
         db,
         args.gibbs_folder,
@@ -1492,80 +1120,23 @@ def run_cluster_search(args):
         args.hla_types,
     )
 
-    # cluster_search.generate_image_grid(cluster_search.correlation_dict,db)
-    cluster_search.generate_html_layout(cluster_search.correlation_dict,db, args.gibbs_folder,args.immunolyser)
-
-    # breakpoint()
-
-    # cluster_search.compute_correlations(
-    #     args.gibbs_folder,
-    #     args.reference_folder,
-    #     args.n_clusters,
-    #     args.output,
-    #     args.hla_types,
-    # )
-
+    # Stage 2: Result visualization
     cluster_search.console.rule(
-        "[bold red]Stage 2/2: Finding best matching Naturally presented HLA ."
+        "[bold red]Stage 2/2: Finding best matching Naturally presented HLA."
     )
-    # if args.output_folder is None:
+    
+    # Generate heatmap
     cluster_search.plot_heatmap(args.output)
-
-    # cluster_search.console.rule("[bold red]Stage 3/4: Cheking the HLA.")
-
-    # cluster_search.check_HLA_DB(args.hla_types, args.reference_folder)
-    # # cluster_search.create_image_grid(cluster_search.correlation_dict, os.path.join(args.gibbs_folder, 'logos'), os.path.join(args.reference_folder, 'images'), os.path.join(args.output_folder, 'image_grid_D90.png'), HLA_list=cluster_search.valid_HLA)
-
-    # cluster_search.console.rule(
-    #     "[bold red]Stage 4/4: Finding Best Matched HLA for Each cluster."
-    # )
-    # cluster_search.create_image_grid(
-    #     cluster_search.correlation_dict,
-    #     os.path.join(args.gibbs_folder, "logos"),
-    #     str(args.reference_folder).replace(
-    #         "/output_matrices_human", "").replace("output_matrices", ""),
-    #     os.path.join(args.output, "compare_motif_corr.png"),
-    #     HLA_list=cluster_search.valid_HLA,
-    # )
-    # logging.info("Process completed successfully.")
+    
+    # Generate HTML report
+    cluster_search.generate_html_layout(
+        cluster_search.correlation_dict, 
+        db, 
+        args.gibbs_folder,
+        args.immunolyser
+    )
+    
+    # Save log if requested
     if args.log:
-        log_file_path = os.path.join(
-            cluster_search._outfolder, "search_cluster.log")
-        save_console_log()
-        # raise FileNotFoundError(f"Log file not found: {log_file_path}")
-
-# Remove thie after test
-
-
-# if __name__ == "__main__":
-    #     # ClusterSearch().compute_correlations(
-    #     #     "data/9mersonly",
-    #     #     "data/ref_data/Gibbs_motifs_mouse/output_matrices",
-    #     #     "all",
-    #     #     "data/outputM",
-    #     # )
-
-    #     # ClusterSearch()._compute_and_log_correlation(
-    #     #     "data/9mersonly",
-    #     #     "data/ref_data/Gibbs_motifs_human/output_matrices_human",
-    #     #     "cluster_1of5.mat",
-    #     #     "HLA_A_02_01.txt",
-    #     # )
-    #     # print(sys.argv)
-
-    #     # print(ClusterSearch()._db_loader("data/ref_data/","mouse"))
-
-    # run_cluster_search(
-    #     argparse.Namespace(
-    #         credits=False,
-    #         gibbs_folder="data/9mersonly",
-    #         species="mouse",
-    #         hla_types="H2_Db,H2_Dd,H2_Dq,H2_Kb,H2_Kd,H2_Kk",
-    #         log=False,
-    #         n_clusters="5",
-    #         output="data/outputMouseTest",
-    #         processes=4,
-    #         version=False,
-    #         immunolyser=False
-    #     )
-    # )
+        log_file_path = os.path.join(cluster_search._outfolder, "search_cluster.log")
+        save_console_log(log_file_path)
