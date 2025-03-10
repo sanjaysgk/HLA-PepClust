@@ -1,140 +1,130 @@
-"""Verify that the database is generated correctly."""
+"""
+Database generation module for HLA-PEPCLUST.
+
+This module handles the generation of reference database files for HLA/MHC allotypes.
+"""
+
 import os
 import sys
-import json
-import pandas as pd 
-from cli.logger import CONSOLE
 import time
+import pandas as pd
+from typing import Dict, Any
 
-def _prase_config_file(config_file):
-    if not os.path.exists(config_file):
-        # sys.exit(f"Config file {config_file} does not exist")
-        CONSOLE.log(f"Config file {config_file} does not exist", style="red")
-        CONSOLE.log("Using default configuration", style="blue")
-        default_config ={
-            "human":{
-                "path": "data/ref_data/Gibbs_motifs_human",
-                "matrix": "/matrices",
-                "motif": "/motif",
-                "allotypes": "/allotypes/hla_data.csv",
-                "ref_data": "data/ref_data"
-            },
+from cli.logger import CONSOLE
+from cli.config import load_config, validate_config, verify_paths
 
-            "mouse" :{
-                "path": "data/ref_data/Gibbs_motifs_mouse",
-                "matrix": "/matrices",
-                "motif": "/motif",
-                "allotypes": "/allotypes/mhc_data.csv",
-                "ref_data": "data/ref_data"
-            }
-        }
-        print(default_config)
-        return default_config 
-           
-    else:
-        with open(config_file, "r") as f:
-            config = json.load(f)
-        return config
 
-def _check_ref_files(config):
-    for species in config:
-        if not os.path.exists(config[species]["path"]):
-            # sys.exit(f"Path {config[species]['path']} does not exist")
-            CONSOLE.log(f"Path {config[species]['path']} does not exist")
+def process_allotype_data(config: Dict[str, Any]) -> None:
+    """
+    Process allotype data and create database files.
+    
+    Args:
+        config (Dict[str, Any]): Configuration dictionary.
+    """
+    for species, species_config in config.items():
+        # Load allotype data
+        allotype_file = os.path.join(species_config["ref_data"], species_config["allotypes"])
+        try:
+            allotypes = pd.read_csv(allotype_file)
+        except Exception as e:
+            CONSOLE.log(f"Error reading allotype file {allotype_file}: {str(e)}", style="red")
             sys.exit(1)
-        if not os.path.exists(config[species]["path"] + config[species]["matrix"]):
-            # sys.exit(f"Matrix path {config[species]['path'] + config[species]['matrix']} does not exist")
-            CONSOLE.log(f"Matrix path {config[species]['path'] + config[species]['matrix']} does not exist")
-            sys.exit(1)
-        if not os.path.exists(config[species]["path"] + config[species]["motif"]):
-            # sys.exit(f"Motif path {config[species]['path'] + config[species]['motif']} does not exist")
-            CONSOLE.log(f"Motif path {config[species]['path'] + config[species]['motif']} does not exist")
-            sys.exit(1)
-        if not os.path.exists(config[species]["ref_data"] + config[species]["allotypes"]):
-            # sys.exit(f"Allotype path {config[species]['path'] + config[species]['allotypes']} does not exist")
-            CONSOLE.log(f"Allotype path {config[species]['ref_data'] + config[species]['allotypes']} does not exist")
-            sys.exit(1)
-
-def _HLA_liist(config):
-    for species in config:
-        allotype_file = config[species]["ref_data"] + config[species]["allotypes"]
-        allotypes = pd.read_csv(allotype_file)
+            
+        # Process based on species
         if species == "human":
-            allotypes.rename(columns={ "formatted_HLA":"formatted_allotypes","HLA":"allotypes"}, inplace=True)
+            allotypes.rename(columns={"formatted_HLA": "formatted_allotypes", "HLA": "allotypes"}, inplace=True)
             allotypes['motif'] = "HLA_" + allotypes['formatted_allotypes'] + ".png"
-            allotypes['species'] = species
         elif species == "mouse":
-            allotypes.rename(columns={"formatted_MHC":"formatted_allotypes","MHC":"allotypes"}, inplace=True)
+            allotypes.rename(columns={"formatted_MHC": "formatted_allotypes", "MHC": "allotypes"}, inplace=True)
             allotypes['motif'] = allotypes['formatted_allotypes'] + ".png"
-            allotypes['species'] = species
         else:
-            # sys.exit(f"Species {species} not supported")
-            CONSOLE.log(f"Species {species} not supported")
+            CONSOLE.log(f"Species {species} not supported", style="red")
             sys.exit(1)
+            
+        # Add species and initialize path columns
+        allotypes['species'] = species
         allotypes['motif_path'] = ""
         allotypes['matrices_path'] = ""
-        for motifs in allotypes['motif']:
-            CONSOLE.log(f"[yellow]{species}[/yellow] {config[species]['path']}/motif/{motifs}", style="blue")
-            if not os.path.exists(f"{config[species]['path']}/motif/{motifs}"):
-                # sys.exit(f"Motif {motifs} does not exist")
-                CONSOLE.log(f"Motif {motifs} does not exist")
+        
+        # Verify and add paths for each motif
+        for motif in allotypes['motif']:
+            motif_path = os.path.join(
+                species_config['ref_data'], 
+                species_config['path'], 
+                species_config['motif'], 
+                motif
+            )
+            matrix_path = os.path.join(
+                species_config['ref_data'],
+                species_config['path'],
+                species_config['matrix'],
+                motif.replace('.png', '.txt')
+            )
+            
+            CONSOLE.log(f"[yellow]{species}[/yellow] checking {motif_path}", style="blue")
+            
+            if not os.path.exists(motif_path):
+                CONSOLE.log(f"Motif {motif} does not exist at {motif_path}", style="red")
                 sys.exit(1)
-            elif not os.path.exists(f"{config[species]['path']}/matrices/{motifs.replace('.png', '.txt')}"):
-                # sys.exit(f"Matrix {motifs.replace('.png', '.txt')} does not exist")
-                CONSOLE.log(f"Matrix {motifs.replace('.png', '.txt')} does not exist")
+            elif not os.path.exists(matrix_path):
+                CONSOLE.log(f"Matrix {motif.replace('.png', '.txt')} does not exist at {matrix_path}", style="red")
                 sys.exit(1)
             else:
-                allotypes.loc[allotypes['motif'] == motifs, 'motif_path'] = f"{config[species]['path']}/motif/{motifs}"
-                allotypes.loc[allotypes['motif'] == motifs, 'matrices_path'] = f"{config[species]['path']}/matrices/{motifs.replace('.png', '.txt')}"
-                # CONSOLE.log(f"Motif {motifs} exists")
-        # allotype_file_db = allotype_file.replace('.csv', '.db')        
-        allotypes.to_csv(f"{config[species]['ref_data']}/{species}.db", index=False)
-        CONSOLE.log(f"Database {species}.db created successfully ({config[species]['ref_data']}/{species}.db)", style="green")
+                # Update paths in dataframe
+                allotypes.loc[allotypes['motif'] == motif, 'motif_path'] = f"{species_config['path']}/motif/{motif}"
+                allotypes.loc[allotypes['motif'] == motif, 'matrices_path'] = f"{species_config['path']}/matrices/{motif.replace('.png', '.txt')}"
         
-def Database_gen(config_file):
-    # CONSOLE.print("Database generation started", style="green")
-    with CONSOLE.status("[bold green] Database generation started [bold green]") as status:
-        config = _prase_config_file(config_file)
-        # CONSOLE.log("Configuration file parsed and validated successfully.", style="green")
-        status.update(
-                        status=f"[bold green] Configuration file parsed and validated successfully. [/bold green]",
-                        spinner="squish",
-                        spinner_style="yellow",
-                            )
-        
-        _check_ref_files(config)
-        time.sleep(3)
-        
-        # CONSOLE.log("Reference files checked and verified.", style="green")
-        status.update(
-                        status=f"[bold green] Reference files checked and verified [/bold green]",
-                        spinner="squish",
-                        spinner_style="yellow",
-                            )
-        _HLA_liist(config)
-        time.sleep(3)
-        # CONSOLE.log("HLA list generated and database output created successfully.", style="green")
-        status.update(
-                        status=f"[bold green] HLA list generated and database output created successfully [/bold green]",
-                        spinner="squish",
-                        spinner_style="yellow",
-                            )
-        time.sleep(3)
-        # CONSOLE.print("Database generation completed", style="green")
-        status.update(
-                        status=f"[bold green] Database generation completed [/bold green]",
-                        spinner="squish",
-                        spinner_style="green",
-                            )
-        sys.exit(0)
+        # Save database
+        db_path = os.path.join(species_config['ref_data'], f"{species}.db")
+        allotypes.to_csv(db_path, index=False)
+        CONSOLE.log(f"Database {species}.db created successfully ({db_path})", style="green")
+
+
+def generate_database(config_file: str) -> None:
+    """
+    Generate reference database files based on configuration.
     
-# Database_gen("config.json")
-# if __name__ == "__main__":
-#     config_file = "config.json"
-#     config = _prase_config_file(config_file)
-#     _check_ref_files(config)
-#     hla_list = _HLA_liist(config)
-#     # print(hla_list)
-#     # print(config)
-#     CONSOLE.log("Config file parsed successfully")
-#     sys.exit(0)
+    Args:
+        config_file (str): Path to the configuration file.
+    """
+    with CONSOLE.status("[bold green]Database generation started[/bold green]") as status:
+        # Load and validate configuration
+        config = load_config(config_file)
+        status.update(
+            status="[bold green]Configuration file parsed and validated successfully[/bold green]",
+            spinner="squish",
+            spinner_style="yellow"
+        )
+        
+        if not validate_config(config):
+            CONSOLE.log("Configuration validation failed", style="red")
+            sys.exit(1)
+            
+        # Verify paths
+        if not verify_paths(config):
+            CONSOLE.log("Path verification failed", style="red")
+            sys.exit(1)
+            
+        time.sleep(1)  # Visual feedback
+        status.update(
+            status="[bold green]Reference files checked and verified[/bold green]",
+            spinner="squish",
+            spinner_style="yellow"
+        )
+        
+        # Process allotype data
+        process_allotype_data(config)
+        
+        time.sleep(1)  # Visual feedback
+        status.update(
+            status="[bold green]HLA/MHC list generated and database output created successfully[/bold green]",
+            spinner="squish",
+            spinner_style="yellow"
+        )
+        
+        time.sleep(1)  # Visual feedback
+        status.update(
+            status="[bold green]Database generation completed[/bold green]",
+            spinner="squish",
+            spinner_style="green"
+        )

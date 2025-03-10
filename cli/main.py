@@ -1,24 +1,23 @@
-"""HLA-PEPCLUST: CLI Application for HLA Motif Discovery"""
+"""
+HLA-PEPCLUST: CLI Application for HLA Motif Discovery
+
+This module serves as the main entry point for the HLA-PEPCLUST command line interface.
+"""
 
 import argparse
 import sys
 from multiprocessing import Pool
 from rich.text import Text
 from rich_argparse import RichHelpFormatter
+
 from cli import __version__
 from cli.cluster_search import run_cluster_search
 from cli.logger import CONSOLE
-from cli.database_gen import Database_gen
-
-# from pyfiglet import Figlet
-# fig = Figlet(font="slant")
-# tool_icon= fig.renderText("HLA-PEPCLUST")
-# print(ascii_text)
+from cli.database_gen import generate_database
 
 
-def _welcome():
+def display_welcome_banner():
     """Display application banner."""
-
     tool_icon = """
     __  ____    ___         ____  __________  ________    __  _____________
    / / / / /   /   |       / __ \/ ____/ __ \/ ____/ /   / / / / ___/_  __/
@@ -27,15 +26,20 @@ def _welcome():
 /_/ /_/_____/_/  |_|    /_/   /_____/_/    \____/_____/\____//____//_/     
                                                                            
     """
-
     CONSOLE.print(tool_icon, style="blue")
 
 
-def _print_credits(credits=False):
-    """Print software credits to terminal."""
+def display_credits(show_details: bool = False):
+    """
+    Print software credits to terminal.
+    
+    Args:
+        show_details (bool): Whether to show detailed citation information.
+    """
     text = Text()
     text.append("\n")
-    if credits:
+    
+    if show_details:
         text.append("Please cite: \n", style="bold")
         text.append(
             "GibbsCluster - 2.0 (Simultaneous alignment and clustering of peptide data)\n",
@@ -46,7 +50,7 @@ def _print_credits(credits=False):
             style="bold link https://services.healthtech.dtu.dk/services/Seq2Logo-2.0/",
         )
         text.append(
-            "MHC Motif Atlas (MHC motif PSM matrics are genrated using mhcmotifatlas please cite [link])\n\n",
+            "MHC Motif Atlas (MHC motif PSM matrices are generated using mhcmotifatlas)\n\n",
             style="bold link http://mhcmotifatlas.org/home",
         )
     else:
@@ -54,14 +58,17 @@ def _print_credits(credits=False):
             "HLA-PEPCLUST", style="bold link https://www.monash.edu/research/compomics/"
         )
         text.append(f" (v{__version__})\n", style="bold")
-    if credits:
+    
+    if show_details:
         text.append(
-            "HLA motif finder pipeline for identifying peptide motif immunopeptididomic data.\n",
+            "HLA motif finder pipeline for identifying peptide motif immunopeptidiomics data.\n",
             style="italic",
         )
+    
     text.append("Developed at Li Lab / Purcell Lab, Monash University, Australia.\n")
     text.append("Please cite: ")
-    if credits:
+    
+    if show_details:
         text.append(
             "Sanjay Krishna, Nathon Craft & Chen Li et al. bioRxiv (2024)",
             style="link https://www.monash.edu/research/compomics/",
@@ -69,24 +76,30 @@ def _print_credits(credits=False):
     else:
         text.append(
             "Sanjay Krishna & Chen Li et al. bioRxiv (2024)",
-            style="ttps://www.monash.edu/research/compomics/",
+            style="link https://www.monash.edu/research/compomics/",
         )
+    
     text.append("\n")
-    if credits:
+    
+    if show_details:
         text.stylize("#006cb5")
+    
     CONSOLE.print(text)
 
 
-def main():
-    """Main function to parse CLI arguments and execute the pipeline."""
-    _welcome()
-    _print_credits()
+def setup_argument_parser():
+    """
+    Set up and return the argument parser.
+    
+    Returns:
+        argparse.ArgumentParser: Configured argument parser.
+    """
     parser = argparse.ArgumentParser(
         description="HLA-PEPCLUST: Identify peptide motifs in immunopeptidomics data 🧬🧬🧬.",
         formatter_class=lambda prog: RichHelpFormatter(prog, max_help_position=42),
     )
-
     
+    # Conditional arguments based on mode (database generation or cluster search)
     if not any(arg in sys.argv for arg in ("-db", "--database")):
         parser.add_argument(
             "gibbs_folder", type=str, help="Path to the test folder containing matrices."
@@ -96,12 +109,16 @@ def main():
             type=str,
             help="Path to the human reference folder containing matrices.",
         )
+    
+    # Database generation
     parser.add_argument(
         "-db",
         "--database",
         type=str,
         help="Generate a motif database from the configuration file. (default: data/config.json)",
     )
+    
+    # Cluster search parameters
     parser.add_argument(
         "-t",
         "--threshold",
@@ -114,9 +131,8 @@ def main():
         "--species",
         type=str,
         default="human",
-        help="Species to search [Human, Mouse] for (default: human).",
+        help="Species to search [Human, Mouse] (default: human).",
     )
-
     parser.add_argument(
         "-hla",
         "--hla_types",
@@ -139,26 +155,37 @@ def main():
         help="Number of clusters to search for.",
     )
     parser.add_argument(
-        "-k", "--best_KL", action="store_true", help="Find the best KL divergence only."
+        "-k",
+        "--best_KL",
+        action="store_true",
+        help="Find the best KL divergence only.",
     )
     parser.add_argument(
-        "-o", "--output", type=str, default="output", help="Path to the output folder."
+        "-o",
+        "--output",
+        type=str,
+        default="output",
+        help="Path to the output folder.",
     )
-    parser.add_argument("-l", "--log", action="store_true", help="Enable logging.")
-
+    parser.add_argument(
+        "-l",
+        "--log",
+        action="store_true",
+        help="Enable logging.",
+    )
     parser.add_argument(
         "-im",
         "--immunolyser",
-        default=False,
+        action="store_true",
         help="Enable immunolyser output.",
-        action="store_true"
     )
-
+    
+    # Informational arguments
     parser.add_argument(
         "-c",
         "--credits",
         action="store_true",
-        help="Show credits for the motif database pipeline.",
+        help="Show detailed credits and citations.",
     )
     parser.add_argument(
         "-v",
@@ -167,17 +194,30 @@ def main():
         version=f"%(prog)s [blue]version[/blue] [i][blue]{__version__}[/blue][/i]",
         help="Show the version of the pipeline.",
     )
+    
+    return parser
 
+
+def main():
+    """Main function to parse CLI arguments and execute the pipeline."""
+    display_welcome_banner()
+    display_credits()
+    
+    parser = setup_argument_parser()
     args = parser.parse_args()
-
+    
+    # Handle special commands first
     if args.credits:
-        _print_credits(credits=True)
+        display_credits(show_details=True)
         sys.exit(0)
-        
+    
+    # Database generation mode
     if args.database:
-        db = Database_gen(args.database)
+        db_config_path = args.database
+        generate_database(db_config_path)
         sys.exit(0)
-        
+    
+    # Cluster search mode (default)
     if args.processes > 1:
         with Pool(args.processes) as pool:
             pool.map(run_cluster_search, [args])
