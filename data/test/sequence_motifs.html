@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <style>
+    #vis.vega-embed {
+      width: 100%;
+      display: flex;
+    }
+
+    #vis.vega-embed details,
+    #vis.vega-embed details summary {
+      position: relative;
+    }
+  </style>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vega-lite@5.20.1"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+</head>
+<body>
+  <div id="vis"></div>
+  <script>
+    (function(vegaEmbed) {
+      var spec = {"config": {"view": {"continuousWidth": 300, "continuousHeight": 300}}, "data": {"name": "data-585f22dd97926500878f3a7104217568"}, "mark": {"type": "bar"}, "encoding": {"color": {"field": "AminoAcid", "scale": {"scheme": "category20"}, "type": "nominal"}, "tooltip": [{"field": "AminoAcid", "type": "nominal"}, {"field": "Frequency", "type": "quantitative"}], "x": {"field": "AminoAcid", "sort": ["A", "C", "D", "E", "F", "G", "H", "I", "K", "L", "M", "N", "P", "Q", "R", "S", "T", "V", "W", "Y"], "title": "Amino Acid", "type": "nominal"}, "y": {"field": "Frequency", "title": "Frequency (%)", "type": "quantitative"}}, "height": 400, "title": "Amino Acid Frequency Distribution Across All Clusters", "width": 600, "$schema": "https://vega.github.io/schema/vega-lite/v5.20.1.json", "datasets": {"data-585f22dd97926500878f3a7104217568": [{"AminoAcid": "A", "Frequency": 4.696292931587049}, {"AminoAcid": "C", "Frequency": 4.97388144446968}, {"AminoAcid": "D", "Frequency": 4.925934337699044}, {"AminoAcid": "E", "Frequency": 5.170716935422818}, {"AminoAcid": "F", "Frequency": 4.97388144446968}, {"AminoAcid": "G", "Frequency": 5.049587402528579}, {"AminoAcid": "H", "Frequency": 4.870416635122518}, {"AminoAcid": "I", "Frequency": 4.925934337699044}, {"AminoAcid": "K", "Frequency": 5.087440381558029}, {"AminoAcid": "L", "Frequency": 5.148005148005148}, {"AminoAcid": "M", "Frequency": 4.802281272869508}, {"AminoAcid": "N", "Frequency": 4.888081358669593}, {"AminoAcid": "P", "Frequency": 5.211093446387563}, {"AminoAcid": "Q", "Frequency": 4.93602846544023}, {"AminoAcid": "R", "Frequency": 5.168193403487521}, {"AminoAcid": "S", "Frequency": 5.203522850581674}, {"AminoAcid": "T", "Frequency": 5.031922678981503}, {"AminoAcid": "V", "Frequency": 4.87546369899311}, {"AminoAcid": "W", "Frequency": 5.180811063164004}, {"AminoAcid": "Y", "Frequency": 4.880510762863704}]}};
+      var embedOpt = {"mode": "vega-lite"};
+
+      function showError(el, error){
+          el.innerHTML = ('<div style="color:red;">'
+                          + '<p>JavaScript Error: ' + error.message + '</p>'
+                          + "<p>This usually means there's a typo in your chart specification. "
+                          + "See the javascript console for the full traceback.</p>"
+                          + '</div>');
+          throw error;
+      }
+      const el = document.getElementById('vis');
+      vegaEmbed("#vis", spec, embedOpt)
+        .catch(error => showError(el, error));
+    })(vegaEmbed);
+
+  </script>
+</body>
+</html>

@@ -1,0 +1,26 @@
+[
+  {
+    "id": "AUSCYP",
+    "name": "Australia Cape York Peninsula Aborigine",
+    "region": "Australia",
+    "source": "allelefrequencies.net"
+  },
+  {
+    "id": "AUSGEA",
+    "name": "Australia Groote Eylandt Aborigine",
+    "region": "Australia",
+    "source": "allelefrequencies.net"
+  },
+  {
+    "id": "AUSNSW",
+    "name": "Australia New South Wales Caucasian",
+    "region": "Australia",
+    "source": "allelefrequencies.net"
+  },
+  {
+    "id": "AUSYUE",
+    "name": "Australia Yuendumu Aborigine",
+    "region": "Australia",
+    "source": "allelefrequencies.net"
+  }
+]

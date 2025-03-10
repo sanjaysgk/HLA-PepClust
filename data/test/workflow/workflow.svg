@@ -1,0 +1,267 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1100" height="1600" viewBox="0 0 1100 1600">
+  <defs>
+    <!-- Gradients -->
+    <linearGradient id="blueGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#8ab4f8;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#4285f4;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="redGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#f28b82;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#ea4335;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="greenGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#a8dab5;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#34a853;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="purpleGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#d7aefb;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#9334e6;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="orangeGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#fde293;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#fbbc04;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="lightBlueGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#e8f0fe;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#c2d7ff;stop-opacity:1" />
+    </linearGradient>
+    
+    <!-- Arrow Marker -->
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="0" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#333" />
+    </marker>
+    
+    <!-- Box Styles -->
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  
+  <!-- Title -->
+  <text x="550" y="50" font-family="Arial" font-size="28" font-weight="bold" text-anchor="middle" fill="#333">Bayesian HLA Allotype Identification from Peptide Motifs</text>
+  <text x="550" y="80" font-family="Arial" font-size="16" text-anchor="middle" fill="#555">Statistical Framework for PSSM-Based Matching with Population-Specific Priors</text>
+  
+  <!-- Input Data Section -->
+  <rect x="50" y="120" width="1000" height="120" rx="10" ry="10" fill="#f8f9fa" stroke="#ddd" stroke-width="2"/>
+  <text x="550" y="140" font-family="Arial" font-size="18" font-weight="bold" text-anchor="middle" fill="#333">Input Data</text>
+  
+  <!-- Peptide Data -->
+  <rect x="80" y="160" width="220" height="60" rx="5" ry="5" fill="url(#blueGradient)" filter="url(#shadow)"/>
+  <text x="190" y="197" font-family="Arial" font-size="16" font-weight="bold" text-anchor="middle" fill="white">Peptide Sequences</text>
+  
+  <!-- Gibbs Clustering -->
+  <rect x="440" y="160" width="220" height="60" rx="5" ry="5" fill="url(#orangeGradient)" filter="url(#shadow)"/>
+  <text x="550" y="197" font-family="Arial" font-size="16" font-weight="bold" text-anchor="middle" fill="#333">Gibbs Clustering</text>
+  
+  <!-- Reference PSSMs -->
+  <rect x="800" y="160" width="220" height="60" rx="5" ry="5" fill="url(#redGradient)" filter="url(#shadow)"/>
+  <text x="910" y="197" font-family="Arial" font-size="16" font-weight="bold" text-anchor="middle" fill="white">HLA Reference Database</text>
+  
+  <!-- Arrows -->
+  <line x1="300" y1="190" x2="440" y2="190" stroke="#555" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="660" y1="190" x2="800" y2="190" stroke="#555" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- PSSM Computation Section -->
+  <rect x="50" y="270" width="1000" height="260" rx="10" ry="10" fill="#f8f9fa" stroke="#ddd" stroke-width="2"/>
+  <text x="550" y="290" font-family="Arial" font-size="18" font-weight="bold" text-anchor="middle" fill="#333">Position-Specific Scoring Matrix (PSSM) Analysis</text>
+  
+  <!-- PSSM Notation -->
+  <rect x="80" y="310" width="940" height="50" rx="5" ry="5" fill="#f5f5f5" stroke="#ddd" stroke-width="1"/>
+  <text x="100" y="340" font-family="Arial" font-size="12" fill="#333">Notation: M<tspan dy="-5" font-size="10">G</tspan> = Gibbs PSSM,  M<tspan dy="-5" font-size="10">R</tspan><tspan dy="5" font-size="10">i</tspan> = Reference PSSM for i-th allotype,  P<tspan dy="-5" font-size="10">G</tspan> and P<tspan dy="-5" font-size="10">R</tspan><tspan dy="5" font-size="10">i</tspan> = Their respective probability matrices</text>
+  <text x="600" y="340" font-family="Arial" font-size="12" fill="#333">S<tspan dy="5" font-size="10">a,j</tspan> = log-odds score for amino acid a at position j</text>
+  
+  <!-- Gibbs PSSM -->
+  <rect x="90" y="370" width="400" height="140" rx="5" ry="5" fill="white" stroke="#4285f4" stroke-width="2"/>
+  <text x="290" y="390" font-family="Arial" font-size="16" font-weight="bold" text-anchor="middle" fill="#4285f4">Gibbs-Derived PSSM (M<tspan dy="-5" font-size="10">G</tspan>)</text>
+  
+  <!-- Matrix Visualization -->
+  <rect x="110" y="400" width="360" height="100" fill="#fcfcfc" stroke="#ddd" stroke-width="1"/>
+  <g transform="translate(110, 400)">
+    <!-- Column headers -->
+    <text x="40" y="15" font-family="Arial" font-size="10" text-anchor="middle" fill="#555">1</text>
+    <text x="70" y="15" font-family="Arial" font-size="10" text-anchor="middle" fill="#555">2</text>
+    <text x="100" y="15" font-family="Arial" font-size="10" text-anchor="middle" fill="#555">3</text>
+    <text x="130" y="15" font-family="Arial" font-size="10" text-anchor="middle" fill="#555">4</text>
+    <text x="160" y="15" font-family="Arial" font-size="10" text-anchor="middle" fill="#555">5</text>
+    <text x="190" y="15" font-family="Arial" font-size="10" text-anchor="middle" fill="#555">6</text>
+    <text x="220" y="15" font-family="Arial" font-size="10" text-anchor="middle" fill="#555">7</text>
+    <text x="250" y="15" font-family="Arial" font-size="10" text-anchor="middle" fill="#555">8</text>
+    <text x="280" y="15" font-family="Arial" font-size="10" text-anchor="middle" fill="#555">9</text>
+    <line x1="20" y1="20" x2="340" y2="20" stroke="#ddd" stroke-width="1"/>
+    
+    <!-- Row labels (abbreviated) -->
+    <text x="15" y="35" font-family="Arial" font-size="10" text-anchor="end" fill="#555">A</text>
+    <text x="15" y="55" font-family="Arial" font-size="10" text-anchor="end" fill="#555">R</text>
+    <text x="15" y="75" font-family="Arial" font-size="10" text-anchor="end" fill="#555">...</text>
+    <text x="15" y="95" font-family="Arial" font-size="10" text-anchor="end" fill="#555">Y</text>
+    
+    <!-- Heatmap cells (blue scale) - simplified representation -->
+    <rect x="20" y="25" width="30" height="20" fill="#deebf7"/>
+    <rect x="50" y="25" width="30" height="20" fill="#c6dbef"/>
+    <rect x="80" y="25" width="30" height="20" fill="#9ecae1"/>
+    <rect x="110" y="25" width="30" height="20" fill="#6baed6"/>
+    <rect x="140" y="25" width="30" height="20" fill="#4292c6"/>
+    <rect x="170" y="25" width="30" height="20" fill="#2171b5"/>
+    <rect x="200" y="25" width="30" height="20" fill="#08519c"/>
+    <rect x="230" y="25" width="30" height="20" fill="#08306b"/>
+    <rect x="260" y="25" width="30" height="20" fill="#f7fbff"/>
+    <rect x="290" y="25" width="30" height="20" fill="#deebf7"/>
+  </g>
+  
+  <!-- Reference PSSM -->
+  <rect x="610" y="370" width="400" height="140" rx="5" ry="5" fill="white" stroke="#ea4335" stroke-width="2"/>
+  <text x="810" y="390" font-family="Arial" font-size="16" font-weight="bold" text-anchor="middle" fill="#ea4335">Reference PSSM Database (M<tspan dy="-5" font-size="10">R</tspan><tspan dy="5" font-size="10">i</tspan>)</text>
+  
+  <!-- Reference Matrix Visualization -->
+  <rect x="630" y="400" width="360" height="100" fill="#fcfcfc" stroke="#ddd" stroke-width="1"/>
+  <g transform="translate(630, 400)">
+    <!-- Column headers -->
+    <text x="40" y="15" font-family="Arial" font-size="10" text-anchor="middle" fill="#555">1</text>
+    <text x="70" y="15" font-family="Arial" font-size="10" text-anchor="middle" fill="#555">2</text>
+    <text x="100" y="15" font-family="Arial" font-size="10" text-anchor="middle" fill="#555">3</text>
+    <text x="130" y="15" font-family="Arial" font-size="10" text-anchor="middle" fill="#555">4</text>
+    <text x="160" y="15" font-family="Arial" font-size="10" text-anchor="middle" fill="#555">5</text>
+    <text x="190" y="15" font-family="Arial" font-size="10" text-anchor="middle" fill="#555">6</text>
+    <text x="220" y="15" font-family="Arial" font-size="10" text-anchor="middle" fill="#555">7</text>
+    <text x="250" y="15" font-family="Arial" font-size="10" text-anchor="middle" fill="#555">8</text>
+    <text x="280" y="15" font-family="Arial" font-size="10" text-anchor="middle" fill="#555">9</text>
+    <line x1="20" y1="20" x2="340" y2="20" stroke="#ddd" stroke-width="1"/>
+    
+    <!-- Row labels (abbreviated) -->
+    <text x="15" y="35" font-family="Arial" font-size="10" text-anchor="end" fill="#555">A</text>
+    <text x="15" y="55" font-family="Arial" font-size="10" text-anchor="end" fill="#555">R</text>
+    <text x="15" y="75" font-family="Arial" font-size="10" text-anchor="end" fill="#555">...</text>
+    <text x="15" y="95" font-family="Arial" font-size="10" text-anchor="end" fill="#555">Y</text>
+    
+    <!-- Heatmap cells (red scale) - simplified representation -->
+    <rect x="20" y="25" width="30" height="20" fill="#fee0d2"/>
+    <rect x="50" y="25" width="30" height="20" fill="#fcbba1"/>
+    <rect x="80" y="25" width="30" height="20" fill="#fc9272"/>
+    <rect x="110" y="25" width="30" height="20" fill="#fb6a4a"/>
+    <rect x="140" y="25" width="30" height="20" fill="#ef3b2c"/>
+    <rect x="170" y="25" width="30" height="20" fill="#cb181d"/>
+    <rect x="200" y="25" width="30" height="20" fill="#99000d"/>
+    <rect x="230" y="25" width="30" height="20" fill="#67000d"/>
+    <rect x="260" y="25" width="30" height="20" fill="#fff5f0"/>
+    <rect x="290" y="25" width="30" height="20" fill="#fee0d2"/>
+  </g>
+  
+  <!-- Conversion Section -->
+  <rect x="50" y="560" width="1000" height="170" rx="10" ry="10" fill="#f8f9fa" stroke="#ddd" stroke-width="2"/>
+  <text x="550" y="580" font-family="Arial" font-size="18" font-weight="bold" text-anchor="middle" fill="#333">PSSM Probability Conversion & Metrics</text>
+  
+  <!-- Log-Odds to Probability Formula -->
+  <rect x="70" y="600" width="460" height="110" rx="5" ry="5" fill="url(#lightBlueGradient)" filter="url(#shadow)"/>
+  <text x="300" y="620" font-family="Arial" font-size="14" font-weight="bold" text-anchor="middle" fill="#333">1. Log-Odds to Probability Conversion</text>
+  
+  <text x="300" y="662" font-family="'Cambria Math', serif" font-size="14" text-anchor="middle" fill="#333">P(a|j) = (2^S_{a,j} · P_b(a)) / (Σ_{a'∈A} 2^S_{a',j} · P_b(a'))</text>
+  
+  <!-- Jensen-Shannon Distance Formula -->
+  <rect x="570" y="600" width="460" height="110" rx="5" ry="5" fill="url(#lightBlueGradient)" filter="url(#shadow)"/>
+  <text x="800" y="620" font-family="Arial" font-size="14" font-weight="bold" text-anchor="middle" fill="#333">2. Jensen-Shannon Distance</text>
+  
+  <text x="800" y="662" font-family="'Cambria Math', serif" font-size="14" text-anchor="middle" fill="#333">JS_j(P_G, P_R^i) = √(½D_{KL}(P_{G,j}||M_j) + ½D_{KL}(P_{R,j}^i||M_j))</text>
+  
+  <!-- Bayesian Framework Section -->
+  <rect x="50" y="760" width="1000" height="380" rx="10" ry="10" fill="#f8f9fa" stroke="#ddd" stroke-width="2"/>
+  <text x="550" y="780" font-family="Arial" font-size="18" font-weight="bold" text-anchor="middle" fill="#333">Bayesian Allotype Matching Framework</text>
+  
+  <!-- Prior Probabilities -->
+  <rect x="80" y="810" width="220" height="80" rx="5" ry="5" fill="url(#purpleGradient)" filter="url(#shadow)"/>
+  <text x="190" y="845" font-family="Arial" font-size="16" font-weight="bold" text-anchor="middle" fill="white">Population-Specific</text>
+  <text x="190" y="870" font-family="Arial" font-size="16" font-weight="bold" text-anchor="middle" fill="white">Prior Probabilities</text>
+  
+  <!-- Population Database icon -->
+  <rect x="100" y="900" width="180" height="60" rx="5" ry="5" fill="#f5f5f5" stroke="#9334e6" stroke-width="1"/>
+  <text x="190" y="924" font-family="Arial" font-size="12" font-style="italic" text-anchor="middle">HLA Frequencies by Ethnicity</text>
+  <text x="190" y="945" font-family="Arial" font-size="10" text-anchor="middle">e.g., HLA-A*02:01: 30% in Caucasians</text>
+  
+  <!-- Likelihood Calculation -->
+  <rect x="440" y="810" width="220" height="80" rx="5" ry="5" fill="url(#greenGradient)" filter="url(#shadow)"/>
+  <text x="550" y="845" font-family="Arial" font-size="16" font-weight="bold" text-anchor="middle" fill="#333">PSSM Similarity</text>
+  <text x="550" y="870" font-family="Arial" font-size="16" font-weight="bold" text-anchor="middle" fill="#333">Likelihood</text>
+  
+  <!-- Likelihood Formula -->
+  <rect x="400" y="900" width="300" height="110" rx="5" ry="5" fill="#f5f5f5" stroke="#34a853" stroke-width="1"/>
+  <text x="550" y="920" font-family="Arial" font-size="12" font-style="italic" text-anchor="middle">Weighted Likelihood Calculation:</text>
+  
+  <text x="550" y="960" font-family="'Cambria Math', serif" font-size="13" text-anchor="middle" fill="#333">L(M_R^i|M_G) = ∏_{j=1}^{min(L_G,L_R)} (1-JS_j(P_G,P_R^i))^{IC_j/∑_k IC_k}</text>
+  
+  <!-- Posterior Probabilities -->
+  <rect x="800" y="810" width="220" height="80" rx="5" ry="5" fill="url(#blueGradient)" filter="url(#shadow)"/>
+  <text x="910" y="845" font-family="Arial" font-size="16" font-weight="bold" text-anchor="middle" fill="white">Posterior Probability</text>
+  <text x="910" y="870" font-family="Arial" font-size="16" font-weight="bold" text-anchor="middle" fill="white">& Bayes Factor</text>
+  
+  <!-- Bayes Theorem -->
+  <rect x="770" y="900" width="280" height="110" rx="5" ry="5" fill="#f5f5f5" stroke="#4285f4" stroke-width="1"/>
+  <text x="910" y="920" font-family="Arial" font-size="12" font-style="italic" text-anchor="middle">Bayes' Theorem:</text>
+  
+  <text x="910" y="960" font-family="'Cambria Math', serif" font-size="13" text-anchor="middle" fill="#333">P(M_R^i|M_G) = (L(M_R^i|M_G) · P(M_R^i)) / (∑_k L(M_R^k|M_G) · P(M_R^k))</text>
+  
+  <!-- Arrows for Bayes theorem -->
+  <line x1="200" y1="970" x2="440" y2="1020" stroke="#555" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="550" y1="1020" x2="550" y2="1040" stroke="#555" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="900" y1="970" x2="660" y2="1020" stroke="#555" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Best Match Determination -->
+  <rect x="350" y="1050" width="400" height="70" rx="5" ry="5" fill="white" stroke="#333" stroke-width="2"/>
+  <text x="550" y="1080" font-family="Arial" font-size="16" font-weight="bold" text-anchor="middle" fill="#333">Best Allotype = argmax<tspan dy="5" font-size="10">i</tspan> P(M<tspan dy="-5" font-size="10">R</tspan><tspan dy="5" font-size="10">i</tspan>|M<tspan dy="-5" font-size="10">G</tspan>)</text>
+  
+  <!-- Results Section -->
+  <rect x="50" y="1170" width="1000" height="180" rx="10" ry="10" fill="#f8f9fa" stroke="#ddd" stroke-width="2"/>
+  <text x="550" y="1190" font-family="Arial" font-size="18" font-weight="bold" text-anchor="middle" fill="#333">Results & Statistical Validation</text>
+  
+  <!-- Results Ranking -->
+  <rect x="150" y="1210" width="800" height="100" rx="5" ry="5" fill="white" stroke="#333" stroke-width="2"/>
+  <text x="550" y="1230" font-family="Arial" font-size="16" font-weight="bold" text-anchor="middle" fill="#333">Ranked Allotype Matches</text>
+  
+  <!-- Results Table -->
+  <rect x="170" y="1240" width="760" height="60" fill="#f9f9f9" stroke="#ddd" stroke-width="1"/>
+  <line x1="170" y1="1260" x2="930" y2="1260" stroke="#ddd" stroke-width="1"/>
+  <text x="210" y="1254" font-family="Arial" font-size="10" fill="#555">Allotype</text>
+  <text x="290" y="1254" font-family="Arial" font-size="10" fill="#555">Prior</text>
+  <text x="370" y="1254" font-family="Arial" font-size="10" fill="#555">Likelihood</text>
+  <text x="460" y="1254" font-family="Arial" font-size="10" fill="#555">Posterior</text>
+  <text x="560" y="1254" font-family="Arial" font-size="10" fill="#555">Bayes Factor</text>
+  <text x="660" y="1254" font-family="Arial" font-size="10" fill="#555">P-value</text>
+  <text x="750" y="1254" font-family="Arial" font-size="10" fill="#555">P-adjusted</text>
+  <text x="860" y="1254" font-family="Arial" font-size="10" fill="#555">Significant</text>
+  
+  <!-- Sample Results -->
+  <text x="210" y="1278" font-family="Arial" font-size="10" fill="#333" font-weight="bold">HLA-A*01:01</text>
+  <text x="290" y="1278" font-family="Arial" font-size="10" fill="#333">0.088</text>
+  <text x="370" y="1278" font-family="Arial" font-size="10" fill="#333">0.097</text>
+  <text x="460" y="1278" font-family="Arial" font-size="10" fill="#333">0.986</text>
+  <text x="560" y="1278" font-family="Arial" font-size="10" fill="#333">1.000</text>
+  <text x="660" y="1278" font-family="Arial" font-size="10" fill="#333">0.001</text>
+  <text x="750" y="1278" font-family="Arial" font-size="10" fill="#333">0.121</text>
+  <text x="860" y="1278" font-family="Arial" font-size="10" fill="#333">False</text>
+  
+  <text x="210" y="1298" font-family="Arial" font-size="10" fill="#555">HLA-C*05:01</text>
+  <text x="290" y="1298" font-family="Arial" font-size="10" fill="#555">0.031</text>
+  <text x="370" y="1298" font-family="Arial" font-size="10" fill="#555">0.002</text>
+  <text x="460" y="1298" font-family="Arial" font-size="10" fill="#555">0.008</text>
+  <text x="560" y="1298" font-family="Arial" font-size="10" fill="#555">124.98</text>
+  <text x="660" y="1298" font-family="Arial" font-size="10" fill="#555">1.000</text>
+  <text x="750" y="1298" font-family="Arial" font-size="10" fill="#555">1.000</text>
+  <text x="860" y="1298" font-family="Arial" font-size="10" fill="#555">False</text>
+  
+  <!-- Combined Metrics -->
+  <rect x="50" y="1380" width="1000" height="150" rx="10" ry="10" fill="#f8f9fa" stroke="#ddd" stroke-width="2"/>
+  <text x="550" y="1400" font-family="Arial" font-size="18" font-weight="bold" text-anchor="middle" fill="#333">Enhanced Multi-Metric Approach</text>
+  
+  <rect x="100" y="1420" width="900" height="90" rx="5" ry="5" fill="#f5f5f5" stroke="#ddd" stroke-width="1"/>
+  <text x="550" y="1440" font-family="Arial" font-size="14" font-weight="bold" text-anchor="middle" fill="#333">Combined Metric Formula</text>
+  
+  <text x="550" y="1480" font-family="'Cambria Math', serif" font-size="14" text-anchor="middle" fill="#333">S(M_G, M_R^i) = w_1 · CosSim + w_2 · (1-AvgJS) + w_3 · LogLikelihood</text>
+  
+  <!-- Workflow Arrows -->
+  <line x1="550" y1="240" x2="550" y2="270" stroke="#555" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="550" y1="530" x2="550" y2="560" stroke="#555" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="550" y1="730" x2="550" y2="760" stroke="#555" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="550" y1="1120" x2="550" y2="1170" stroke="#555" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="550" y1="1350" x2="550" y2="1380" stroke="#555" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Footnote -->
+  <text x="550" y="1560" font-family="Arial" font-size="10" text-anchor="middle" fill="#777">© 2025 - Bayesian framework for HLA allotype identification from Position-Specific Scoring Matrices</text>
+</svg>
