@@ -70,7 +70,7 @@ def display_credits(show_details: bool = False):
     
     if show_details:
         text.append(
-            "Sanjay Krishna, Nathon Craft & Chen Li et al. bioRxiv (2024)",
+            "Sanjay Krishna, Nathon Craft, Prithvi & Chen Li et al. bioRxiv (2024)",
             style="link https://www.monash.edu/research/compomics/",
         )
     else:

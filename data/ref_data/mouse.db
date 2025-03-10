@@ -1,9 +1,9 @@
 allotypes,formatted_allotypes,motif,species,motif_path,matrices_path
-MHC*H2_Db,H2_Db,H2_Db.png,mouse,Gibbs_motifs_mouse/motif/H2_Db.png,Gibbs_motifs_mouse/matrices/H2_Db.txt
-MHC*H2_Dd,H2_Dd,H2_Dd.png,mouse,Gibbs_motifs_mouse/motif/H2_Dd.png,Gibbs_motifs_mouse/matrices/H2_Dd.txt
-MHC*H2_Dq,H2_Dq,H2_Dq.png,mouse,Gibbs_motifs_mouse/motif/H2_Dq.png,Gibbs_motifs_mouse/matrices/H2_Dq.txt
-MHC*H2_Kb,H2_Kb,H2_Kb.png,mouse,Gibbs_motifs_mouse/motif/H2_Kb.png,Gibbs_motifs_mouse/matrices/H2_Kb.txt
-MHC*H2_Kd,H2_Kd,H2_Kd.png,mouse,Gibbs_motifs_mouse/motif/H2_Kd.png,Gibbs_motifs_mouse/matrices/H2_Kd.txt
-MHC*H2_Kk,H2_Kk,H2_Kk.png,mouse,Gibbs_motifs_mouse/motif/H2_Kk.png,Gibbs_motifs_mouse/matrices/H2_Kk.txt
-MHC*H2_Lq,H2_Kq,H2_Kq.png,mouse,Gibbs_motifs_mouse/motif/H2_Kq.png,Gibbs_motifs_mouse/matrices/H2_Kq.txt
-MHC*H2_Ld,H2_LD,H2_LD.png,mouse,Gibbs_motifs_mouse/motif/H2_LD.png,Gibbs_motifs_mouse/matrices/H2_LD.txt
+MHC*H2_Db,H2_Db,H2_Db.png,mouse,motif/H2_Db.png,matrices/H2_Db.txt
+MHC*H2_Dd,H2_Dd,H2_Dd.png,mouse,motif/H2_Dd.png,matrices/H2_Dd.txt
+MHC*H2_Dq,H2_Dq,H2_Dq.png,mouse,motif/H2_Dq.png,matrices/H2_Dq.txt
+MHC*H2_Kb,H2_Kb,H2_Kb.png,mouse,motif/H2_Kb.png,matrices/H2_Kb.txt
+MHC*H2_Kd,H2_Kd,H2_Kd.png,mouse,motif/H2_Kd.png,matrices/H2_Kd.txt
+MHC*H2_Kk,H2_Kk,H2_Kk.png,mouse,motif/H2_Kk.png,matrices/H2_Kk.txt
+MHC*H2_Lq,H2_Kq,H2_Kq.png,mouse,motif/H2_Kq.png,matrices/H2_Kq.txt
+MHC*H2_Ld,H2_LD,H2_LD.png,mouse,motif/H2_LD.png,matrices/H2_LD.txt

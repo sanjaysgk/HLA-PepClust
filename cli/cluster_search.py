@@ -22,6 +22,7 @@ from jinja2 import Template
 
 from cli.logger import CONSOLE, display_search_results, save_console_log
 from cli.html_config import html_content, body_start
+from cli.config import DEFAULT_CONFIG
 from cli.utils import (
     generate_unique_random_ids, 
     ensure_directory_exists,
@@ -153,6 +154,7 @@ class ClusterSearch:
         output_path: str,
         hla_list: Optional[List[str]] = None,
     ) -> None:
+        
         """
         Compute correlations between test and reference Gibbs matrices.
 
@@ -233,9 +235,8 @@ class ClusterSearch:
                         should_process = True
                     
                     if should_process:
-                        correlation =                 # Using the correct path structure by not duplicating the species path
-                self._compute_and_log_correlation_V2(
-                    os.path.join(gibbs_matrix_dir, gibbs_f),
+                        correlation = self._compute_and_log_correlation_V2(
+                    os.path.join(gibbs_matrix_dir, gibbs_f),  # Using the correct path structure by not duplicating the species path
                     mat_path,  # This is a relative path, so we don't need to include the species folder again
                 )
                         status.update(
@@ -343,7 +344,9 @@ class ClusterSearch:
             m1 = format_input_gibbs(gibbs_f)
             
             # Construct the correct absolute path to the reference matrix
-            ref_mat_path = os.path.join(self.data_dir, ref_mat)
+            # Update: Include the species folder in the path construction
+            species_folder = f"Gibbs_motifs_{self.species}"
+            ref_mat_path = os.path.join(self.data_dir, species_folder, ref_mat)
             self.console.log(f"Loading reference matrix: {ref_mat_path}", style="blue")
             
             m2 = format_input_gibbs(ref_mat_path)
@@ -975,8 +978,9 @@ class ClusterSearch:
             # Find and copy motif image
             nat_path = db[db['formatted_allotypes'] == hla]['motif_path'].values[0]
             if nat_path:
+                
                 dest_path = os.path.join(self._outfolder, 'allotypes-img', f"{os.path.basename(nat_path)}")
-                shutil.copy(nat_path, dest_path)
+                shutil.copy(os.path.join(DEFAULT_CONFIG[self.species]['ref_data'],DEFAULT_CONFIG[self.species]['path'],nat_path), dest_path)
                 output_dict[cluster_id]['nat_img'] = dest_path
             
             # Generate correlation plot

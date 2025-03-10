@@ -46,44 +46,66 @@ def process_allotype_data(config: Dict[str, Any]) -> None:
         allotypes['motif_path'] = ""
         allotypes['matrices_path'] = ""
         
+        # Check actual directory structure
+        matrices_dir = os.path.join(
+            species_config['ref_data'], 
+            f'Gibbs_motifs_{species}', 
+            species_config['matrix']
+        )
+        
+        motifs_dir = os.path.join(
+            species_config['ref_data'], 
+            f'Gibbs_motifs_{species}', 
+            species_config['motif']
+        )
+        
+        # Verify directories exist
+        if not os.path.exists(matrices_dir):
+            CONSOLE.log(f"Matrix directory not found at: {matrices_dir}", style="red")
+            sys.exit(1)
+            
+        if not os.path.exists(motifs_dir):
+            CONSOLE.log(f"Motif directory not found at: {motifs_dir}", style="red")
+            sys.exit(1)
+        
         # Verify and add paths for each motif
         for motif in allotypes['motif']:
-            motif_path = os.path.join(
-                species_config['ref_data'], 
-                species_config['path'], 
-                species_config['motif'], 
-                motif
-            )
-            matrix_path = os.path.join(
-                species_config['ref_data'],
-                species_config['path'],
-                species_config['matrix'],
-                motif.replace('.png', '.txt')
-            )
+            motif_path = os.path.join(motifs_dir, motif)
+            matrix_path = os.path.join(matrices_dir, motif.replace('.png', '.txt'))
             
             CONSOLE.log(f"[yellow]{species}[/yellow] checking {motif_path}", style="blue")
             
-            if not os.path.exists(motif_path):
-                CONSOLE.log(f"Motif {motif} does not exist at {motif_path}", style="red")
-                sys.exit(1)
-            elif not os.path.exists(matrix_path):
-                CONSOLE.log(f"Matrix {motif.replace('.png', '.txt')} does not exist at {matrix_path}", style="red")
-                sys.exit(1)
-            else:
-                # Update paths in dataframe - store absolute paths to ensure consistent access
-                motif_path = os.path.join(species_config['path'], 'motif', motif)
-                matrix_path = os.path.join(species_config['path'], 'matrices', motif.replace('.png', '.txt'))
+            # Check if files exist
+            motif_exists = os.path.exists(motif_path)
+            matrix_exists = os.path.exists(matrix_path)
+            
+            if not motif_exists:
+                CONSOLE.log(f"Motif file not found: {motif_path}", style="yellow")
+            
+            if not matrix_exists:
+                CONSOLE.log(f"Matrix file not found: {matrix_path}", style="yellow")
+            
+            # Store relative paths to make it easier to use with different base dirs
+            # rel_motif_path = os.path.join(f'Gibbs_motifs_{species}', species_config['motif'], motif)
+            # rel_matrix_path = os.path.join(f'Gibbs_motifs_{species}', species_config['matrix'], motif.replace('.png', '.txt'))
+            rel_motif_path = os.path.join( species_config['motif'], motif)
+            rel_matrix_path = os.path.join(species_config['matrix'], motif.replace('.png', '.txt'))
+            
+            # Update paths in dataframe
+            allotypes.loc[allotypes['motif'] == motif, 'motif_path'] = rel_motif_path
+            allotypes.loc[allotypes['motif'] == motif, 'matrices_path'] = rel_matrix_path
                 
-                # Store these paths - important to use consistent path format
-                allotypes.loc[allotypes['motif'] == motif, 'motif_path'] = motif_path
-                allotypes.loc[allotypes['motif'] == motif, 'matrices_path'] = matrix_path
-                
-                CONSOLE.log(f"[green]✓[/green] Registered {motif} with matrix at {matrix_path}", style="dim")
+            CONSOLE.log(f"[green]✓[/green] Registered {motif} with matrix at {rel_matrix_path}", style="dim")
         
         # Save database
         db_path = os.path.join(species_config['ref_data'], f"{species}.db")
         allotypes.to_csv(db_path, index=False)
         CONSOLE.log(f"Database {species}.db created successfully ({db_path})", style="green")
+        
+        # Create a backup inside the species directory for convenience
+        species_db_path = os.path.join(species_config['ref_data'], f'Gibbs_motifs_{species}', f"{species}.db")
+        allotypes.to_csv(species_db_path, index=False)
+        CONSOLE.log(f"Database backup created at {species_db_path}", style="green")
 
 
 def generate_database(config_file: str) -> None:
