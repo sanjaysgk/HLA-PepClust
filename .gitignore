@@ -26,3 +26,4 @@ test_results
 *.png
 cli/test_imagegrid.py
 test
+cluster_search_v2

@@ -82,7 +82,7 @@ def _HLA_liist(config):
                 # sys.exit(f"Motif {motifs} does not exist")
                 CONSOLE.log(f"Motif {motifs} does not exist")
                 sys.exit(1)
-            elif not os.path.exists(f"{config[species]['path']}/matrices/{motifs.replace('.png', '.txt')}"):
+            elif not os.path.exists(f"{os.path.join(config[species]["ref_data"],config[species]["path"] ,config[species]["matrix"])}/{motifs.replace('.png', '.txt')}"):
                 # sys.exit(f"Matrix {motifs.replace('.png', '.txt')} does not exist")
                 CONSOLE.log(f"Matrix {motifs.replace('.png', '.txt')} does not exist")
                 sys.exit(1)
@@ -131,13 +131,13 @@ def Database_gen(config_file):
                             )
         sys.exit(0)
     
-Database_gen("config.json")
-if __name__ == "__main__":
-    config_file = "config.json"
-    config = _prase_config_file(config_file)
-    _check_ref_files(config)
-    hla_list = _HLA_liist(config)
-    # print(hla_list)
-    # print(config)
-    CONSOLE.log("Config file parsed successfully")
-    sys.exit(0)
+# Database_gen("config.json")
+# if __name__ == "__main__":
+#     config_file = "config.json"
+#     config = _prase_config_file(config_file)
+#     _check_ref_files(config)
+#     hla_list = _HLA_liist(config)
+#     # print(hla_list)
+#     # print(config)
+#     CONSOLE.log("Config file parsed successfully")
+#     sys.exit(0)
