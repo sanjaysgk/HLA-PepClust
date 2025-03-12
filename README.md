@@ -63,6 +63,10 @@ To see available options and usage details:
 clust-search -h      
 ```
 
+Example of running the help `clust-search -h` command:  
+
+![Example Output](assets/img/clust-search-help.png)  
+
 ### Command Structure  
 
 ```bash
