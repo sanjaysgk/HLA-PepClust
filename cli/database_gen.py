@@ -82,7 +82,7 @@ def _HLA_liist(config):
                 # sys.exit(f"Motif {motifs} does not exist")
                 CONSOLE.log(f"Motif {motifs} does not exist")
                 sys.exit(1)
-            elif not os.path.exists(f"{os.path.join(config[species]["ref_data"],config[species]["path"] ,config[species]["matrix"])}/{motifs.replace('.png', '.txt')}"):
+            elif not os.path.exists(f"{os.path.join(config[species]['ref_data'],config[species]['path'] ,config[species]['matrix'])}/{motifs.replace('.png', '.txt')}"):
                 # sys.exit(f"Matrix {motifs.replace('.png', '.txt')} does not exist")
                 CONSOLE.log(f"Matrix {motifs.replace('.png', '.txt')} does not exist")
                 sys.exit(1)
