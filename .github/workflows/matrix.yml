@@ -1,4 +1,4 @@
-name: CI Test HLA-PepClust on Ubuntu, macOS, and Windows
+name: new-features CI Test HLA-PepClust on Ubuntu, macOS, and Windows
 
 on:
   push:
