@@ -17,7 +17,8 @@ setup(
         "rich-argparse==1.7.0",
         "opencv-python",
         "altair==5.5.0",
-        "vl-convert-python==1.7.0"
+        "vl-convert-python==1.7.0",
+        "ipykernel"
     ],
     entry_points={
         "console_scripts": [

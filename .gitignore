@@ -8,6 +8,7 @@ data/*html
 !data/ref_data/
 # Allow motif PNGs
 !data/ref_data/Gibbs_motifs_human/motif/*.png
+!data/ref_data/Gibbs_motifs_mouse/motif/*.png 
 output/*
 .DS_Store
 cli/*__pycache__
