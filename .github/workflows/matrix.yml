@@ -9,7 +9,7 @@ on:
       - main
 
 jobs:
-  setup:
+  test:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -27,65 +27,51 @@ jobs:
         shell: bash
         run: |
           python -m venv hlapepclust-env
-          if [[ "$RUNNER_OS" == "Windows" ]]; then
-            echo "source hlapepclust-env/Scripts/activate" >> $GITHUB_ENV
+          if [ "$RUNNER_OS" == "Windows" ]; then
+            source hlapepclust-env/Scripts/activate
           else
-            echo "source hlapepclust-env/bin/activate" >> $GITHUB_ENV
+            source hlapepclust-env/bin/activate
           fi
-          source $GITHUB_ENV
-          pip install --upgrade pip
-          pip install .
-
-  test:
-    runs-on: ${{ matrix.os }}
-    needs: setup
-    strategy:
-      matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-
-      - name: Set up Python 3.9
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.9'
-
-      - name: Activate virtual environment and install dependencies
-        shell: bash
-        run: |
-          source $GITHUB_ENV
           pip install --upgrade pip
           pip install -e .
-
+          
       - name: Run `clust-search` --help command
         shell: bash
         run: |
-          source $GITHUB_ENV
+          if [ "$RUNNER_OS" == "Windows" ]; then
+            source hlapepclust-env/Scripts/activate
+          else
+            source hlapepclust-env/bin/activate
+          fi
           clust-search -h
 
       - name: Run `clust-search` --version command
         shell: bash
         run: |
-          source $GITHUB_ENV
+          if [ "$RUNNER_OS" == "Windows" ]; then
+            source hlapepclust-env/Scripts/activate
+          else
+            source hlapepclust-env/bin/activate
+          fi
           clust-search --version
       
       - name: Check current directory
+        shell: bash
         run: |
+          if [ "$RUNNER_OS" == "Windows" ]; then
+            source hlapepclust-env/Scripts/activate
+          else
+            source hlapepclust-env/bin/activate
+          fi
           ls
           pwd
 
       - name: Run `clust-search` command with test data
         shell: bash
         run: |
-          source $GITHUB_ENV
-          clust-search data/D90_HLA_3844874 data/ref_data/Gibbs_motifs_human/output_matrices_human --hla_types A0201,A0101,B1302,B3503,C0401 --n_clusters 6 --output test_results --processes 4
-
-      - name: Deactivate virtual environment
-        shell: bash
-        run: |
-          if [[ "$RUNNER_OS" == "Windows" ]]; then
-            exit 0
+          if [ "$RUNNER_OS" == "Windows" ]; then
+            source hlapepclust-env/Scripts/activate
           else
-            deactivate
+            source hlapepclust-env/bin/activate
           fi
+          clust-search data/D90_HLA_3844874 data/ref_data/Gibbs_motifs_human/output_matrices_human --hla_types A0201,A0101,B1302,B3503,C0401 --n_clusters 6 --output test_results --processes 4
