@@ -124,6 +124,21 @@ After finishing, deactivate the virtual environment with:
 deactivate
 ```
 
+
+## Running HLA-PepClust in Google Colab  
+
+You can try out **HLA-PepClust** directly in **Google Colab** without installing anything on your local system!  
+
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Sanpme66/HLA-PepClust/blob/main/example/HLA_PepClust_testing.ipynb)  
+
+### Steps to Run in Colab  
+
+1. Click the **"Open In Colab"** button above.  
+2. Once the notebook opens in Colab, go to **Runtime → Run All** to execute all cells.  
+3. Modify input parameters if needed and run the pipeline in Colab.  
+
+
+
 ## Conclusion  
 
 More detailed instructions coming soon... 🚀  
