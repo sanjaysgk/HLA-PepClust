@@ -137,6 +137,9 @@ You can try out **HLA-PepClust** directly in **Google Colab** without installing
 2. Once the notebook opens in Colab, go to **Runtime → Run All** to execute all cells.  
 3. Modify input parameters if needed and run the pipeline in Colab.  
 
+Example of `input` folder path:  
+
+![Example Output](assets/img/google-colab.png)  
 
 
 ## Conclusion  
