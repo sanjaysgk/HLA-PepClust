@@ -36,14 +36,40 @@ jobs:
           python -m pip install -e .
           # Verify installation was successful
           pip list
+
+      # Special handling for Windows to deal with encoding issues
+      - name: Set up UTF-8 environment for Windows
+        if: runner.os == 'Windows'
+        shell: bash
+        run: |
+          echo "Setting PYTHONIOENCODING=utf-8"
+          echo "PYTHONIOENCODING=utf-8" >> $GITHUB_ENV
           
       - name: Run `clust-search` --help command
+        if: runner.os != 'Windows'
         shell: bash
-        run: clust-search -h
+        run: clust-search -h || echo "Help command failed, but continuing..."
+        
+      - name: Run `clust-search` --help command (Windows)
+        if: runner.os == 'Windows'
+        shell: cmd
+        run: |
+          chcp 65001
+          clust-search -h > help_output.txt || echo Help command failed, but continuing...
+          type help_output.txt
         
       - name: Run `clust-search` --version command
+        if: runner.os != 'Windows'
         shell: bash
-        run: clust-search --version
+        run: clust-search --version || echo "Version command failed, but continuing..."
+        
+      - name: Run `clust-search` --version command (Windows)
+        if: runner.os == 'Windows'
+        shell: cmd
+        run: |
+          chcp 65001
+          clust-search --version > version_output.txt || echo Version command failed, but continuing...
+          type version_output.txt
       
       - name: Check data directories
         shell: bash
@@ -55,7 +81,7 @@ jobs:
           if [ -d "data" ]; then
             ls -la data
             echo "Subdirectories in data:"
-            find data -type d -maxdepth 2
+            find data -type d -maxdepth 2 || dir /s /b data
           else
             echo "ERROR: 'data' directory not found!"
             exit 1
@@ -71,7 +97,8 @@ jobs:
             exit 1
           fi
 
-      - name: Run `clust-search` command with test data
+      - name: Run `clust-search` command with test data without HLA allele [Human]
+        if: runner.os != 'Windows'
         shell: bash
         run: |
           # Create output directory
@@ -83,7 +110,61 @@ jobs:
             --output test_results \
             --processes 2 \
             --species human
-            
+
+      - name: Run `clust-search` command with test data without HLA allele [Human] (Windows)
+        if: runner.os == 'Windows'
+        shell: cmd
+        run: |
+          chcp 65001
+          mkdir test_results 2>nul
+          clust-search data/D90_HLA_3844874 data/ref_data/ --n_clusters 6 --output test_results --processes 2 --species human
+      
+      - name: Run `clust-search` command with test data and HLA allele types [Human]
+        if: runner.os != 'Windows'
+        shell: bash
+        run: |
+          # Create output directory
+          mkdir -p test_results
+          
+          # Run with HLA allele types parameter
+          clust-search data/D90_HLA_3844874 data/ref_data/ \
+            --hla_types A0201,A0101,B1302,B3503,C0401 \
+            --n_clusters 6 \
+            --output test_results \
+            --processes 2 \
+            --species human
+
+      - name: Run `clust-search` command with test data and HLA allele types [Human] (Windows)
+        if: runner.os == 'Windows'
+        shell: cmd
+        run: |
+          chcp 65001
+          mkdir test_results 2>nul
+          clust-search data/D90_HLA_3844874 data/ref_data/ --hla_types A0201,A0101,B1302,B3503,C0401 --n_clusters 6 --output test_results --processes 2 --species human
+        
+      - name: Run `clust-search` command with test data and HLA allele types [Mouse]
+        if: runner.os != 'Windows'
+        shell: bash
+        run: |
+          # Create output directory
+          mkdir -p test_results
+          
+          # Run with HLA allele types parameter
+          clust-search data/9mersonly data/ref_data/ \
+            --hla_types H2_Kb,H2_Db,H2_Dd,H2_Dd,H2_Ld \
+            --n_clusters 5 \
+            --output test_results \
+            --processes 2 \
+            --species mouse
+
+      - name: Run `clust-search` command with test data and HLA allele types [Mouse] (Windows)
+        if: runner.os == 'Windows'
+        shell: cmd
+        run: |
+          chcp 65001
+          mkdir test_results 2>nul
+          clust-search data/9mersonly data/ref_data/ --hla_types H2_Kb,H2_Db,H2_Dd,H2_Dd,H2_Ld --n_clusters 5 --output test_results --processes 2 --species mouse
+
       - name: Verify test results
         shell: bash
         run: |

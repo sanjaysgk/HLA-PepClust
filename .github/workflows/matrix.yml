@@ -3,10 +3,10 @@ name: CI Test HLA-PepClust on Ubuntu, macOS, and Windows
 on:
   push:
     branches:
-      - main
+      - new-features
   pull_request:
     branches:
-      - main
+      - new-features
 
 jobs:
   test:
@@ -74,4 +74,4 @@ jobs:
           else
             source hlapepclust-env/bin/activate
           fi
-          clust-search data/D90_HLA_3844874 data/ref_data/Gibbs_motifs_human/output_matrices_human --hla_types A0201,A0101,B1302,B3503,C0401 --n_clusters 6 --output test_results --processes 4
+          clust-search data/D90_HLA_3844874 data/ref_data/ --n_clusters 6 --output test_results --processes 4
