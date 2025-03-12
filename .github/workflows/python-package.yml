@@ -15,9 +15,13 @@ jobs:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
       fail-fast: false
+    timeout-minutes: 30
+    
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 1
 
       - name: Set up Python 3.12
         uses: actions/setup-python@v4
@@ -36,25 +40,59 @@ jobs:
       - name: Run `clust-search` --help command
         shell: bash
         run: clust-search -h
-
+        
       - name: Run `clust-search` --version command
         shell: bash
         run: clust-search --version
       
-      - name: Check current directory
+      - name: Check data directories
         shell: bash
         run: |
+          echo "Current directory contents:"
           ls -la
-          pwd
+          
+          echo "Data directory contents:"
+          if [ -d "data" ]; then
+            ls -la data
+            echo "Subdirectories in data:"
+            find data -type d -maxdepth 2
+          else
+            echo "ERROR: 'data' directory not found!"
+            exit 1
+          fi
+          
+          if [ ! -d "data/D90_HLA_3844874" ]; then
+            echo "ERROR: Input data directory 'data/D90_HLA_3844874' not found!"
+            exit 1
+          fi
+          
+          if [ ! -d "data/ref_data" ]; then
+            echo "ERROR: Reference data directory 'data/ref_data' not found!"
+            exit 1
+          fi
 
       - name: Run `clust-search` command with test data
         shell: bash
         run: |
-          # Verify data directories exist
-          if [ ! -d "data/D90_HLA_3844874" ] || [ ! -d "data/ref_data/" ]; then
-            echo "Warning: Data directories not found, listing available data:"
-            find data -type d | sort
-          fi
+          # Create output directory
+          mkdir -p test_results
           
-          # Run with reduced processes to avoid memory issues
-          clust-search data/D90_HLA_3844874 data/ref_data/ --hla_types A0201,A0101,B1302,B3503,C0401 --n_clusters 6 --output test_results --processes 2
+          # Run with species parameter
+          clust-search data/D90_HLA_3844874 data/ref_data/ \
+            --hla_types A0201,A0101,B1302,B3503,C0401 \
+            --n_clusters 6 \
+            --output test_results \
+            --processes 2 \
+            --species human
+            
+      - name: Verify test results
+        shell: bash
+        run: |
+          echo "Checking test results directory:"
+          if [ -d "test_results" ]; then
+            ls -la test_results
+            echo "Success! Test results generated."
+          else
+            echo "ERROR: No test results directory found!"
+            exit 1
+          fi
