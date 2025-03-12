@@ -1970,8 +1970,18 @@ document.addEventListener('DOMContentLoaded', initHeatmap);
             gibbs_img = self._find_gibbs_image_path(str(row).split("/")[-1].split('.')[1], os.path.join(gibbs_out, 'logos'))
 
             if gibbs_img:
-                shutil.copy(gibbs_img, os.path.join(self._outfolder, 'cluster-img', f"{str(gibbs_img).split('/')[-1]}"))
-                output_dict[str(row).split("/")[-1].split('.')[1]]['gibbs_img'] = os.path.join(self._outfolder, 'cluster-img', f"{str(gibbs_img).split('/')[-1]}")
+                # shutil.copy(gibbs_img, os.path.join(self._outfolder, 'cluster-img', f"{str(gibbs_img).split('/')[-1]}"))
+                # Use os.path functions for platform-independent path handling
+                gibbs_img_basename = os.path.basename(gibbs_img)
+                dest_path = os.path.join(os.path.join(self._outfolder, 'cluster-img'), gibbs_img_basename)
+                shutil.copy(gibbs_img, dest_path)
+            
+                # output_dict[str(row).split("/")[-1].split('.')[1]]['gibbs_img'] = os.path.join(self._outfolder, 'cluster-img', f"{str(gibbs_img).split('/')[-1]}")
+                # Use platform-independent path operations for the output dictionary
+                row_basename = os.path.basename(str(row))
+                row_name = os.path.splitext(row_basename)[0].split('.')[1]
+                output_dict[row_name]['gibbs_img'] = dest_path
+                
             if self.species == 'human':
                 hla = str(col).split('/')[-1].replace('.txt','').split('_')[1]
             else:
@@ -1979,8 +1989,16 @@ document.addEventListener('DOMContentLoaded', initHeatmap);
             nat_path = db[db['formatted_allotypes'] == hla]['motif_path'].values[0]
             
             if nat_path:
-                shutil.copy(os.path.join(self.db_path,nat_path), os.path.join(self._outfolder, 'allotypes-img', f"{str(nat_path).split('/')[-1]}"))
-                output_dict[str(row).split("/")[-1].split('.')[1]]['nat_img'] = os.path.join(self._outfolder, 'allotypes-img', f"{str(nat_path).split('/')[-1]}")
+                # shutil.copy(os.path.join(self.db_path,nat_path), os.path.join(self._outfolder, 'allotypes-img', f"{str(nat_path).split('/')[-1]}"))
+                src_path = os.path.join(self.db_path, nat_path)
+                nat_path_basename = os.path.basename(nat_path)
+                dest_path = os.path.join(os.path.join(self._outfolder, 'allotypes-img'), nat_path_basename)
+                # Copy the file
+                shutil.copy(src_path, dest_path)
+                # output_dict[str(row).split("/")[-1].split('.')[1]]['nat_img'] = os.path.join(self._outfolder, 'allotypes-img', f"{str(nat_path).split('/')[-1]}")
+                row_basename = os.path.basename(str(row))
+                row_name = os.path.splitext(row_basename)[0].split('.')[1]
+                output_dict[row_name]['nat_img'] = dest_path
             
             try:
                 gibbs_mt = self.format_input_gibbs(row)
