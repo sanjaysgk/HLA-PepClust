@@ -1,5 +1,6 @@
 /Users/
 **/.venv
+.venv
 ./DS_Store
 ./__pycache__
 .gitignore
