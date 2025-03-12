@@ -186,7 +186,7 @@ class ClusterSearch:
         :param HLA: HLA file name
         :return: Formatted HLA type
         """
-        return HLA.replace("HLA_", "").replace("*", "").replace("txt", "")
+        return HLA.replace("HLA_", "").replace("*", "").replace("txt", "").replace(".","")
 
     def check_HLA_DB(self, HLA_list: list, ref_folder: str) -> bool:
         """
@@ -453,7 +453,7 @@ class ClusterSearch:
                         
                         else:
                             self.console.log(
-                                f"Skipping {str(mat_path).split('/')[0]} as it is not in the provided HLA list"
+                                f"Skipping {self.formate_HLA_DB(str(mat_path).split('/')[0])} as it is not in the provided HLA list"
                             )
                          
                             
@@ -506,11 +506,11 @@ class ClusterSearch:
                         for mat_path in db['matrices_path']:
                             if (
                                 hla_list is not None
-                                and self.formate_HLA_DB(str(mat_path).split('/')[0]) in hla_list
+                                and self.formate_HLA_DB(str(mat_path).split('/')[-1]) in hla_list
                             ):
                                 correlation = self._compute_and_log_correlation_V2(
                                     os.path.join(gibbs_result_matrix, gibbs_f),
-                                    mat_path,
+                                     mat_path,
                                 )
                                 status.update(
                                     status=f"[bold blue] Compute correlation between {gibbs_f} and {str(mat_path).split('/')[-1]} with correlation {correlation:.4f}",
@@ -533,7 +533,7 @@ class ClusterSearch:
                         
                             else:
                                 self.console.log(
-                                    f"Skipping {str(mat_path).split('/')[0]} as it is not in the provided HLA list"
+                                    f"Skipping ref databse {self.formate_HLA_DB(str(mat_path).split('/')[-1])} as it is not in the provided HLA list {hla_list}"
                                 )
         else:
             self.console.log(
