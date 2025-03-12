@@ -19,10 +19,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Set up Python 3.9
+      - name: Set up Python 3.12
         uses: actions/setup-python@v4
         with:
-          python-version: '3.9'
+          python-version: '3.12'
           cache: 'pip'
 
       - name: Install dependencies
@@ -51,7 +51,7 @@ jobs:
         shell: bash
         run: |
           # Verify data directories exist
-          if [ ! -d "data/D90_HLA_3844874" ] || [ ! -d "data/ref_data/Gibbs_motifs_human/output_matrices_human" ]; then
+          if [ ! -d "data/D90_HLA_3844874" ] || [ ! -d "data/ref_data/" ]; then
             echo "Warning: Data directories not found, listing available data:"
             find data -type d | sort
           fi
