@@ -47,15 +47,15 @@ def _check_ref_files(config):
             sys.exit(1)
         if not os.path.exists(os.path.join(config[species]["ref_data"],config[species]["path"],config[species]["matrix"])):
             # sys.exit(f"Matrix path {config[species]['path'] + config[species]['matrix']} does not exist")
-            CONSOLE.log(f"Matrix path {os.path.join(config[species]["ref_data"],config[species]["path"],config[species]["matrix"])} does not exist")
+            CONSOLE.log(f"Matrix path {os.path.join(config[species]['ref_data'],config[species]['path'],config[species]["matrix"])} does not exist")
             sys.exit(1)
-        if not os.path.exists(os.path.join(config[species]["ref_data"],config[species]["path"] ,config[species]["motif"])):
+        if not os.path.exists(os.path.join(config[species]['ref_data'],config[species]['path'] ,config[species]["motif"])):
             # sys.exit(f"Motif path {config[species]['path'] + config[species]['motif']} does not exist")
-            CONSOLE.log(f"Motif path {os.path.join(config[species]["ref_data"],config[species]["path"] ,config[species]["motif"])} does not exist")
+            CONSOLE.log(f"Motif path {os.path.join(config[species]['ref_data'],config[species]['path'] ,config[species]['motif'])} does not exist")
             sys.exit(1)
         if not os.path.exists(os.path.join(config[species]["ref_data"], config[species]["allotypes"])):
             # sys.exit(f"Allotype path {config[species]['path'] + config[species]['allotypes']} does not exist")
-            CONSOLE.log(f"Allotype path {os.path.join(config[species]["ref_data"], config[species]["allotypes"])} does not exist")
+            CONSOLE.log(f"Allotype path {os.path.join(config[species]['ref_data'], config[species]['allotypes'])} does not exist")
             sys.exit(1)
 
 def _HLA_liist(config):
