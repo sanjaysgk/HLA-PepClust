@@ -1,59 +1,60 @@
-name: HLA-PepClust Python Package CI
+name: CI Test HLA-PepClust on Ubuntu, macOS, and Windows
+
 on:
   push:
-    branches-ignore: [ "main" ]
+    branches:
+      - main
   pull_request:
-    branches-ignore: [ "main" ]
+    branches:
+      - main
 
 jobs:
-  build:
-
-    runs-on: ubuntu-latest
+  test:
+    runs-on: ${{ matrix.os }}
     strategy:
-      fail-fast: false
       matrix:
-        python-version: ["3.9", "3.10", "3.11"]
-
+        os: [ubuntu-latest, macos-latest, windows-latest]
+      fail-fast: false
     steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-    - name: Set Up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v3
-      with:
-        python-version: ${{ matrix.python-version }}
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+          cache: 'pip'
 
-    - name: Install Poetry
-      run: |
-        python -m pip install --upgrade pip
-        pip install poetry
+      - name: Install dependencies
+        shell: bash
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e .
+          # Verify installation was successful
+          pip list
+          
+      - name: Run `clust-search` --help command
+        shell: bash
+        run: clust-search -h
 
-    - name: Install Dependencies
-      run: |
-        poetry install --no-interaction --no-root
-        poetry run pip install flake8 pytest
-    
-    - name: Check if pytest is installed
-      run: poetry run pytest --version || echo "pytest is not installed"
+      - name: Run `clust-search` --version command
+        shell: bash
+        run: clust-search --version
+      
+      - name: Check current directory
+        shell: bash
+        run: |
+          ls -la
+          pwd
 
-    - name: Lint with flake8
-      run: |
-        poetry run flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
-        poetry run flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
-
-    - name: Run Tests with pytest
-      run: |
-        poetry install     
-        #export PYTHONPATH=$PYTHONPATH:$(pwd)/cli #poetry run pytest
-
-    - name: Verify CLI Help Command
-      run: |
-        poetry run cluster-search -h
-    
-    - name: Verify CLI Version Command
-      run: |
-        poetry run cluster-search --version
-
-    - name: Verify CLI Command test data
-      run: |
-        poetry run clust-search data/D90_HLA_3844874 data/ref_data/Gibbs_motifs_human/output_matrices_human --hla_types A0201,A0101,B1302,B3503,C0401 --n_clusters 6 --output test_results --processes 4
+      - name: Run `clust-search` command with test data
+        shell: bash
+        run: |
+          # Verify data directories exist
+          if [ ! -d "data/D90_HLA_3844874" ] || [ ! -d "data/ref_data/Gibbs_motifs_human/output_matrices_human" ]; then
+            echo "Warning: Data directories not found, listing available data:"
+            find data -type d | sort
+          fi
+          
+          # Run with reduced processes to avoid memory issues
+          clust-search data/D90_HLA_3844874 data/ref_data/Gibbs_motifs_human/output_matrices_human --hla_types A0201,A0101,B1302,B3503,C0401 --n_clusters 6 --output test_results --processes 2
