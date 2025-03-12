@@ -1,4 +1,4 @@
-name: CI: Test HLA-PepClust on Ubuntu, macOS, and Windows
+name: CI Test HLA-PepClust on Ubuntu, macOS, and Windows
 
 on:
   push:
@@ -56,18 +56,7 @@ jobs:
         run: |
           source $GITHUB_ENV
           pip install --upgrade pip
-          pip install .
-
-      - name: Download test data (example)
-        shell: bash
-        run: |
-          mkdir -p data
-          if [[ "$RUNNER_OS" == "Windows" ]]; then
-            Invoke-WebRequest -Uri "https://github.com/Sanpme66/HLA-PepClust/raw/new-features/data.zip" -OutFile "data.zip"
-          else
-            wget -O data.zip "https://github.com/Sanpme66/HLA-PepClust/raw/new-features/data.zip"
-          fi
-          unzip data.zip -d data/
+          pip install -e .
 
       - name: Run `clust-search` --help command
         shell: bash
