@@ -1,0 +1,3791 @@
+{
+  "heatmapData": [
+    {
+      "cluster": "1of5",
+      "hla": "HLA_A0101",
+      "correlation": 0.19
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_A0201",
+      "correlation": 0.44
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_A0202",
+      "correlation": 0.27
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_A0203",
+      "correlation": 0.48
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_A0204",
+      "correlation": 0.48
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_A0205",
+      "correlation": 0.34
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_A0206",
+      "correlation": 0.51
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_A0207",
+      "correlation": 0.51
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_A0211",
+      "correlation": 0.42
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_A0252",
+      "correlation": 0.32
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_A0301",
+      "correlation": 0.43
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_A0302",
+      "correlation": 0.22
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_A1101",
+      "correlation": 0.38
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_A1102",
+      "correlation": 0.34
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_A2301",
+      "correlation": 0.45
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_A2402",
+      "correlation": 0.44
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_A2407",
+      "correlation": 0.36
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_A2501",
+      "correlation": 0.45
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_A2601",
+      "correlation": 0.44
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_A2608",
+      "correlation": 0.3
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_A2902",
+      "correlation": 0.36
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_A3001",
+      "correlation": 0.47
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_A3002",
+      "correlation": 0.31
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_A3101",
+      "correlation": 0.38
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_A3201",
+      "correlation": 0.32
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_A3301",
+      "correlation": 0.29
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_A3303",
+      "correlation": 0.29
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_A3401",
+      "correlation": 0.3
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_A3601",
+      "correlation": 0.17
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_A6601",
+      "correlation": 0.28
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_A6801",
+      "correlation": 0.28
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_A6802",
+      "correlation": 0.39
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_A6901",
+      "correlation": 0.42
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_A7401",
+      "correlation": 0.3
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_B0702",
+      "correlation": 0.39
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_B0704",
+      "correlation": 0.34
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_B0801",
+      "correlation": 0.25
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_B1301",
+      "correlation": 0.21
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_B1302",
+      "correlation": 0.29
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_B1401",
+      "correlation": 0.27
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_B1402",
+      "correlation": 0.33
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_B1501",
+      "correlation": 0.32
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_B1502",
+      "correlation": 0.3
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_B1503",
+      "correlation": 0.33
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_B1510",
+      "correlation": 0.34
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_B1511",
+      "correlation": 0.22
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_B1513",
+      "correlation": 0.31
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_B1517",
+      "correlation": 0.43
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_B1518",
+      "correlation": 0.33
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_B1801",
+      "correlation": 0.17
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_B1803",
+      "correlation": 0.11
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_B1805",
+      "correlation": 0.17
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_B2704",
+      "correlation": 0.42
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_B2705",
+      "correlation": 0.34
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_B2709",
+      "correlation": 0.39
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_B3501",
+      "correlation": 0.28
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_B3502",
+      "correlation": 0.19
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_B3503",
+      "correlation": 0.28
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_B3507",
+      "correlation": 0.23
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_B3508",
+      "correlation": 0.18
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_B3701",
+      "correlation": 0.33
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_B3801",
+      "correlation": 0.19
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_B3802",
+      "correlation": 0.14
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_B3901",
+      "correlation": 0.27
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_B3905",
+      "correlation": 0.26
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_B3906",
+      "correlation": 0.28
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_B3924",
+      "correlation": 0.37
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_B4001",
+      "correlation": 0.19
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_B4002",
+      "correlation": 0.29
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_B4006",
+      "correlation": 0.26
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_B4032",
+      "correlation": 0.39
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_B4101",
+      "correlation": 0.07
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_B4201",
+      "correlation": 0.35
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_B4402",
+      "correlation": 0.27
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_B4403",
+      "correlation": 0.27
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_B4405",
+      "correlation": 0.29
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_B4501",
+      "correlation": 0.23
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_B4601",
+      "correlation": 0.46
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_B4701",
+      "correlation": 0.31
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_B4801",
+      "correlation": 0.17
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_B4901",
+      "correlation": 0.4
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_B5001",
+      "correlation": 0.36
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_B5101",
+      "correlation": 0.42
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_B5108",
+      "correlation": 0.32
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_B5201",
+      "correlation": 0.29
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_B5301",
+      "correlation": 0.21
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_B5401",
+      "correlation": 0.29
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_B5501",
+      "correlation": 0.42
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_B5502",
+      "correlation": 0.36
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_B5601",
+      "correlation": 0.35
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_B5701",
+      "correlation": 0.32
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_B5703",
+      "correlation": 0.31
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_B5801",
+      "correlation": 0.21
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_B5802",
+      "correlation": 0.23
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_B6701",
+      "correlation": 0.29
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_B7301",
+      "correlation": 0.25
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_B8101",
+      "correlation": 0.38
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_C0102",
+      "correlation": 0.49
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_C0202",
+      "correlation": 0.32
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_C0302",
+      "correlation": 0.5
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_C0303",
+      "correlation": 0.48
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_C0304",
+      "correlation": 0.5
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_C0401",
+      "correlation": 0.27
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_C0403",
+      "correlation": 0.22
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_C0501",
+      "correlation": 0.35
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_C0602",
+      "correlation": 0.35
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_C0701",
+      "correlation": 0.29
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_C0702",
+      "correlation": 0.24
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_C0704",
+      "correlation": 0.29
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_C0801",
+      "correlation": 0.4
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_C0802",
+      "correlation": 0.33
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_C1202",
+      "correlation": 0.4
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_C1203",
+      "correlation": 0.36
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_C1204",
+      "correlation": 0.28
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_C1402",
+      "correlation": 0.45
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_C1403",
+      "correlation": 0.41
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_C1502",
+      "correlation": 0.47
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_C1505",
+      "correlation": 0.34
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_C1601",
+      "correlation": 0.39
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_C1602",
+      "correlation": 0.25
+    },
+    {
+      "cluster": "1of5",
+      "hla": "HLA_C1701",
+      "correlation": 0.4
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_A0101",
+      "correlation": 0.15
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_A0201",
+      "correlation": 0.27
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_A0202",
+      "correlation": 0.15
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_A0203",
+      "correlation": 0.2
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_A0204",
+      "correlation": 0.3
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_A0205",
+      "correlation": 0.2
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_A0206",
+      "correlation": 0.24
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_A0207",
+      "correlation": 0.29
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_A0211",
+      "correlation": 0.2
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_A0252",
+      "correlation": 0.27
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_A0301",
+      "correlation": 0.28
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_A0302",
+      "correlation": 0.28
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_A1101",
+      "correlation": 0.4
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_A1102",
+      "correlation": 0.4
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_A2301",
+      "correlation": 0.1
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_A2402",
+      "correlation": 0.1
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_A2407",
+      "correlation": 0.06
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_A2501",
+      "correlation": 0.1
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_A2601",
+      "correlation": 0.16
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_A2608",
+      "correlation": 0.24
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_A2902",
+      "correlation": 0.3
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_A3001",
+      "correlation": 0.17
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_A3002",
+      "correlation": 0.12
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_A3101",
+      "correlation": 0.34
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_A3201",
+      "correlation": 0.19
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_A3301",
+      "correlation": 0.34
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_A3303",
+      "correlation": 0.34
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_A3401",
+      "correlation": 0.25
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_A3601",
+      "correlation": 0.12
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_A6601",
+      "correlation": 0.32
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_A6801",
+      "correlation": 0.36
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_A6802",
+      "correlation": 0.3
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_A6901",
+      "correlation": 0.29
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_A7401",
+      "correlation": 0.3
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_B0702",
+      "correlation": -0.04
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_B0704",
+      "correlation": -0.09
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_B0801",
+      "correlation": 0.18
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_B1301",
+      "correlation": 0.2
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_B1302",
+      "correlation": 0.25
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_B1401",
+      "correlation": 0.17
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_B1402",
+      "correlation": 0.15
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_B1501",
+      "correlation": 0.15
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_B1502",
+      "correlation": 0.13
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_B1503",
+      "correlation": 0.1
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_B1510",
+      "correlation": 0.11
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_B1511",
+      "correlation": 0.22
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_B1513",
+      "correlation": 0.14
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_B1517",
+      "correlation": 0.19
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_B1518",
+      "correlation": 0.16
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_B1801",
+      "correlation": 0.24
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_B1803",
+      "correlation": 0.15
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_B1805",
+      "correlation": 0.32
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_B2704",
+      "correlation": 0.13
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_B2705",
+      "correlation": 0.22
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_B2709",
+      "correlation": 0.2
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_B3501",
+      "correlation": 0.34
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_B3502",
+      "correlation": 0.08
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_B3503",
+      "correlation": 0.16
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_B3507",
+      "correlation": 0.22
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_B3508",
+      "correlation": 0.14
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_B3701",
+      "correlation": 0.13
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_B3801",
+      "correlation": 0.2
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_B3802",
+      "correlation": 0.23
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_B3901",
+      "correlation": 0.19
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_B3905",
+      "correlation": 0.23
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_B3906",
+      "correlation": 0.22
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_B3924",
+      "correlation": 0.11
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_B4001",
+      "correlation": 0.15
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_B4002",
+      "correlation": 0.2
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_B4006",
+      "correlation": 0.21
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_B4032",
+      "correlation": 0.22
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_B4101",
+      "correlation": -0.06
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_B4201",
+      "correlation": -0.02
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_B4402",
+      "correlation": 0.13
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_B4403",
+      "correlation": 0.13
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_B4405",
+      "correlation": 0.13
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_B4501",
+      "correlation": 0.1
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_B4601",
+      "correlation": 0.15
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_B4701",
+      "correlation": 0.25
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_B4801",
+      "correlation": 0.1
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_B4901",
+      "correlation": 0.15
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_B5001",
+      "correlation": 0.15
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_B5101",
+      "correlation": 0.19
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_B5108",
+      "correlation": 0.17
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_B5201",
+      "correlation": 0.2
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_B5301",
+      "correlation": 0.17
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_B5401",
+      "correlation": 0.26
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_B5501",
+      "correlation": 0.06
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_B5502",
+      "correlation": 0.13
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_B5601",
+      "correlation": 0.14
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_B5701",
+      "correlation": 0.21
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_B5703",
+      "correlation": 0.27
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_B5801",
+      "correlation": 0.26
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_B5802",
+      "correlation": 0.16
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_B6701",
+      "correlation": 0.04
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_B7301",
+      "correlation": 0.08
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_B8101",
+      "correlation": 0.17
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_C0102",
+      "correlation": 0.05
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_C0202",
+      "correlation": 0.21
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_C0302",
+      "correlation": 0.24
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_C0303",
+      "correlation": 0.15
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_C0304",
+      "correlation": 0.19
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_C0401",
+      "correlation": 0.03
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_C0403",
+      "correlation": 0.13
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_C0501",
+      "correlation": 0.05
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_C0602",
+      "correlation": 0.2
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_C0701",
+      "correlation": 0.19
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_C0702",
+      "correlation": 0.12
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_C0704",
+      "correlation": 0.22
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_C0801",
+      "correlation": 0.21
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_C0802",
+      "correlation": 0.02
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_C1202",
+      "correlation": 0.16
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_C1203",
+      "correlation": 0.22
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_C1204",
+      "correlation": 0.26
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_C1402",
+      "correlation": 0.04
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_C1403",
+      "correlation": 0.05
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_C1502",
+      "correlation": 0.27
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_C1505",
+      "correlation": 0.13
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_C1601",
+      "correlation": 0.14
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_C1602",
+      "correlation": 0.16
+    },
+    {
+      "cluster": "2of5",
+      "hla": "HLA_C1701",
+      "correlation": 0.26
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_A0101",
+      "correlation": -0.04
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_A0201",
+      "correlation": -0.09
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_A0202",
+      "correlation": -0.15
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_A0203",
+      "correlation": -0.06
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_A0204",
+      "correlation": -0.11
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_A0205",
+      "correlation": -0.17
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_A0206",
+      "correlation": -0.14
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_A0207",
+      "correlation": -0.03
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_A0211",
+      "correlation": -0.1
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_A0252",
+      "correlation": -0.12
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_A0301",
+      "correlation": -0.06
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_A0302",
+      "correlation": -0.1
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_A1101",
+      "correlation": -0.1
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_A1102",
+      "correlation": -0.14
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_A2301",
+      "correlation": -0.04
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_A2402",
+      "correlation": 0.01
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_A2407",
+      "correlation": -0.02
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_A2501",
+      "correlation": -0.11
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_A2601",
+      "correlation": -0.11
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_A2608",
+      "correlation": -0.13
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_A2902",
+      "correlation": -0.08
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_A3001",
+      "correlation": 0.01
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_A3002",
+      "correlation": -0.03
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_A3101",
+      "correlation": -0.06
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_A3201",
+      "correlation": -0.23
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_A3301",
+      "correlation": -0.08
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_A3303",
+      "correlation": -0.03
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_A3401",
+      "correlation": -0.07
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_A3601",
+      "correlation": -0.1
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_A6601",
+      "correlation": -0.08
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_A6801",
+      "correlation": 0.0
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_A6802",
+      "correlation": -0.07
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_A6901",
+      "correlation": -0.14
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_A7401",
+      "correlation": -0.1
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_B0702",
+      "correlation": 0.01
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_B0704",
+      "correlation": -0.04
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_B0801",
+      "correlation": -0.12
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_B1301",
+      "correlation": -0.19
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_B1302",
+      "correlation": -0.11
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_B1401",
+      "correlation": -0.09
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_B1402",
+      "correlation": -0.14
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_B1501",
+      "correlation": -0.16
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_B1502",
+      "correlation": -0.17
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_B1503",
+      "correlation": -0.09
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_B1510",
+      "correlation": -0.05
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_B1511",
+      "correlation": -0.1
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_B1513",
+      "correlation": -0.12
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_B1517",
+      "correlation": -0.18
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_B1518",
+      "correlation": -0.04
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_B1801",
+      "correlation": -0.12
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_B1803",
+      "correlation": -0.02
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_B1805",
+      "correlation": -0.06
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_B2704",
+      "correlation": -0.04
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_B2705",
+      "correlation": -0.05
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_B2709",
+      "correlation": -0.08
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_B3501",
+      "correlation": -0.09
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_B3502",
+      "correlation": -0.06
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_B3503",
+      "correlation": -0.05
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_B3507",
+      "correlation": -0.13
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_B3508",
+      "correlation": -0.04
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_B3701",
+      "correlation": -0.06
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_B3801",
+      "correlation": -0.15
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_B3802",
+      "correlation": -0.13
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_B3901",
+      "correlation": -0.07
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_B3905",
+      "correlation": -0.04
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_B3906",
+      "correlation": -0.02
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_B3924",
+      "correlation": 0.07
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_B4001",
+      "correlation": -0.09
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_B4002",
+      "correlation": 0.04
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_B4006",
+      "correlation": -0.08
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_B4032",
+      "correlation": -0.05
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_B4101",
+      "correlation": -0.01
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_B4201",
+      "correlation": -0.01
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_B4402",
+      "correlation": -0.09
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_B4403",
+      "correlation": -0.11
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_B4405",
+      "correlation": -0.08
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_B4501",
+      "correlation": -0.12
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_B4601",
+      "correlation": -0.09
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_B4701",
+      "correlation": 0.07
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_B4801",
+      "correlation": -0.06
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_B4901",
+      "correlation": -0.05
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_B5001",
+      "correlation": -0.04
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_B5101",
+      "correlation": 0.03
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_B5108",
+      "correlation": 0.09
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_B5201",
+      "correlation": 0.02
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_B5301",
+      "correlation": -0.11
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_B5401",
+      "correlation": 0.04
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_B5501",
+      "correlation": 0.04
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_B5502",
+      "correlation": 0.02
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_B5601",
+      "correlation": -0.01
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_B5701",
+      "correlation": -0.12
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_B5703",
+      "correlation": -0.13
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_B5801",
+      "correlation": -0.21
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_B5802",
+      "correlation": -0.08
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_B6701",
+      "correlation": -0.1
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_B7301",
+      "correlation": -0.04
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_B8101",
+      "correlation": -0.04
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_C0102",
+      "correlation": 0.05
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_C0202",
+      "correlation": -0.12
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_C0302",
+      "correlation": -0.13
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_C0303",
+      "correlation": -0.09
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_C0304",
+      "correlation": -0.07
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_C0401",
+      "correlation": 0.13
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_C0403",
+      "correlation": 0.05
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_C0501",
+      "correlation": 0.03
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_C0602",
+      "correlation": -0.02
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_C0701",
+      "correlation": -0.11
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_C0702",
+      "correlation": 0.0
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_C0704",
+      "correlation": -0.09
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_C0801",
+      "correlation": -0.14
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_C0802",
+      "correlation": 0.0
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_C1202",
+      "correlation": -0.05
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_C1203",
+      "correlation": -0.07
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_C1204",
+      "correlation": -0.03
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_C1402",
+      "correlation": 0.06
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_C1403",
+      "correlation": 0.02
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_C1502",
+      "correlation": -0.12
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_C1505",
+      "correlation": -0.05
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_C1601",
+      "correlation": -0.1
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_C1602",
+      "correlation": -0.04
+    },
+    {
+      "cluster": "3of5",
+      "hla": "HLA_C1701",
+      "correlation": -0.1
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_A0101",
+      "correlation": 0.28
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_A0201",
+      "correlation": 0.56
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_A0202",
+      "correlation": 0.51
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_A0203",
+      "correlation": 0.52
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_A0204",
+      "correlation": 0.56
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_A0205",
+      "correlation": 0.51
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_A0206",
+      "correlation": 0.53
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_A0207",
+      "correlation": 0.53
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_A0211",
+      "correlation": 0.57
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_A0252",
+      "correlation": 0.49
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_A0301",
+      "correlation": 0.41
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_A0302",
+      "correlation": 0.22
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_A1101",
+      "correlation": 0.38
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_A1102",
+      "correlation": 0.34
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_A2301",
+      "correlation": 0.45
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_A2402",
+      "correlation": 0.45
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_A2407",
+      "correlation": 0.37
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_A2501",
+      "correlation": 0.38
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_A2601",
+      "correlation": 0.45
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_A2608",
+      "correlation": 0.35
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_A2902",
+      "correlation": 0.39
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_A3001",
+      "correlation": 0.36
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_A3002",
+      "correlation": 0.4
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_A3101",
+      "correlation": 0.48
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_A3201",
+      "correlation": 0.49
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_A3301",
+      "correlation": 0.35
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_A3303",
+      "correlation": 0.32
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_A3401",
+      "correlation": 0.25
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_A3601",
+      "correlation": 0.34
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_A6601",
+      "correlation": 0.23
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_A6801",
+      "correlation": 0.32
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_A6802",
+      "correlation": 0.48
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_A6901",
+      "correlation": 0.44
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_A7401",
+      "correlation": 0.39
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_B0702",
+      "correlation": 0.32
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_B0704",
+      "correlation": 0.25
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_B0801",
+      "correlation": 0.41
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_B1301",
+      "correlation": 0.39
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_B1302",
+      "correlation": 0.47
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_B1401",
+      "correlation": 0.37
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_B1402",
+      "correlation": 0.43
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_B1501",
+      "correlation": 0.45
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_B1502",
+      "correlation": 0.36
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_B1503",
+      "correlation": 0.46
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_B1510",
+      "correlation": 0.23
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_B1511",
+      "correlation": 0.22
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_B1513",
+      "correlation": 0.33
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_B1517",
+      "correlation": 0.51
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_B1518",
+      "correlation": 0.35
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_B1801",
+      "correlation": 0.38
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_B1803",
+      "correlation": 0.39
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_B1805",
+      "correlation": 0.38
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_B2704",
+      "correlation": 0.4
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_B2705",
+      "correlation": 0.44
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_B2709",
+      "correlation": 0.46
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_B3501",
+      "correlation": 0.34
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_B3502",
+      "correlation": 0.21
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_B3503",
+      "correlation": 0.26
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_B3507",
+      "correlation": 0.31
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_B3508",
+      "correlation": 0.22
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_B3701",
+      "correlation": 0.38
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_B3801",
+      "correlation": 0.31
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_B3802",
+      "correlation": 0.28
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_B3901",
+      "correlation": 0.35
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_B3905",
+      "correlation": 0.31
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_B3906",
+      "correlation": 0.34
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_B3924",
+      "correlation": 0.38
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_B4001",
+      "correlation": 0.31
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_B4002",
+      "correlation": 0.36
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_B4006",
+      "correlation": 0.29
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_B4032",
+      "correlation": 0.3
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_B4101",
+      "correlation": 0.04
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_B4201",
+      "correlation": 0.3
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_B4402",
+      "correlation": 0.39
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_B4403",
+      "correlation": 0.41
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_B4405",
+      "correlation": 0.35
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_B4501",
+      "correlation": 0.14
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_B4601",
+      "correlation": 0.36
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_B4701",
+      "correlation": 0.46
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_B4801",
+      "correlation": 0.36
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_B4901",
+      "correlation": 0.41
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_B5001",
+      "correlation": 0.28
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_B5101",
+      "correlation": 0.41
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_B5108",
+      "correlation": 0.36
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_B5201",
+      "correlation": 0.51
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_B5301",
+      "correlation": 0.3
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_B5401",
+      "correlation": 0.24
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_B5501",
+      "correlation": 0.23
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_B5502",
+      "correlation": 0.26
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_B5601",
+      "correlation": 0.25
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_B5701",
+      "correlation": 0.49
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_B5703",
+      "correlation": 0.54
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_B5801",
+      "correlation": 0.45
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_B5802",
+      "correlation": 0.45
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_B6701",
+      "correlation": 0.27
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_B7301",
+      "correlation": 0.24
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_B8101",
+      "correlation": 0.35
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_C0102",
+      "correlation": 0.41
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_C0202",
+      "correlation": 0.5
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_C0302",
+      "correlation": 0.45
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_C0303",
+      "correlation": 0.34
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_C0304",
+      "correlation": 0.37
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_C0401",
+      "correlation": 0.38
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_C0403",
+      "correlation": 0.33
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_C0501",
+      "correlation": 0.42
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_C0602",
+      "correlation": 0.52
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_C0701",
+      "correlation": 0.4
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_C0702",
+      "correlation": 0.3
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_C0704",
+      "correlation": 0.32
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_C0801",
+      "correlation": 0.36
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_C0802",
+      "correlation": 0.35
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_C1202",
+      "correlation": 0.46
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_C1203",
+      "correlation": 0.5
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_C1204",
+      "correlation": 0.37
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_C1402",
+      "correlation": 0.47
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_C1403",
+      "correlation": 0.46
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_C1502",
+      "correlation": 0.54
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_C1505",
+      "correlation": 0.47
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_C1601",
+      "correlation": 0.43
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_C1602",
+      "correlation": 0.43
+    },
+    {
+      "cluster": "4of5",
+      "hla": "HLA_C1701",
+      "correlation": 0.47
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_A0101",
+      "correlation": 0.32
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_A0201",
+      "correlation": 0.41
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_A0202",
+      "correlation": 0.35
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_A0203",
+      "correlation": 0.38
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_A0204",
+      "correlation": 0.41
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_A0205",
+      "correlation": 0.43
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_A0206",
+      "correlation": 0.46
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_A0207",
+      "correlation": 0.42
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_A0211",
+      "correlation": 0.38
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_A0252",
+      "correlation": 0.31
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_A0301",
+      "correlation": 0.17
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_A0302",
+      "correlation": 0.1
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_A1101",
+      "correlation": 0.19
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_A1102",
+      "correlation": 0.1
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_A2301",
+      "correlation": 0.29
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_A2402",
+      "correlation": 0.38
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_A2407",
+      "correlation": 0.33
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_A2501",
+      "correlation": 0.21
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_A2601",
+      "correlation": 0.22
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_A2608",
+      "correlation": 0.22
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_A2902",
+      "correlation": 0.24
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_A3001",
+      "correlation": 0.2
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_A3002",
+      "correlation": 0.2
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_A3101",
+      "correlation": 0.24
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_A3201",
+      "correlation": 0.24
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_A3301",
+      "correlation": 0.06
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_A3303",
+      "correlation": 0.05
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_A3401",
+      "correlation": 0.05
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_A3601",
+      "correlation": 0.21
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_A6601",
+      "correlation": 0.09
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_A6801",
+      "correlation": 0.17
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_A6802",
+      "correlation": 0.35
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_A6901",
+      "correlation": 0.27
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_A7401",
+      "correlation": 0.13
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_B0702",
+      "correlation": 0.24
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_B0704",
+      "correlation": 0.17
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_B0801",
+      "correlation": 0.41
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_B1301",
+      "correlation": 0.33
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_B1302",
+      "correlation": 0.37
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_B1401",
+      "correlation": 0.27
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_B1402",
+      "correlation": 0.32
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_B1501",
+      "correlation": 0.36
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_B1502",
+      "correlation": 0.21
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_B1503",
+      "correlation": 0.35
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_B1510",
+      "correlation": 0.2
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_B1511",
+      "correlation": 0.18
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_B1513",
+      "correlation": 0.19
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_B1517",
+      "correlation": 0.32
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_B1518",
+      "correlation": 0.26
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_B1801",
+      "correlation": 0.25
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_B1803",
+      "correlation": 0.31
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_B1805",
+      "correlation": 0.27
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_B2704",
+      "correlation": 0.29
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_B2705",
+      "correlation": 0.31
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_B2709",
+      "correlation": 0.33
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_B3501",
+      "correlation": 0.27
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_B3502",
+      "correlation": 0.22
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_B3503",
+      "correlation": 0.25
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_B3507",
+      "correlation": 0.25
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_B3508",
+      "correlation": 0.27
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_B3701",
+      "correlation": 0.35
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_B3801",
+      "correlation": 0.27
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_B3802",
+      "correlation": 0.23
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_B3901",
+      "correlation": 0.31
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_B3905",
+      "correlation": 0.27
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_B3906",
+      "correlation": 0.23
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_B3924",
+      "correlation": 0.32
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_B4001",
+      "correlation": 0.4
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_B4002",
+      "correlation": 0.4
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_B4006",
+      "correlation": 0.2
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_B4032",
+      "correlation": 0.19
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_B4101",
+      "correlation": 0.07
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_B4201",
+      "correlation": 0.24
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_B4402",
+      "correlation": 0.28
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_B4403",
+      "correlation": 0.29
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_B4405",
+      "correlation": 0.29
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_B4501",
+      "correlation": 0.06
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_B4601",
+      "correlation": 0.27
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_B4701",
+      "correlation": 0.38
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_B4801",
+      "correlation": 0.4
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_B4901",
+      "correlation": 0.33
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_B5001",
+      "correlation": 0.16
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_B5101",
+      "correlation": 0.32
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_B5108",
+      "correlation": 0.32
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_B5201",
+      "correlation": 0.36
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_B5301",
+      "correlation": 0.24
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_B5401",
+      "correlation": 0.17
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_B5501",
+      "correlation": 0.1
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_B5502",
+      "correlation": 0.14
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_B5601",
+      "correlation": 0.16
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_B5701",
+      "correlation": 0.4
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_B5703",
+      "correlation": 0.44
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_B5801",
+      "correlation": 0.33
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_B5802",
+      "correlation": 0.35
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_B6701",
+      "correlation": 0.24
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_B7301",
+      "correlation": 0.11
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_B8101",
+      "correlation": 0.23
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_C0102",
+      "correlation": 0.39
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_C0202",
+      "correlation": 0.41
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_C0302",
+      "correlation": 0.39
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_C0303",
+      "correlation": 0.35
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_C0304",
+      "correlation": 0.39
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_C0401",
+      "correlation": 0.25
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_C0403",
+      "correlation": 0.28
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_C0501",
+      "correlation": 0.41
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_C0602",
+      "correlation": 0.4
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_C0701",
+      "correlation": 0.26
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_C0702",
+      "correlation": 0.22
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_C0704",
+      "correlation": 0.39
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_C0801",
+      "correlation": 0.4
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_C0802",
+      "correlation": 0.37
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_C1202",
+      "correlation": 0.35
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_C1203",
+      "correlation": 0.35
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_C1204",
+      "correlation": 0.29
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_C1402",
+      "correlation": 0.36
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_C1403",
+      "correlation": 0.32
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_C1502",
+      "correlation": 0.4
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_C1505",
+      "correlation": 0.36
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_C1601",
+      "correlation": 0.39
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_C1602",
+      "correlation": 0.33
+    },
+    {
+      "cluster": "5of5",
+      "hla": "HLA_C1701",
+      "correlation": 0.46
+    }
+  ],
+  "matrixData": [
+    {
+      "cluster": "1of5",
+      "values": [
+        0.19,
+        0.44,
+        0.27,
+        0.48,
+        0.48,
+        0.34,
+        0.51,
+        0.51,
+        0.42,
+        0.32,
+        0.43,
+        0.22,
+        0.38,
+        0.34,
+        0.45,
+        0.44,
+        0.36,
+        0.45,
+        0.44,
+        0.3,
+        0.36,
+        0.47,
+        0.31,
+        0.38,
+        0.32,
+        0.29,
+        0.29,
+        0.3,
+        0.17,
+        0.28,
+        0.28,
+        0.39,
+        0.42,
+        0.3,
+        0.39,
+        0.34,
+        0.25,
+        0.21,
+        0.29,
+        0.27,
+        0.33,
+        0.32,
+        0.3,
+        0.33,
+        0.34,
+        0.22,
+        0.31,
+        0.43,
+        0.33,
+        0.17,
+        0.11,
+        0.17,
+        0.42,
+        0.34,
+        0.39,
+        0.28,
+        0.19,
+        0.28,
+        0.23,
+        0.18,
+        0.33,
+        0.19,
+        0.14,
+        0.27,
+        0.26,
+        0.28,
+        0.37,
+        0.19,
+        0.29,
+        0.26,
+        0.39,
+        0.07,
+        0.35,
+        0.27,
+        0.27,
+        0.29,
+        0.23,
+        0.46,
+        0.31,
+        0.17,
+        0.4,
+        0.36,
+        0.42,
+        0.32,
+        0.29,
+        0.21,
+        0.29,
+        0.42,
+        0.36,
+        0.35,
+        0.32,
+        0.31,
+        0.21,
+        0.23,
+        0.29,
+        0.25,
+        0.38,
+        0.49,
+        0.32,
+        0.5,
+        0.48,
+        0.5,
+        0.27,
+        0.22,
+        0.35,
+        0.35,
+        0.29,
+        0.24,
+        0.29,
+        0.4,
+        0.33,
+        0.4,
+        0.36,
+        0.28,
+        0.45,
+        0.41,
+        0.47,
+        0.34,
+        0.39,
+        0.25,
+        0.4
+      ]
+    },
+    {
+      "cluster": "2of5",
+      "values": [
+        0.15,
+        0.27,
+        0.15,
+        0.2,
+        0.3,
+        0.2,
+        0.24,
+        0.29,
+        0.2,
+        0.27,
+        0.28,
+        0.28,
+        0.4,
+        0.4,
+        0.1,
+        0.1,
+        0.06,
+        0.1,
+        0.16,
+        0.24,
+        0.3,
+        0.17,
+        0.12,
+        0.34,
+        0.19,
+        0.34,
+        0.34,
+        0.25,
+        0.12,
+        0.32,
+        0.36,
+        0.3,
+        0.29,
+        0.3,
+        -0.04,
+        -0.09,
+        0.18,
+        0.2,
+        0.25,
+        0.17,
+        0.15,
+        0.15,
+        0.13,
+        0.1,
+        0.11,
+        0.22,
+        0.14,
+        0.19,
+        0.16,
+        0.24,
+        0.15,
+        0.32,
+        0.13,
+        0.22,
+        0.2,
+        0.34,
+        0.08,
+        0.16,
+        0.22,
+        0.14,
+        0.13,
+        0.2,
+        0.23,
+        0.19,
+        0.23,
+        0.22,
+        0.11,
+        0.15,
+        0.2,
+        0.21,
+        0.22,
+        -0.06,
+        -0.02,
+        0.13,
+        0.13,
+        0.13,
+        0.1,
+        0.15,
+        0.25,
+        0.1,
+        0.15,
+        0.15,
+        0.19,
+        0.17,
+        0.2,
+        0.17,
+        0.26,
+        0.06,
+        0.13,
+        0.14,
+        0.21,
+        0.27,
+        0.26,
+        0.16,
+        0.04,
+        0.08,
+        0.17,
+        0.05,
+        0.21,
+        0.24,
+        0.15,
+        0.19,
+        0.03,
+        0.13,
+        0.05,
+        0.2,
+        0.19,
+        0.12,
+        0.22,
+        0.21,
+        0.02,
+        0.16,
+        0.22,
+        0.26,
+        0.04,
+        0.05,
+        0.27,
+        0.13,
+        0.14,
+        0.16,
+        0.26
+      ]
+    },
+    {
+      "cluster": "3of5",
+      "values": [
+        -0.04,
+        -0.09,
+        -0.15,
+        -0.06,
+        -0.11,
+        -0.17,
+        -0.14,
+        -0.03,
+        -0.1,
+        -0.12,
+        -0.06,
+        -0.1,
+        -0.1,
+        -0.14,
+        -0.04,
+        0.01,
+        -0.02,
+        -0.11,
+        -0.11,
+        -0.13,
+        -0.08,
+        0.01,
+        -0.03,
+        -0.06,
+        -0.23,
+        -0.08,
+        -0.03,
+        -0.07,
+        -0.1,
+        -0.08,
+        0.0,
+        -0.07,
+        -0.14,
+        -0.1,
+        0.01,
+        -0.04,
+        -0.12,
+        -0.19,
+        -0.11,
+        -0.09,
+        -0.14,
+        -0.16,
+        -0.17,
+        -0.09,
+        -0.05,
+        -0.1,
+        -0.12,
+        -0.18,
+        -0.04,
+        -0.12,
+        -0.02,
+        -0.06,
+        -0.04,
+        -0.05,
+        -0.08,
+        -0.09,
+        -0.06,
+        -0.05,
+        -0.13,
+        -0.04,
+        -0.06,
+        -0.15,
+        -0.13,
+        -0.07,
+        -0.04,
+        -0.02,
+        0.07,
+        -0.09,
+        0.04,
+        -0.08,
+        -0.05,
+        -0.01,
+        -0.01,
+        -0.09,
+        -0.11,
+        -0.08,
+        -0.12,
+        -0.09,
+        0.07,
+        -0.06,
+        -0.05,
+        -0.04,
+        0.03,
+        0.09,
+        0.02,
+        -0.11,
+        0.04,
+        0.04,
+        0.02,
+        -0.01,
+        -0.12,
+        -0.13,
+        -0.21,
+        -0.08,
+        -0.1,
+        -0.04,
+        -0.04,
+        0.05,
+        -0.12,
+        -0.13,
+        -0.09,
+        -0.07,
+        0.13,
+        0.05,
+        0.03,
+        -0.02,
+        -0.11,
+        0.0,
+        -0.09,
+        -0.14,
+        0.0,
+        -0.05,
+        -0.07,
+        -0.03,
+        0.06,
+        0.02,
+        -0.12,
+        -0.05,
+        -0.1,
+        -0.04,
+        -0.1
+      ]
+    },
+    {
+      "cluster": "4of5",
+      "values": [
+        0.28,
+        0.56,
+        0.51,
+        0.52,
+        0.56,
+        0.51,
+        0.53,
+        0.53,
+        0.57,
+        0.49,
+        0.41,
+        0.22,
+        0.38,
+        0.34,
+        0.45,
+        0.45,
+        0.37,
+        0.38,
+        0.45,
+        0.35,
+        0.39,
+        0.36,
+        0.4,
+        0.48,
+        0.49,
+        0.35,
+        0.32,
+        0.25,
+        0.34,
+        0.23,
+        0.32,
+        0.48,
+        0.44,
+        0.39,
+        0.32,
+        0.25,
+        0.41,
+        0.39,
+        0.47,
+        0.37,
+        0.43,
+        0.45,
+        0.36,
+        0.46,
+        0.23,
+        0.22,
+        0.33,
+        0.51,
+        0.35,
+        0.38,
+        0.39,
+        0.38,
+        0.4,
+        0.44,
+        0.46,
+        0.34,
+        0.21,
+        0.26,
+        0.31,
+        0.22,
+        0.38,
+        0.31,
+        0.28,
+        0.35,
+        0.31,
+        0.34,
+        0.38,
+        0.31,
+        0.36,
+        0.29,
+        0.3,
+        0.04,
+        0.3,
+        0.39,
+        0.41,
+        0.35,
+        0.14,
+        0.36,
+        0.46,
+        0.36,
+        0.41,
+        0.28,
+        0.41,
+        0.36,
+        0.51,
+        0.3,
+        0.24,
+        0.23,
+        0.26,
+        0.25,
+        0.49,
+        0.54,
+        0.45,
+        0.45,
+        0.27,
+        0.24,
+        0.35,
+        0.41,
+        0.5,
+        0.45,
+        0.34,
+        0.37,
+        0.38,
+        0.33,
+        0.42,
+        0.52,
+        0.4,
+        0.3,
+        0.32,
+        0.36,
+        0.35,
+        0.46,
+        0.5,
+        0.37,
+        0.47,
+        0.46,
+        0.54,
+        0.47,
+        0.43,
+        0.43,
+        0.47
+      ]
+    },
+    {
+      "cluster": "5of5",
+      "values": [
+        0.32,
+        0.41,
+        0.35,
+        0.38,
+        0.41,
+        0.43,
+        0.46,
+        0.42,
+        0.38,
+        0.31,
+        0.17,
+        0.1,
+        0.19,
+        0.1,
+        0.29,
+        0.38,
+        0.33,
+        0.21,
+        0.22,
+        0.22,
+        0.24,
+        0.2,
+        0.2,
+        0.24,
+        0.24,
+        0.06,
+        0.05,
+        0.05,
+        0.21,
+        0.09,
+        0.17,
+        0.35,
+        0.27,
+        0.13,
+        0.24,
+        0.17,
+        0.41,
+        0.33,
+        0.37,
+        0.27,
+        0.32,
+        0.36,
+        0.21,
+        0.35,
+        0.2,
+        0.18,
+        0.19,
+        0.32,
+        0.26,
+        0.25,
+        0.31,
+        0.27,
+        0.29,
+        0.31,
+        0.33,
+        0.27,
+        0.22,
+        0.25,
+        0.25,
+        0.27,
+        0.35,
+        0.27,
+        0.23,
+        0.31,
+        0.27,
+        0.23,
+        0.32,
+        0.4,
+        0.4,
+        0.2,
+        0.19,
+        0.07,
+        0.24,
+        0.28,
+        0.29,
+        0.29,
+        0.06,
+        0.27,
+        0.38,
+        0.4,
+        0.33,
+        0.16,
+        0.32,
+        0.32,
+        0.36,
+        0.24,
+        0.17,
+        0.1,
+        0.14,
+        0.16,
+        0.4,
+        0.44,
+        0.33,
+        0.35,
+        0.24,
+        0.11,
+        0.23,
+        0.39,
+        0.41,
+        0.39,
+        0.35,
+        0.39,
+        0.25,
+        0.28,
+        0.41,
+        0.4,
+        0.26,
+        0.22,
+        0.39,
+        0.4,
+        0.37,
+        0.35,
+        0.35,
+        0.29,
+        0.36,
+        0.32,
+        0.4,
+        0.36,
+        0.39,
+        0.33,
+        0.46
+      ]
+    }
+  ],
+  "clusters": [
+    "1of5",
+    "2of5",
+    "3of5",
+    "4of5",
+    "5of5"
+  ],
+  "hlas": [
+    "HLA_A0101",
+    "HLA_A0201",
+    "HLA_A0202",
+    "HLA_A0203",
+    "HLA_A0204",
+    "HLA_A0205",
+    "HLA_A0206",
+    "HLA_A0207",
+    "HLA_A0211",
+    "HLA_A0252",
+    "HLA_A0301",
+    "HLA_A0302",
+    "HLA_A1101",
+    "HLA_A1102",
+    "HLA_A2301",
+    "HLA_A2402",
+    "HLA_A2407",
+    "HLA_A2501",
+    "HLA_A2601",
+    "HLA_A2608",
+    "HLA_A2902",
+    "HLA_A3001",
+    "HLA_A3002",
+    "HLA_A3101",
+    "HLA_A3201",
+    "HLA_A3301",
+    "HLA_A3303",
+    "HLA_A3401",
+    "HLA_A3601",
+    "HLA_A6601",
+    "HLA_A6801",
+    "HLA_A6802",
+    "HLA_A6901",
+    "HLA_A7401",
+    "HLA_B0702",
+    "HLA_B0704",
+    "HLA_B0801",
+    "HLA_B1301",
+    "HLA_B1302",
+    "HLA_B1401",
+    "HLA_B1402",
+    "HLA_B1501",
+    "HLA_B1502",
+    "HLA_B1503",
+    "HLA_B1510",
+    "HLA_B1511",
+    "HLA_B1513",
+    "HLA_B1517",
+    "HLA_B1518",
+    "HLA_B1801",
+    "HLA_B1803",
+    "HLA_B1805",
+    "HLA_B2704",
+    "HLA_B2705",
+    "HLA_B2709",
+    "HLA_B3501",
+    "HLA_B3502",
+    "HLA_B3503",
+    "HLA_B3507",
+    "HLA_B3508",
+    "HLA_B3701",
+    "HLA_B3801",
+    "HLA_B3802",
+    "HLA_B3901",
+    "HLA_B3905",
+    "HLA_B3906",
+    "HLA_B3924",
+    "HLA_B4001",
+    "HLA_B4002",
+    "HLA_B4006",
+    "HLA_B4032",
+    "HLA_B4101",
+    "HLA_B4201",
+    "HLA_B4402",
+    "HLA_B4403",
+    "HLA_B4405",
+    "HLA_B4501",
+    "HLA_B4601",
+    "HLA_B4701",
+    "HLA_B4801",
+    "HLA_B4901",
+    "HLA_B5001",
+    "HLA_B5101",
+    "HLA_B5108",
+    "HLA_B5201",
+    "HLA_B5301",
+    "HLA_B5401",
+    "HLA_B5501",
+    "HLA_B5502",
+    "HLA_B5601",
+    "HLA_B5701",
+    "HLA_B5703",
+    "HLA_B5801",
+    "HLA_B5802",
+    "HLA_B6701",
+    "HLA_B7301",
+    "HLA_B8101",
+    "HLA_C0102",
+    "HLA_C0202",
+    "HLA_C0302",
+    "HLA_C0303",
+    "HLA_C0304",
+    "HLA_C0401",
+    "HLA_C0403",
+    "HLA_C0501",
+    "HLA_C0602",
+    "HLA_C0701",
+    "HLA_C0702",
+    "HLA_C0704",
+    "HLA_C0801",
+    "HLA_C0802",
+    "HLA_C1202",
+    "HLA_C1203",
+    "HLA_C1204",
+    "HLA_C1402",
+    "HLA_C1403",
+    "HLA_C1502",
+    "HLA_C1505",
+    "HLA_C1601",
+    "HLA_C1602",
+    "HLA_C1701"
+  ]
+}

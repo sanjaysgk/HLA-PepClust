@@ -27,6 +27,8 @@ html_content = """
   
   <link href="https://cdn.datatables.net/2.2.2/css/dataTables.bootstrap5.css" rel="stylesheet">
   
+  <!-- D3 Scriprt -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
   
   <!-- Container styles -->
   <style>
