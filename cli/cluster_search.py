@@ -2007,9 +2007,11 @@ document.addEventListener('DOMContentLoaded', initHeatmap);
                 # Align amino acid order
                 gibbs_mt, nat_mat = self.amino_acid_order_identical(gibbs_mt, nat_mat)
                 mat_motif = str(row).split("/")[-1].split('.')[1]+"_"+str(col).split('/')[-1].replace('.txt','')
-                self._make_correlation_plot(gibbs_mt, nat_mat,mat_motif)
-                output_dict[str(row).split("/")[-1].split('.')[1]]['corr_plot'] = f"{os.path.join(self._outfolder,'corr-data')}/amino_acids_comparison_with_correlation_{mat_motif}.png"
-                output_dict[str(row).split("/")[-1].split('.')[1]]['corr_json'] = f"{os.path.join(self._outfolder,'corr-data')}/amino_acids_comparison_with_correlation_{mat_motif}.json"
+                # Remove Corelation plot
+                # self._make_correlation_plot(gibbs_mt, nat_mat,mat_motif)
+                # output_dict[str(row).split("/")[-1].split('.')[1]]['corr_plot'] = f"{os.path.join(self._outfolder,'corr-data')}/amino_acids_comparison_with_correlation_{mat_motif}.png"
+                # output_dict[str(row).split("/")[-1].split('.')[1]]['corr_json'] = f"{os.path.join(self._outfolder,'corr-data')}/amino_acids_comparison_with_correlation_{mat_motif}.json"
+                
             except Exception as e:
                 self.console.print(
                     f"Failed to compute correlation plot between {row} and {col}: {str(e)}"
