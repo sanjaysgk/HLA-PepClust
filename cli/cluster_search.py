@@ -45,6 +45,7 @@ class ClusterSearch:
         self.threshold = 0.70
         self.d3js_json = None
         self.db = None  # databse of motif and matrix
+        self.treshold_img = False
 
     def generate_unique_random_ids(self, count: int) -> list:
         """
@@ -383,6 +384,7 @@ class ClusterSearch:
         output_path: str,
         hla_list: str = None,
         threshold: float = 0.70,
+        treshold_img: bool = False
     ) -> None:
         """
         Compute correlations between test and reference Gibbs matrices.
@@ -391,7 +393,10 @@ class ClusterSearch:
         :param human_reference_folder: Path to reference matrices
         :param hla_list: List of HLA types to process (optional, default is all available types)
         """
+        #Update to self
         self.threshold = threshold
+        self.treshold_img = treshold_img
+        
         gibbs_result_matrix = os.path.join(gibbs_results, "matrices")
         should_process = False
         if os.path.exists(gibbs_result_matrix) and any(".mat" in file for file in os.listdir(gibbs_result_matrix)):
@@ -541,6 +546,7 @@ class ClusterSearch:
             )
             with self.console.status("Processing all clusters") as status:
                 for gibbs_f in os.listdir(gibbs_result_matrix):
+                    cluster_found.append(gibbs_f)
                     for mat_path in db['matrices_path']:
                         # print(filename1, filename2,"####"*100)
                         if (
@@ -1145,10 +1151,15 @@ class ClusterSearch:
         return script_template.render(script_data_path=script_data_path, img_fallback_path=img_fallback_path, div_id=div_id)
 
     def render_hla_section(self, hla_name, corr, best_cluster_img, naturally_presented_img):
+        
+        if str(self.species).lower() == "human":
+            hla_name = f"HLA-{hla_name}"
+        else:
+            hla_name
         template = Template('''
         <div class="row" style="border: 2px solid #007bff;">
         <div class="row">
-            <h3 style="text-align: center;">{{ hla_name }} PCC = {{corr}}</h3>
+            <h3 style="text-align: center;">{{ hla_name }}  PCC = {{corr}}</h3>
         </div>
         <div class="row">
             <div class="col">
@@ -1174,7 +1185,7 @@ class ClusterSearch:
             </div>
             <div class="col">
             <div class="card">
-                <h5 style="text-align: center;">Reference Motif logo of HLA-{{ hla_name }}</h5>
+                <h5 style="text-align: center;">Reference Motif logo of {{ hla_name }}</h5>
                 <div class="card">
                 {% if naturally_presented_img and naturally_presented_img != "None" %}
                 <img src="{{ naturally_presented_img }}" class="bd-placeholder-img card-img" width="100%" height="260" alt="No Image">
@@ -1287,34 +1298,35 @@ class ClusterSearch:
             self.console.log("No correlation data found to process")
             return None
 
-
-    
     def save_correlation_data(self):
         """Save correlation data to CSV and JSON files"""
         try:
             # Save dataframe to CSV
-            self.corr_df.to_csv(os.path.join(self._outfolder, 'corr-data', 'corr_matrix.csv'), index=False)
-            
+            self.corr_df.to_csv(os.path.join(
+                self._outfolder, 'corr-data', 'corr_matrix.csv'), index=False)
+            self.console.log(f"Saved PCC data at corr-data/corr_matrix.csv",style="bold green")
             # Save to JSON format for D3.js
             try:
                 json_data = self.write_to_json(self.corr_df)
                 with open(os.path.join(self._outfolder, 'corr-data', 'pcc_data.json'), 'w+') as f:
                     json.dump(json_data, f, ensure_ascii=False, indent=4)
-                
+                self.console.log(f"Saved Network and Heatmap data at corr-data/pcc_data.json" ,style="bold green")
                 return True
-                
+
             except Exception as e:
-                self.console.log(f"Failed to save the correlation matrix JSON for network plot: {str(e)}")
+                self.console.log(
+                    f"Failed to save the correlation matrix JSON for network plot: {str(e)}",style="bold red")
                 return False
-            
+                 
         except Exception as e:
-            self.console.log(f"Failed to save the correlation matrix: {str(e)}")
+            self.console.log(
+                f"Failed to save the correlation matrix: {str(e)}",style="bold red")
             return False
 
     def write_to_json(self, df):
         """Convert dataframe to JSON format for D3.js visualization"""
         data = []
-        
+
         for idx, row in df.iterrows():
             # Convert each row to the required format
             data.append({
@@ -1322,7 +1334,7 @@ class ClusterSearch:
                 "hla_type": row['HLA'],
                 "correlation": float(row['Correlation'])
             })
-        
+
         return data
 
     def make_heatmap(self, correlation_dict):
@@ -1332,7 +1344,7 @@ class ClusterSearch:
         try:
             self.corr_df = df
             self.d3js_json = self.save_correlation_data()
-        
+            return True
             # self.d3js_json = self.process_correlation_data(df)
         except Exception as e:
             self.console.log(
@@ -1411,57 +1423,28 @@ class ClusterSearch:
 
     #### NEW !!!!! Carousel Control based clusters #########
 
+
     def create_cluster_hierarchy(self, highest_corr_per_row, gibbs_out):
         """
         Create a hierarchical dictionary of clusters organized by their groups.
-
-        Args:
-            highest_corr_per_row: Dictionary from find_highest_correlation_for_each_row method
-            gibbs_out: Path to the gibbs output directory
-
-        Returns:
-            Dictionary with hierarchical structure of clusters by group number
         """
-        # Initialize result dictionary
         result = {}
-        threshold = self.threshold
-
-        # Process each row in the correlation dictionary
+        
         for row_path, (col_path, correlation) in highest_corr_per_row.items():
-            # Skip if correlation is below threshold
-            if correlation < threshold:
-                continue
-
-            # Extract cluster information from the row path
             try:
-                # Get the filename from the path
                 filename = os.path.basename(row_path)
-
-                # Extract the cluster identifier (like '1of3')
-                if 'gibbs.' in filename:
-                    cluster_id = filename.split('gibbs.')[1].split('.')[0]
-                    # First number (before "of")
-                    group_num = int(cluster_id.split('of')[0])
-                    # Second number (after "of")
-                    cluster_num = int(cluster_id.split('of')[1])
-                else:
-                    # Handle cases where the filename format might be different
+                
+                if 'gibbs.' not in filename:
                     continue
-
-                # Extract HLA information
-                if self.species == 'human':
-                    # For human, extract HLA from column path
-                    hla = os.path.basename(col_path).replace(
-                        '.txt', '').split('_')[1]
-                else:
-                    # For other species
-                    hla = os.path.basename(col_path).replace('.txt', '')
-
-                # Initialize cluster in the dictionary if it doesn't exist
+                
+                cluster_id = filename.split('gibbs.')[1].split('.')[0]
+                group_num, cluster_num = map(int, cluster_id.split('of'))
+                
+                hla = os.path.basename(col_path).replace('.txt', '').split('_')[1] if self.species == 'human' else os.path.basename(col_path).replace('.txt', '')
+                
                 if cluster_num not in result:
                     result[cluster_num] = {}
-
-                # Add cluster data to the dictionary
+                
                 result[cluster_num][group_num] = {
                     'id': cluster_id,
                     'matrix_path': row_path,
@@ -1469,79 +1452,64 @@ class ClusterSearch:
                     'hla': hla,
                     'correlation': float(correlation)
                 }
-
-                # Find and add additional data if needed
-                gibbs_img = self._find_gibbs_image_path(
-                    cluster_id, os.path.join(gibbs_out, 'logos'))
-
+                
+                gibbs_img = self._find_gibbs_image_path(cluster_id, os.path.join(gibbs_out, 'logos'))
                 if gibbs_img:
-                    gibbs_img_basename = os.path.basename(gibbs_img)
-                    dest_path = os.path.join(os.path.join(
-                        self._outfolder, 'cluster-img'), gibbs_img_basename)
+                    dest_path = os.path.join(self._outfolder, 'cluster-img', os.path.basename(gibbs_img))
                     shutil.copy(gibbs_img, dest_path)
                     result[cluster_num][group_num]['gibbs_img'] = dest_path
-
-                # If we have a database path, try to find natural motif image
+                
                 if hasattr(self, 'db_path') and hasattr(self, 'db'):
-                    try:
-                        db_matches = self.db[self.db['formatted_allotypes'] == hla]
-                        if not db_matches.empty:
-                            nat_path = db_matches['motif_path'].values[0]
-                            if nat_path:
-                                src_path = os.path.join(self.db_path, nat_path)
-                                nat_path_basename = os.path.basename(nat_path)
-                                dest_path = os.path.join(os.path.join(
-                                    self._outfolder, 'allotypes-img'), nat_path_basename)
-                                # Copy the file
-                                shutil.copy(src_path, dest_path)
-                                result[cluster_num][group_num]['nat_img'] = dest_path
-                    except Exception as e:
-                        # Handle exceptions when accessing database
-                        if hasattr(self, 'console'):
-                            self.console.print(
-                                f"Error accessing database for {hla}: {str(e)}")
-
+                    db_matches = self.db[self.db['formatted_allotypes'] == hla]
+                    if not db_matches.empty:
+                        nat_path = db_matches['motif_path'].values[0]
+                        if nat_path:
+                            src_path = os.path.join(self.db_path, nat_path)
+                            dest_path = os.path.join(self._outfolder, 'allotypes-img', os.path.basename(nat_path))
+                            shutil.copy(src_path, dest_path)
+                            result[cluster_num][group_num]['nat_img'] = dest_path
+            
             except Exception as e:
-                # Handle any exceptions during processing
                 if hasattr(self, 'console'):
-                    self.console.print(
-                        f"Error processing cluster {row_path}: {str(e)}")
-                continue
-
+                    self.console.print(f"Error processing cluster {row_path}: {str(e)}")
+        
         return result
 
     def render_cluster_carousels(self, highest_corr_per_row, gibbs_out):
         """
         Renders carousels for clusters, grouping them by their group number.
-
-        Args:
-            highest_corr_per_row: Dictionary from find_highest_correlation_for_each_row method
-            gibbs_out: Path to the gibbs output directory
-
-        Returns:
-            HTML string containing all cluster carousels
         """
-        # Create hierarchical structure
-        cluster_hierarchy = self.create_cluster_hierarchy(
-            highest_corr_per_row, gibbs_out)
-
-        # Generate carousels for each group
-        all_carousels_html = ""
-        # cluster_num = sorted(cluster_hierarchy.keys()).items()
-
+        cluster_hierarchy = self.create_cluster_hierarchy(highest_corr_per_row, gibbs_out)
+        cluster_html = """
+                <div class="container py-4">
+                <div class="card">
+                    <div class="card-header bg-secondary text-white">
+                        <h4 class="card-title mb-0">Gibbs Cluster and Reference Motif Comparisons</h4>
+                    </div>
+                    <div class="card-body">
+        """
+        
         for cluster_num in sorted(cluster_hierarchy.keys()):
+            if cluster_hierarchy[cluster_num]:
+                cluster_html += self._create_carousel_for_cluster(
+                    f"carousel-cluster-{cluster_num}", cluster_num, cluster_hierarchy[cluster_num])
 
-            group_data = cluster_hierarchy[cluster_num]
-            # Skip empty clusters
-            if not group_data:
-                continue
+        if self.treshold_img:
+            cluster_html += f"""
+                 </div>
+                 <h2> Note: Filtered cluster groups below threshold {self.threshold}</h2>
+                 </div>
+                        </div>
+                """
+        else:
+            cluster_html += """
+                        </div>
+                        </div>
+                        </div>
+                """
+        
+        return cluster_html
 
-            carousel_id = f"carousel-cluster-{cluster_num}"
-            carousel_html = self._create_carousel_for_cluster(
-                carousel_id, cluster_num, group_data)
-            all_carousels_html += carousel_html
-
-        return all_carousels_html
 
     def _create_carousel_for_cluster(self, carousel_id, cluster_num, group_data):
         """
@@ -1555,6 +1523,12 @@ class ClusterSearch:
         Returns:
             HTML string for the carousel
         """
+        
+        # self.treshold_img = True
+        # Filter groups based on threshold if treshold_img is enabled
+        if self.treshold_img:
+            group_data = {k: v for k, v in group_data.items() if v.get('correlation', 0) >= self.threshold}
+            
         # Get ordered list of group numbers
         group_nums = sorted(group_data.keys())
 
@@ -1562,11 +1536,13 @@ class ClusterSearch:
         if not group_nums:
             return ""
 
+        total_slides = len(group_nums)
+
         # Start building the carousel HTML
         carousel_html = f"""
         <div class="row mt-4 mb-4">
             <div class="col-12">
-                <h2 class="text-center">Clusters{cluster_num}</h2>
+                <h2 class="text-center">Cluster {cluster_num}</h2>
                 <div id="{carousel_id}" class="carousel slide" data-ride="carousel" data-interval="false">
         """
 
@@ -1577,7 +1553,7 @@ class ClusterSearch:
 
         for i, group_num in enumerate(group_nums):
             active_class = "active" if i == 0 else ""
-            carousel_html += f'<li data-target="#{carousel_id}" data-slide-to="{i}" class="{active_class}"></li>\n'
+            carousel_html += f'<li data-bs-target="#{carousel_id}" data-bs-slide-to="{i}" class="{active_class}"></li>\n'
 
         carousel_html += """
                     </ol>
@@ -1614,10 +1590,8 @@ class ClusterSearch:
             carousel_html += f"""
                         <div class="carousel-item {active_class}">
                             <div class="container">
-                                <div class="cluster-id-label text-center mb-2">
-                                    <h4>Group {cluster_data['id']}</h4>
-                                </div>
                                 {hla_section}
+                                <div class="text-center mt-2">Slide {i+1} of {total_slides}</div>
                             </div>
                         </div>
             """
@@ -1640,22 +1614,37 @@ class ClusterSearch:
 
         return carousel_html
 
+
     def render_clustered_results(self, highest_corr_per_row, gibbs_out):
         """
         Renders the complete HTML for all clustered results with carousels and necessary JavaScript.
-
-        Args:
-            highest_corr_per_row: Dictionary from find_highest_correlation_for_each_row method
-            gibbs_out: Path to the gibbs output directory
-
-        Returns:
-            Complete HTML string with carousels and required JavaScript
         """
-        # Generate all carousels
-        carousels_html = self.render_cluster_carousels(
-            highest_corr_per_row, gibbs_out)
+        
+        html_card = """
+                <div class="container py-4">
+                <div class="card">
+                    <div class="card-header bg-secondary text-white">
+                        <h4 class="card-title mb-0">Gibbs Cluster and Reference Motif Comparisons</h4>
+                    </div>
+                    <div class="card-body">
+                    
+        
+        """
+        html_card += self.render_cluster_carousels(highest_corr_per_row, gibbs_out)
+        
+        html_card += """"
+                </div>
+                </div>
+                </div>
+        """
+        
+        return html_card
 
-        return carousels_html
+
+
+
+
+
 
     # New functions ends here
 
@@ -1829,27 +1818,7 @@ class ClusterSearch:
 </body>
 </html>
 """
-        heatmap_js = """
-                // heatmap json or PNG loading
-                fetch('corr-data/correlation_heatmap.json')
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error("JSON fetch failed");
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    console.log("Loaded JSON:", 'corr-data/correlation_heatmap.json', data);
-                    var opt = {"renderer": "canvas", "actions": false};
-                    vegaEmbed("#correlation_heatmap", data, opt);
-                })
-                .catch(error => {
-                    console.error("Error fetching JSON, loading fallback image instead:", error);
-                    document.getElementById("correlation_heatmap").innerHTML = `<img src="corr-data/correlation_heatmap.png" alt="Fallback Image" width="100%">`;
-                });
         
-
-"""
         heatmap_d3_js = """
         
         
@@ -1873,12 +1842,27 @@ fetch('corr-data/pcc_data.json')
 
         // Color mapping for clusters
         const clusterColors = {
+            "1of1": "#FFFF33",
+            "1of2": "#FF7F00",
+            "2of2": "#FF7F00",
+            "1of3": "#984EA3",
+            "2of3": "#984EA3",
+            "3of3": "#984EA3",
+            "1of4": "#4DAF4A",
+            "2of4": "#4DAF4A",
+            "3of4": "#4DAF4A",
+            "4of4": "#4DAF4A",
+            "1of5": "#377EB8",
+            "2of5": "#377EB8",
+            "3of5": "#377EB8",
+            "4of5": "#377EB8",
+            "5of5": "#377EB8",
             "1of6": "#E41A1C",
-            "2of6": "#377EB8",
-            "3of6": "#4DAF4A",
-            "4of6": "#984EA3",
-            "5of6": "#FF7F00",
-            "6of6": "#FFFF33"
+            "2of6": "#E41A1C",
+            "3of6": "#E41A1C",
+            "4of6": "#E41A1C",
+            "5of6": "#E41A1C",
+            "6of6": "#E41A1C",
         };
         
         // Initialize tooltip
@@ -2445,6 +2429,8 @@ fetch('corr-data/pcc_data.json')
             """
 
         # heatmap_json = self.make_heatmap(correlation_dict)
+        self.make_heatmap(correlation_dict)
+
 
         # script_js = ""
         df_corr_html = self.make_datatable_html(correlation_dict)
@@ -2544,16 +2530,27 @@ fetch('corr-data/pcc_data.json')
             body_end_1 += heatmap_d3_js
             immunolyser_out_js += heatmap_d3_js
         else:
-            heatmap_d3_html = ""
+            heatmap_d3_html = """
+        <div class="container py-4">
+            <div class="card">
+                <div class="card-header bg-secondary text-white">
+                    <h4 class="card-title mb-0">HLA Correlation Analysis</h4>
+                </div>
+                <div class="card-body">
+                <h2> Faild to load Heatmap and Network plot</h2>
+                </div>
+            </div>
+        </div>
+            """
             heatmap_d3_js = ""
         # addeing new new_html_carousel
         html_create += new_html_carousel
         # ends here
         html_create += br_tag + \
-            br_tag + heatmap_d3_html +\
+            br_tag + heatmap_d3_html + \
             br_tag + df_corr_html + br_tag + body_end_1 + body_end_2
 
-        immunolyser_out += br_tag + br_tag + df_corr_html 
+        immunolyser_out += br_tag + br_tag + df_corr_html
         with open(os.path.join(self._outfolder, "clust-search-result.html"), "w") as file:
             file.write(html_create)
 
@@ -2671,7 +2668,8 @@ def run_cluster_search(args):
         args.n_clusters,
         args.output,
         args.hla_types,
-        args.threshold
+        args.threshold,
+        args.treshold_img
     )
 
     # cluster_search.generate_image_grid(cluster_search.correlation_dict,db)

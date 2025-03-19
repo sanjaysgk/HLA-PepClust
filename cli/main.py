@@ -109,6 +109,14 @@ def main():
         default=0.70,
         help="Threshold for motif similarity (default: 0.70).",
     )
+    
+    parser.add_argument(
+        "-timg",
+        "--treshold_img",
+        action="store_true",
+        help="Only display groups that pass the threshold (default: False).",
+    )
+
     parser.add_argument(
         "-s",
         "--species",
