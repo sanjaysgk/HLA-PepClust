@@ -1,5 +1,6 @@
-
-html_content = """
+from cli import __version__
+from jinja2 import Template
+html_content = Template("""
   <!doctype html>
   <html lang="en" data-bs-theme="auto">
 
@@ -8,7 +9,7 @@ html_content = """
   <meta name="description" content="HLA Cluster Search Algorithm for find closely related HLA types">
   <meta name="author" content="Sanjay SG Krishna Monash University">
   <meta name="generator" content="">
-  <title>Clust-search v0.01-dev</title>
+  <title>Clust-search {{ version }}</title>
 
 
 
@@ -164,7 +165,7 @@ html_content = """
 
 
   </head>
-"""
+""").render(version = __version__)
 
 body_start = """
 <body>

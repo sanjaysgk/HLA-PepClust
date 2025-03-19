@@ -1,6 +1,7 @@
 from cli.imagegrid import imagelayout
 from cli.logger import *
 from cli.html_config import *
+from cli import __version__
 import os
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -1742,7 +1743,7 @@ class ClusterSearch:
             });
         });
         """
-        body_end_1 = """
+        body_end_1 = Template("""
 </div>
 </div>
 </div>
@@ -1760,8 +1761,9 @@ class ClusterSearch:
       <p class="float-end mb-1">
         <a href="#">Back to top</a>
       </p>
-      <p class="mb-1"> Purcell Lab, Monash University&copy; 2025,please refere git repo</p>
-      <p class="mb-0">Plese visit github <a href="/">Visit git hub the homepage</a> or read our <a
+      <p class="mb-1"> Clust-Search v{{version}}</p>
+      <p class="mb-1"> Li Lab / Purcell Lab, Monash University&copy; 2025,please refere git repo for more information</p>
+      <p class="mb-0">github<a href="https://github.com/Sanpme66/HLA-PepClust">Visit git hub the homepage</a> or read our <a
           href="https://github.com/Sanpme66/HLA-PepClust">getting started guide</a>.</p>
     </div>
   </footer>
@@ -1804,7 +1806,7 @@ class ClusterSearch:
 <script>
 
 
-"""
+""").render(version = __version__)
 
         br_tag = """
         <br>
@@ -2408,7 +2410,8 @@ fetch('corr-data/pcc_data.json')
         document.querySelectorAll('.visualization-container').forEach(container => {
             container.innerHTML = `
                 <div class="alert alert-danger" role="alert">
-                    Error loading data: json_data_path not found or invalid format.
+                    Error loading data: json_data_path not found or invalid format.\n
+                    Tip: Please use VS code live server it loads pcc_data.json
                 </div>
             `;
         });
