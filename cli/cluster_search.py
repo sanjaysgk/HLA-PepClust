@@ -41,7 +41,7 @@ class ClusterSearch:
         self.uhla = None
         self.data_dir= None
         self.corr_df = None #pd.DataFrame(columns=['Cluster', 'HLA', 'Correlation'])
-        self.threshold = 0.5
+        self.threshold = 0.70
         self.d3js_json = None
 
     def generate_unique_random_ids(self, count: int) -> list:
@@ -380,7 +380,7 @@ class ClusterSearch:
         n_clusters: str,
         output_path: str,
         hla_list: str = None,
-        threshold: float = 0.5,
+        threshold: float = 0.70,
     ) -> None:
         """
         Compute correlations between test and reference Gibbs matrices.
@@ -924,7 +924,7 @@ class ClusterSearch:
             correlation_dict
         )
         # print(highest_corr_per_row)
-        display_search_results(highest_corr_per_row, 0.8)
+        display_search_results(highest_corr_per_row, self.threshold)
 
         sorted_HLA_list = sorted(
             HLA_list,
@@ -1043,7 +1043,7 @@ class ClusterSearch:
             correlation_dict
         )
         # print(highest_corr_per_row)
-        display_search_results(highest_corr_per_row, 0.8)
+        display_search_results(highest_corr_per_row, self.threshold)
         # print(highest_corr_per_row)
         # config_dict = {
         #     "image_folder": "data/ref_data/Gibbs_motifs_human/logos",
@@ -1394,7 +1394,7 @@ class ClusterSearch:
             correlation_dict
         )
         # print(highest_corr_per_row)
-        display_search_results(highest_corr_per_row, 0.8)
+        display_search_results(highest_corr_per_row, self.threshold)
         # print(highest_corr_per_row)
         
 
@@ -1952,6 +1952,8 @@ document.addEventListener('DOMContentLoaded', initHeatmap);
         immunolyser_out_js = ""
         for row, (col, corr) in highest_corr_per_row.items():
 
+            # if corr >= self.threshold:
+            
             output_dict[str(row).split("/")[-1].split('.')[1]] = {
                 'cluster': str(row).split("/")[-1],
                 'HLA': str(col).split('/')[-1].replace('.txt',''),
@@ -2101,9 +2103,9 @@ def run_cluster_search(args):
             raise ValueError(
                 "Invalid threshold provided. Please provide a valid threshold between 0 and 1")
     else:
-        args.threshold = 0.5
+        args.threshold = 0.70
         CONSOLE.log(
-            f"No threshold provided. Using default threshold of 0.5", style="bold yellow")
+            f"No threshold provided. Using default threshold of 0.70", style="bold yellow")
     
     if args.hla_types:
         CONSOLE.log(

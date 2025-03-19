@@ -106,8 +106,8 @@ def main():
         "-t",
         "--threshold",
         type=float,
-        default=0.5,
-        help="Threshold for motif similarity (default: 0.5).",
+        default=0.70,
+        help="Threshold for motif similarity (default: 0.70).",
     )
     parser.add_argument(
         "-s",
