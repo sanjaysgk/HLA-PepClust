@@ -1142,19 +1142,13 @@ class ClusterSearch:
 
         return script_template.render(script_data_path=script_data_path, img_fallback_path=img_fallback_path, div_id=div_id)
     
-    def render_hla_section(self,hla_name, correlation_chart_id, best_cluster_img, naturally_presented_img):
+    def render_hla_section(self,hla_name,best_cluster_img, naturally_presented_img):
         template = Template('''
         <div class="row" style="border: 2px solid #007bff;">
         <div class="row">
             <h3 style="text-align: center;">{{ hla_name }}</h3>
         </div>
         <div class="row">
-            <div class="col">
-            <div class="card">
-                <h5 style="text-align: center;">Correlation</h5>
-                <div id="{{correlation_chart_id}}"></div>
-            </div>
-            </div>
             <div class="col">
             <div class="card">
                 <h5 style="text-align: center;">Identified Best Cluster</h5>
@@ -1200,7 +1194,7 @@ class ClusterSearch:
         </div>
         </div>
         ''')
-        return template.render(hla_name=hla_name, correlation_chart_id=correlation_chart_id, best_cluster_img=best_cluster_img, naturally_presented_img=naturally_presented_img)
+        return template.render(hla_name=hla_name, best_cluster_img=best_cluster_img, naturally_presented_img=naturally_presented_img)
 
     
     def make_datatable(self,correlation_dict):
@@ -2017,7 +2011,7 @@ document.addEventListener('DOMContentLoaded', initHeatmap);
                     f"Failed to compute correlation plot between {row} and {col}: {str(e)}"
                 )
                 # return float('nan')
-            rows_list = self.render_hla_section(hla, f"correlation_chart_{str(row).split('/')[-1].split('.')[1]}", str(output_dict[str(row).split("/")[-1].split('.')[1]]['gibbs_img']).replace(f"{self._outfolder}/",''), str(output_dict[str(row).split("/")[-1].split('.')[1]]['nat_img']).replace(f"{self._outfolder}/",''))
+            rows_list = self.render_hla_section(hla, str(output_dict[str(row).split("/")[-1].split('.')[1]]['gibbs_img']).replace(f"{self._outfolder}/",''), str(output_dict[str(row).split("/")[-1].split('.')[1]]['nat_img']).replace(f"{self._outfolder}/",''))
             html_create += rows_list
             # plot_js = self.insert_script_hla_section(str(output_dict[str(row).split("/")[-1].split('.')[1]]['corr_json']).replace(f"{self._outfolder}/",''), f"correlation_chart_{str(row).split('/')[-1].split('.')[1]}")
             plot_js = self.insert_script_png_json(str(output_dict[str(row).split("/")[-1].split('.')[1]]['corr_json']).replace(f"{self._outfolder}/",''),str(output_dict[str(row).split("/")[-1].split('.')[1]]['corr_plot']).replace(f"{self._outfolder}/",''),f"correlation_chart_{str(row).split('/')[-1].split('.')[1]}")
