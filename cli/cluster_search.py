@@ -1142,11 +1142,11 @@ class ClusterSearch:
 
         return script_template.render(script_data_path=script_data_path, img_fallback_path=img_fallback_path, div_id=div_id)
     
-    def render_hla_section(self,hla_name,best_cluster_img, naturally_presented_img):
+    def render_hla_section(self,hla_name,corr,best_cluster_img, naturally_presented_img):
         template = Template('''
         <div class="row" style="border: 2px solid #007bff;">
         <div class="row">
-            <h3 style="text-align: center;">{{ hla_name }}</h3>
+            <h3 style="text-align: center;">{{ hla_name }} correlations = {{corr}}</h3>
         </div>
         <div class="row">
             <div class="col">
@@ -1194,7 +1194,7 @@ class ClusterSearch:
         </div>
         </div>
         ''')
-        return template.render(hla_name=hla_name, best_cluster_img=best_cluster_img, naturally_presented_img=naturally_presented_img)
+        return template.render(hla_name=hla_name,corr=corr ,best_cluster_img=best_cluster_img, naturally_presented_img=naturally_presented_img)
 
     
     def make_datatable(self,correlation_dict):
@@ -1952,75 +1952,75 @@ document.addEventListener('DOMContentLoaded', initHeatmap);
         immunolyser_out_js = ""
         for row, (col, corr) in highest_corr_per_row.items():
 
-            # if corr >= self.threshold:
+            if corr >= self.threshold:
             
-            output_dict[str(row).split("/")[-1].split('.')[1]] = {
-                'cluster': str(row).split("/")[-1],
-                'HLA': str(col).split('/')[-1].replace('.txt',''),
-                'correlation': corr,
-                'gibbs_img': None,
-                'nat_img': None,
-                'corr_plot': None,
-                'corr_json': None
-            }
-            gibbs_img = self._find_gibbs_image_path(str(row).split("/")[-1].split('.')[1], os.path.join(gibbs_out, 'logos'))
+                output_dict[str(row).split("/")[-1].split('.')[1]] = {
+                    'cluster': str(row).split("/")[-1],
+                    'HLA': str(col).split('/')[-1].replace('.txt',''),
+                    'correlation': corr,
+                    'gibbs_img': None,
+                    'nat_img': None,
+                    'corr_plot': None,
+                    'corr_json': None
+                }
+                gibbs_img = self._find_gibbs_image_path(str(row).split("/")[-1].split('.')[1], os.path.join(gibbs_out, 'logos'))
 
-            if gibbs_img:
-                # shutil.copy(gibbs_img, os.path.join(self._outfolder, 'cluster-img', f"{str(gibbs_img).split('/')[-1]}"))
-                # Use os.path functions for platform-independent path handling
-                gibbs_img_basename = os.path.basename(gibbs_img)
-                dest_path = os.path.join(os.path.join(self._outfolder, 'cluster-img'), gibbs_img_basename)
-                shutil.copy(gibbs_img, dest_path)
-            
-                # output_dict[str(row).split("/")[-1].split('.')[1]]['gibbs_img'] = os.path.join(self._outfolder, 'cluster-img', f"{str(gibbs_img).split('/')[-1]}")
-                # Use platform-independent path operations for the output dictionary
-                row_basename = os.path.basename(str(row))
-                row_name = os.path.splitext(row_basename)[0].split('.')[1]
-                output_dict[row_name]['gibbs_img'] = dest_path
+                if gibbs_img:
+                    # shutil.copy(gibbs_img, os.path.join(self._outfolder, 'cluster-img', f"{str(gibbs_img).split('/')[-1]}"))
+                    # Use os.path functions for platform-independent path handling
+                    gibbs_img_basename = os.path.basename(gibbs_img)
+                    dest_path = os.path.join(os.path.join(self._outfolder, 'cluster-img'), gibbs_img_basename)
+                    shutil.copy(gibbs_img, dest_path)
                 
-            if self.species == 'human':
-                hla = str(col).split('/')[-1].replace('.txt','').split('_')[1]
-            else:
-                hla = str(col).split('/')[-1].replace('.txt','')
-            nat_path = db[db['formatted_allotypes'] == hla]['motif_path'].values[0]
-            
-            if nat_path:
-                # shutil.copy(os.path.join(self.db_path,nat_path), os.path.join(self._outfolder, 'allotypes-img', f"{str(nat_path).split('/')[-1]}"))
-                src_path = os.path.join(self.db_path, nat_path)
-                nat_path_basename = os.path.basename(nat_path)
-                dest_path = os.path.join(os.path.join(self._outfolder, 'allotypes-img'), nat_path_basename)
-                # Copy the file
-                shutil.copy(src_path, dest_path)
-                # output_dict[str(row).split("/")[-1].split('.')[1]]['nat_img'] = os.path.join(self._outfolder, 'allotypes-img', f"{str(nat_path).split('/')[-1]}")
-                row_basename = os.path.basename(str(row))
-                row_name = os.path.splitext(row_basename)[0].split('.')[1]
-                output_dict[row_name]['nat_img'] = dest_path
-            
-            try:
-                gibbs_mt = self.format_input_gibbs(row)
-                nat_mat = self.format_input_gibbs(os.path.join(self.db_path,col))
+                    # output_dict[str(row).split("/")[-1].split('.')[1]]['gibbs_img'] = os.path.join(self._outfolder, 'cluster-img', f"{str(gibbs_img).split('/')[-1]}")
+                    # Use platform-independent path operations for the output dictionary
+                    row_basename = os.path.basename(str(row))
+                    row_name = os.path.splitext(row_basename)[0].split('.')[1]
+                    output_dict[row_name]['gibbs_img'] = dest_path
+                    
+                if self.species == 'human':
+                    hla = str(col).split('/')[-1].replace('.txt','').split('_')[1]
+                else:
+                    hla = str(col).split('/')[-1].replace('.txt','')
+                nat_path = db[db['formatted_allotypes'] == hla]['motif_path'].values[0]
+                
+                if nat_path:
+                    # shutil.copy(os.path.join(self.db_path,nat_path), os.path.join(self._outfolder, 'allotypes-img', f"{str(nat_path).split('/')[-1]}"))
+                    src_path = os.path.join(self.db_path, nat_path)
+                    nat_path_basename = os.path.basename(nat_path)
+                    dest_path = os.path.join(os.path.join(self._outfolder, 'allotypes-img'), nat_path_basename)
+                    # Copy the file
+                    shutil.copy(src_path, dest_path)
+                    # output_dict[str(row).split("/")[-1].split('.')[1]]['nat_img'] = os.path.join(self._outfolder, 'allotypes-img', f"{str(nat_path).split('/')[-1]}")
+                    row_basename = os.path.basename(str(row))
+                    row_name = os.path.splitext(row_basename)[0].split('.')[1]
+                    output_dict[row_name]['nat_img'] = dest_path
+                
+                try:
+                    gibbs_mt = self.format_input_gibbs(row)
+                    nat_mat = self.format_input_gibbs(os.path.join(self.db_path,col))
 
-                # Align amino acid order
-                gibbs_mt, nat_mat = self.amino_acid_order_identical(gibbs_mt, nat_mat)
-                mat_motif = str(row).split("/")[-1].split('.')[1]+"_"+str(col).split('/')[-1].replace('.txt','')
-                # Remove Corelation plot
-                # self._make_correlation_plot(gibbs_mt, nat_mat,mat_motif)
-                # output_dict[str(row).split("/")[-1].split('.')[1]]['corr_plot'] = f"{os.path.join(self._outfolder,'corr-data')}/amino_acids_comparison_with_correlation_{mat_motif}.png"
-                # output_dict[str(row).split("/")[-1].split('.')[1]]['corr_json'] = f"{os.path.join(self._outfolder,'corr-data')}/amino_acids_comparison_with_correlation_{mat_motif}.json"
+                    # Align amino acid order
+                    gibbs_mt, nat_mat = self.amino_acid_order_identical(gibbs_mt, nat_mat)
+                    mat_motif = str(row).split("/")[-1].split('.')[1]+"_"+str(col).split('/')[-1].replace('.txt','')
+                    # Remove Corelation plot
+                    # self._make_correlation_plot(gibbs_mt, nat_mat,mat_motif)
+                    # output_dict[str(row).split("/")[-1].split('.')[1]]['corr_plot'] = f"{os.path.join(self._outfolder,'corr-data')}/amino_acids_comparison_with_correlation_{mat_motif}.png"
+                    # output_dict[str(row).split("/")[-1].split('.')[1]]['corr_json'] = f"{os.path.join(self._outfolder,'corr-data')}/amino_acids_comparison_with_correlation_{mat_motif}.json"
+                    
+                except Exception as e:
+                    self.console.print(
+                        f"Failed to compute correlation plot between {row} and {col}: {str(e)}"
+                    )
+                    # return float('nan')
+                rows_list = self.render_hla_section(hla,round(corr,2), str(output_dict[str(row).split("/")[-1].split('.')[1]]['gibbs_img']).replace(f"{self._outfolder}/",''), str(output_dict[str(row).split("/")[-1].split('.')[1]]['nat_img']).replace(f"{self._outfolder}/",''))
+                html_create += rows_list
+                # plot_js = self.insert_script_hla_section(str(output_dict[str(row).split("/")[-1].split('.')[1]]['corr_json']).replace(f"{self._outfolder}/",''), f"correlation_chart_{str(row).split('/')[-1].split('.')[1]}")
+                plot_js = self.insert_script_png_json(str(output_dict[str(row).split("/")[-1].split('.')[1]]['corr_json']).replace(f"{self._outfolder}/",''),str(output_dict[str(row).split("/")[-1].split('.')[1]]['corr_plot']).replace(f"{self._outfolder}/",''),f"correlation_chart_{str(row).split('/')[-1].split('.')[1]}")
+                body_end_1  += plot_js
                 
-            except Exception as e:
-                self.console.print(
-                    f"Failed to compute correlation plot between {row} and {col}: {str(e)}"
-                )
-                # return float('nan')
-            rows_list = self.render_hla_section(hla, str(output_dict[str(row).split("/")[-1].split('.')[1]]['gibbs_img']).replace(f"{self._outfolder}/",''), str(output_dict[str(row).split("/")[-1].split('.')[1]]['nat_img']).replace(f"{self._outfolder}/",''))
-            html_create += rows_list
-            # plot_js = self.insert_script_hla_section(str(output_dict[str(row).split("/")[-1].split('.')[1]]['corr_json']).replace(f"{self._outfolder}/",''), f"correlation_chart_{str(row).split('/')[-1].split('.')[1]}")
-            plot_js = self.insert_script_png_json(str(output_dict[str(row).split("/")[-1].split('.')[1]]['corr_json']).replace(f"{self._outfolder}/",''),str(output_dict[str(row).split("/")[-1].split('.')[1]]['corr_plot']).replace(f"{self._outfolder}/",''),f"correlation_chart_{str(row).split('/')[-1].split('.')[1]}")
-            body_end_1  += plot_js
-            
-            immunolyser_out += rows_list
-            immunolyser_out_js += plot_js
+                immunolyser_out += rows_list
+                immunolyser_out_js += plot_js
             
         if heatmap_json:
             body_end_1 += heatmap_js
