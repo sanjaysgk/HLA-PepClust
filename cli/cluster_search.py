@@ -43,6 +43,7 @@ class ClusterSearch:
         self.corr_df = None #pd.DataFrame(columns=['Cluster', 'HLA', 'Correlation'])
         self.threshold = 0.70
         self.d3js_json = None
+        self.db = None # databse of motif and matrix
 
     def generate_unique_random_ids(self, count: int) -> list:
         """
@@ -1385,6 +1386,255 @@ class ClusterSearch:
               
               
             # return df.to_html(classes='table table-striped', index=False, table_id='correlation_table')
+            
+            
+            
+    #### NEW !!!!! Carousel Control based clusters #########
+    
+    def create_cluster_hierarchy(self, highest_corr_per_row, gibbs_out):
+        """
+        Create a hierarchical dictionary of clusters organized by their groups.
+        
+        Args:
+            highest_corr_per_row: Dictionary from find_highest_correlation_for_each_row method
+            gibbs_out: Path to the gibbs output directory
+            
+        Returns:
+            Dictionary with hierarchical structure of clusters by group number
+        """
+        # Initialize result dictionary
+        result = {}
+        threshold = self.threshold
+        
+        # Process each row in the correlation dictionary
+        for row_path, (col_path, correlation) in highest_corr_per_row.items():
+            # Skip if correlation is below threshold
+            if correlation < threshold:
+                continue
+                
+            # Extract cluster information from the row path
+            try:
+                # Get the filename from the path
+                filename = os.path.basename(row_path)
+                
+                # Extract the cluster identifier (like '1of3')
+                if 'gibbs.' in filename:
+                    cluster_id = filename.split('gibbs.')[1].split('.')[0]
+                    group_num = int(cluster_id.split('of')[0])  # First number (before "of")
+                    cluster_num = int(cluster_id.split('of')[1])  # Second number (after "of")
+                else:
+                    # Handle cases where the filename format might be different
+                    continue
+                    
+                # Extract HLA information
+                if self.species == 'human':
+                    # For human, extract HLA from column path
+                    hla = os.path.basename(col_path).replace('.txt', '').split('_')[1]
+                else:
+                    # For other species
+                    hla = os.path.basename(col_path).replace('.txt', '')
+                    
+                # Initialize cluster in the dictionary if it doesn't exist
+                if cluster_num not in result:
+                    result[cluster_num] = {}
+                    
+                # Add cluster data to the dictionary
+                result[cluster_num][group_num] = {
+                    'id': cluster_id,
+                    'matrix_path': row_path,
+                    'motif': col_path,
+                    'hla': hla,
+                    'correlation': float(correlation)
+                }
+                
+                # Find and add additional data if needed
+                gibbs_img = self._find_gibbs_image_path(cluster_id, os.path.join(gibbs_out, 'logos'))
+
+                if gibbs_img:
+                    gibbs_img_basename = os.path.basename(gibbs_img)
+                    dest_path = os.path.join(os.path.join(self._outfolder, 'cluster-img'), gibbs_img_basename)
+                    shutil.copy(gibbs_img, dest_path)
+                    result[cluster_num][group_num]['gibbs_img'] = dest_path
+                    
+                # If we have a database path, try to find natural motif image
+                if hasattr(self, 'db_path') and hasattr(self, 'db'):
+                    try:
+                        db_matches = self.db[self.db['formatted_allotypes'] == hla]
+                        if not db_matches.empty:
+                            nat_path = db_matches['motif_path'].values[0]
+                            if nat_path:
+                                src_path = os.path.join(self.db_path, nat_path)
+                                nat_path_basename = os.path.basename(nat_path)
+                                dest_path = os.path.join(os.path.join(self._outfolder, 'allotypes-img'), nat_path_basename)
+                                # Copy the file
+                                shutil.copy(src_path, dest_path)
+                                result[cluster_num][group_num]['nat_img'] = dest_path
+                    except Exception as e:
+                        # Handle exceptions when accessing database
+                        if hasattr(self, 'console'):
+                            self.console.print(f"Error accessing database for {hla}: {str(e)}")
+                
+            except Exception as e:
+                # Handle any exceptions during processing
+                if hasattr(self, 'console'):
+                    self.console.print(f"Error processing cluster {row_path}: {str(e)}")
+                continue
+        
+        return result
+
+    def render_cluster_carousels(self, highest_corr_per_row, gibbs_out):
+        """
+        Renders carousels for clusters, grouping them by their group number.
+        
+        Args:
+            highest_corr_per_row: Dictionary from find_highest_correlation_for_each_row method
+            gibbs_out: Path to the gibbs output directory
+            
+        Returns:
+            HTML string containing all cluster carousels
+        """
+        # Create hierarchical structure
+        cluster_hierarchy = self.create_cluster_hierarchy(highest_corr_per_row, gibbs_out)
+        
+        # Generate carousels for each group
+        all_carousels_html = ""
+        # cluster_num = sorted(cluster_hierarchy.keys()).items()
+        
+        for cluster_num in sorted(cluster_hierarchy.keys()):
+            
+            group_data = cluster_hierarchy[cluster_num]
+            # Skip empty clusters
+            if not group_data:
+                continue
+                
+            carousel_id = f"carousel-cluster-{cluster_num}"
+            carousel_html = self._create_carousel_for_cluster(carousel_id, cluster_num, group_data)
+            all_carousels_html += carousel_html
+        
+        return all_carousels_html
+
+    def _create_carousel_for_cluster(self, carousel_id, cluster_num, group_data):
+        """
+        Creates a Bootstrap carousel for a specific cluster group.
+        
+        Args:
+            carousel_id: Unique ID for the carousel
+            cluster_num: The cluster number
+            group_data: Dictionary of groups in this cluster
+            
+        Returns:
+            HTML string for the carousel
+        """
+        # Get ordered list of group numbers
+        group_nums = sorted(group_data.keys())
+        
+        # Skip if no groups to display
+        if not group_nums:
+            return ""
+        
+        # Start building the carousel HTML
+        carousel_html = f"""
+        <div class="row mt-4 mb-4">
+            <div class="col-12">
+                <h2 class="text-center">Clusters{cluster_num}</h2>
+                <div id="{carousel_id}" class="carousel slide" data-ride="carousel" data-interval="false">
+        """
+        
+        # Add indicators
+        carousel_html += """
+                    <ol class="carousel-indicators">
+        """
+        
+        for i, group_num in enumerate(group_nums):
+            active_class = "active" if i == 0 else ""
+            carousel_html += f'<li data-target="#{carousel_id}" data-slide-to="{i}" class="{active_class}"></li>\n'
+        
+        carousel_html += """
+                    </ol>
+                    <div class="carousel-inner">
+        """
+        
+        # Add carousel items
+        for i, group_num in enumerate(group_nums):
+            active_class = "active" if i == 0 else ""
+            cluster_data = group_data[group_num]
+            
+            # Get HLA info
+            hla_name = cluster_data.get('hla', 'Unknown HLA')
+            correlation = cluster_data.get('correlation', 0)
+            correlation_formatted = round(correlation, 2) if isinstance(correlation, (int, float)) else correlation
+            
+            # Get image paths
+            gibbs_img = cluster_data.get('gibbs_img', None)
+            nat_img = cluster_data.get('nat_img', None)
+            
+            # Remove base path if needed
+            if gibbs_img and hasattr(self, '_outfolder'):
+                gibbs_img = str(gibbs_img).replace(f"{self._outfolder}/", '')
+            
+            if nat_img and hasattr(self, '_outfolder'):
+                nat_img = str(nat_img).replace(f"{self._outfolder}/", '')
+            
+            # Generate the HLA section for this cluster
+            hla_section = self.render_hla_section(hla_name, correlation_formatted, gibbs_img, nat_img)
+            
+            # Create carousel item with the HLA section
+            carousel_html += f"""
+                        <div class="carousel-item {active_class}">
+                            <div class="container">
+                                <div class="cluster-id-label text-center mb-2">
+                                    <h4>Group {cluster_data['id']}</h4>
+                                </div>
+                                {hla_section}
+                            </div>
+                        </div>
+            """
+        
+        # Add carousel controls
+        carousel_html += f"""
+                    </div>
+                    <a class="carousel-control-prev" href="#{carousel_id}" role="button" data-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="carousel-control-next" href="#{carousel_id}" role="button" data-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+        """
+        
+        return carousel_html
+
+    def render_clustered_results(self, highest_corr_per_row, gibbs_out):
+        """
+        Renders the complete HTML for all clustered results with carousels and necessary JavaScript.
+        
+        Args:
+            highest_corr_per_row: Dictionary from find_highest_correlation_for_each_row method
+            gibbs_out: Path to the gibbs output directory
+        
+        Returns:
+            Complete HTML string with carousels and required JavaScript
+        """
+        # Generate all carousels
+        carousels_html = self.render_cluster_carousels(highest_corr_per_row, gibbs_out)
+        
+        
+        
+        return carousels_html
+        
+    
+        
+        
+        
+
+    
+    #####  New functions ends here 
+    
+    
     
     def generate_html_layout(self, correlation_dict, db, gibbs_out,immunolyser=False):
         """
@@ -1397,6 +1647,8 @@ class ClusterSearch:
         display_search_results(highest_corr_per_row, self.threshold)
         # print(highest_corr_per_row)
         
+        ## added to self
+        self.db = db
 
         if not os.path.exists(os.path.join(self._outfolder,'cluster-img')):
             os.makedirs(os.path.join(self._outfolder,'cluster-img'))
@@ -1450,6 +1702,30 @@ class ClusterSearch:
     """
         
         html_create = html_content + body_start
+        
+        carousel_js = """
+        $(document).ready(function() {
+            // Initialize all carousels
+            $('.carousel').carousel({
+                interval: false  // Prevent auto-sliding
+            });
+            
+            // Fix for carousel controls
+            $('.carousel-control-prev, .carousel-control-next').click(function(e) {
+                e.preventDefault();
+                var targetId = $(this).attr('href');
+                var direction = $(this).hasClass('carousel-control-prev') ? 'prev' : 'next';
+                $(targetId).carousel(direction);
+            });
+            
+            // Fix for indicators
+            $('.carousel-indicators li').click(function() {
+                var targetId = $(this).data('target');
+                var slideIndex = $(this).data('slide-to');
+                $(targetId).carousel(parseInt(slideIndex));
+            });
+        });
+        """
         body_end_1 = """
 </div>
 </div>
@@ -1950,90 +2226,102 @@ document.addEventListener('DOMContentLoaded', initHeatmap);
         # print(df_co)
         immunolyser_out = ""
         immunolyser_out_js = ""
-        for row, (col, corr) in highest_corr_per_row.items():
+        # cluster = {}
+        # print("##"*100)
+        # print(highest_corr_per_row)
+        
+        new_html_carousel = self.render_cluster_carousels(highest_corr_per_row,gibbs_out)
+        body_end_1 += carousel_js
+        # print(new_html_carousel)
+        
+        # print("$$$"*100)
+        
+        # for row, (col, corr) in highest_corr_per_row.items():
+        #     # cluster = str(row).split("/")[-1].split('.')[1]
+        #     if corr >= self.threshold:
+        #         output_dict[str(row).split("/")[-1].split('.')[1]] = {
+        #             'cluster': str(row).split("/")[-1],
+        #             'HLA': str(col).split('/')[-1].replace('.txt',''),
+        #             'correlation': corr,
+        #             'gibbs_img': None,
+        #             'nat_img': None,
+        #             'corr_plot': None,
+        #             'corr_json': None
+        #         }
+        #         gibbs_img = self._find_gibbs_image_path(str(row).split("/")[-1].split('.')[1], os.path.join(gibbs_out, 'logos'))
 
-            if corr >= self.threshold:
-            
-                output_dict[str(row).split("/")[-1].split('.')[1]] = {
-                    'cluster': str(row).split("/")[-1],
-                    'HLA': str(col).split('/')[-1].replace('.txt',''),
-                    'correlation': corr,
-                    'gibbs_img': None,
-                    'nat_img': None,
-                    'corr_plot': None,
-                    'corr_json': None
-                }
-                gibbs_img = self._find_gibbs_image_path(str(row).split("/")[-1].split('.')[1], os.path.join(gibbs_out, 'logos'))
-
-                if gibbs_img:
-                    # shutil.copy(gibbs_img, os.path.join(self._outfolder, 'cluster-img', f"{str(gibbs_img).split('/')[-1]}"))
-                    # Use os.path functions for platform-independent path handling
-                    gibbs_img_basename = os.path.basename(gibbs_img)
-                    dest_path = os.path.join(os.path.join(self._outfolder, 'cluster-img'), gibbs_img_basename)
-                    shutil.copy(gibbs_img, dest_path)
+        #         if gibbs_img:
+        #             # shutil.copy(gibbs_img, os.path.join(self._outfolder, 'cluster-img', f"{str(gibbs_img).split('/')[-1]}"))
+        #             # Use os.path functions for platform-independent path handling
+        #             gibbs_img_basename = os.path.basename(gibbs_img)
+        #             dest_path = os.path.join(os.path.join(self._outfolder, 'cluster-img'), gibbs_img_basename)
+        #             shutil.copy(gibbs_img, dest_path)
                 
-                    # output_dict[str(row).split("/")[-1].split('.')[1]]['gibbs_img'] = os.path.join(self._outfolder, 'cluster-img', f"{str(gibbs_img).split('/')[-1]}")
-                    # Use platform-independent path operations for the output dictionary
-                    row_basename = os.path.basename(str(row))
-                    row_name = os.path.splitext(row_basename)[0].split('.')[1]
-                    output_dict[row_name]['gibbs_img'] = dest_path
+        #             # output_dict[str(row).split("/")[-1].split('.')[1]]['gibbs_img'] = os.path.join(self._outfolder, 'cluster-img', f"{str(gibbs_img).split('/')[-1]}")
+        #             # Use platform-independent path operations for the output dictionary
+        #             row_basename = os.path.basename(str(row))
+        #             row_name = os.path.splitext(row_basename)[0].split('.')[1]
+        #             output_dict[row_name]['gibbs_img'] = dest_path
                     
-                if self.species == 'human':
-                    hla = str(col).split('/')[-1].replace('.txt','').split('_')[1]
-                else:
-                    hla = str(col).split('/')[-1].replace('.txt','')
-                nat_path = db[db['formatted_allotypes'] == hla]['motif_path'].values[0]
+        #         if self.species == 'human':
+        #             hla = str(col).split('/')[-1].replace('.txt','').split('_')[1]
+        #         else:
+        #             hla = str(col).split('/')[-1].replace('.txt','')
+        #         nat_path = db[db['formatted_allotypes'] == hla]['motif_path'].values[0]
                 
-                if nat_path:
-                    # shutil.copy(os.path.join(self.db_path,nat_path), os.path.join(self._outfolder, 'allotypes-img', f"{str(nat_path).split('/')[-1]}"))
-                    src_path = os.path.join(self.db_path, nat_path)
-                    nat_path_basename = os.path.basename(nat_path)
-                    dest_path = os.path.join(os.path.join(self._outfolder, 'allotypes-img'), nat_path_basename)
-                    # Copy the file
-                    shutil.copy(src_path, dest_path)
-                    # output_dict[str(row).split("/")[-1].split('.')[1]]['nat_img'] = os.path.join(self._outfolder, 'allotypes-img', f"{str(nat_path).split('/')[-1]}")
-                    row_basename = os.path.basename(str(row))
-                    row_name = os.path.splitext(row_basename)[0].split('.')[1]
-                    output_dict[row_name]['nat_img'] = dest_path
+        #         if nat_path:
+        #             # shutil.copy(os.path.join(self.db_path,nat_path), os.path.join(self._outfolder, 'allotypes-img', f"{str(nat_path).split('/')[-1]}"))
+        #             src_path = os.path.join(self.db_path, nat_path)
+        #             nat_path_basename = os.path.basename(nat_path)
+        #             dest_path = os.path.join(os.path.join(self._outfolder, 'allotypes-img'), nat_path_basename)
+        #             # Copy the file
+        #             shutil.copy(src_path, dest_path)
+        #             # output_dict[str(row).split("/")[-1].split('.')[1]]['nat_img'] = os.path.join(self._outfolder, 'allotypes-img', f"{str(nat_path).split('/')[-1]}")
+        #             row_basename = os.path.basename(str(row))
+        #             row_name = os.path.splitext(row_basename)[0].split('.')[1]
+        #             output_dict[row_name]['nat_img'] = dest_path
                 
-                try:
-                    gibbs_mt = self.format_input_gibbs(row)
-                    nat_mat = self.format_input_gibbs(os.path.join(self.db_path,col))
+        #         try:
+        #             gibbs_mt = self.format_input_gibbs(row)
+        #             nat_mat = self.format_input_gibbs(os.path.join(self.db_path,col))
 
-                    # Align amino acid order
-                    gibbs_mt, nat_mat = self.amino_acid_order_identical(gibbs_mt, nat_mat)
-                    mat_motif = str(row).split("/")[-1].split('.')[1]+"_"+str(col).split('/')[-1].replace('.txt','')
-                    # Remove Corelation plot
-                    # self._make_correlation_plot(gibbs_mt, nat_mat,mat_motif)
-                    # output_dict[str(row).split("/")[-1].split('.')[1]]['corr_plot'] = f"{os.path.join(self._outfolder,'corr-data')}/amino_acids_comparison_with_correlation_{mat_motif}.png"
-                    # output_dict[str(row).split("/")[-1].split('.')[1]]['corr_json'] = f"{os.path.join(self._outfolder,'corr-data')}/amino_acids_comparison_with_correlation_{mat_motif}.json"
+        #             # Align amino acid order
+        #             gibbs_mt, nat_mat = self.amino_acid_order_identical(gibbs_mt, nat_mat)
+        #             mat_motif = str(row).split("/")[-1].split('.')[1]+"_"+str(col).split('/')[-1].replace('.txt','')
+        #             # Remove Corelation plot
+        #             # self._make_correlation_plot(gibbs_mt, nat_mat,mat_motif)
+        #             # output_dict[str(row).split("/")[-1].split('.')[1]]['corr_plot'] = f"{os.path.join(self._outfolder,'corr-data')}/amino_acids_comparison_with_correlation_{mat_motif}.png"
+        #             # output_dict[str(row).split("/")[-1].split('.')[1]]['corr_json'] = f"{os.path.join(self._outfolder,'corr-data')}/amino_acids_comparison_with_correlation_{mat_motif}.json"
                     
-                except Exception as e:
-                    self.console.print(
-                        f"Failed to compute correlation plot between {row} and {col}: {str(e)}"
-                    )
-                    # return float('nan')
-                rows_list = self.render_hla_section(hla,round(corr,2), str(output_dict[str(row).split("/")[-1].split('.')[1]]['gibbs_img']).replace(f"{self._outfolder}/",''), str(output_dict[str(row).split("/")[-1].split('.')[1]]['nat_img']).replace(f"{self._outfolder}/",''))
-                html_create += rows_list
-                # plot_js = self.insert_script_hla_section(str(output_dict[str(row).split("/")[-1].split('.')[1]]['corr_json']).replace(f"{self._outfolder}/",''), f"correlation_chart_{str(row).split('/')[-1].split('.')[1]}")
-                plot_js = self.insert_script_png_json(str(output_dict[str(row).split("/")[-1].split('.')[1]]['corr_json']).replace(f"{self._outfolder}/",''),str(output_dict[str(row).split("/")[-1].split('.')[1]]['corr_plot']).replace(f"{self._outfolder}/",''),f"correlation_chart_{str(row).split('/')[-1].split('.')[1]}")
-                body_end_1  += plot_js
+        #         except Exception as e:
+        #             self.console.print(
+        #                 f"Failed to compute correlation plot between {row} and {col}: {str(e)}"
+        #             )
+        #             # return float('nan')
+        #         rows_list = self.render_hla_section(hla,round(corr,2), str(output_dict[str(row).split("/")[-1].split('.')[1]]['gibbs_img']).replace(f"{self._outfolder}/",''), str(output_dict[str(row).split("/")[-1].split('.')[1]]['nat_img']).replace(f"{self._outfolder}/",''))
+        #         html_create += rows_list
+        #         # plot_js = self.insert_script_hla_section(str(output_dict[str(row).split("/")[-1].split('.')[1]]['corr_json']).replace(f"{self._outfolder}/",''), f"correlation_chart_{str(row).split('/')[-1].split('.')[1]}")
+        #         plot_js = self.insert_script_png_json(str(output_dict[str(row).split("/")[-1].split('.')[1]]['corr_json']).replace(f"{self._outfolder}/",''),str(output_dict[str(row).split("/")[-1].split('.')[1]]['corr_plot']).replace(f"{self._outfolder}/",''),f"correlation_chart_{str(row).split('/')[-1].split('.')[1]}")
+        #         body_end_1  += plot_js
                 
-                immunolyser_out += rows_list
-                immunolyser_out_js += plot_js
+        #         immunolyser_out += rows_list
+        #         immunolyser_out_js += plot_js
             
-        if heatmap_json:
-            body_end_1 += heatmap_js
-            immunolyser_out_js += heatmap_js
-        else:
-            heatmap_div = ""
-            heatmap_js =""
+        # if heatmap_json:
+        #     body_end_1 += heatmap_js
+        #     immunolyser_out_js += heatmap_js
+        # else:
+        #     heatmap_div = ""
+        #     heatmap_js =""
         if  self.d3js_json:
             body_end_1 += heatmap_d3_js
             immunolyser_out_js += heatmap_d3_js
         else:
             heatmap_d3_html = ""
             heatmap_d3_js = ""
+        ## addeing new new_html_carousel
+        html_create += new_html_carousel
+        ##ends here
         html_create += br_tag + df_corr_html + br_tag + heatmap_div + br_tag + heatmap_d3_html +br_tag + body_end_1 + body_end_2
         
         immunolyser_out += br_tag + br_tag +  df_corr_html + heatmap_div
