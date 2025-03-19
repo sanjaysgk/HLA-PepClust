@@ -39,11 +39,12 @@ class ClusterSearch:
         self.console = CONSOLE
         self.species = None
         self.uhla = None
-        self.data_dir= None
-        self.corr_df = None #pd.DataFrame(columns=['Cluster', 'HLA', 'Correlation'])
+        self.data_dir = None
+        # pd.DataFrame(columns=['Cluster', 'HLA', 'Correlation'])
+        self.corr_df = None
         self.threshold = 0.70
         self.d3js_json = None
-        self.db = None # databse of motif and matrix
+        self.db = None  # databse of motif and matrix
 
     def generate_unique_random_ids(self, count: int) -> list:
         """
@@ -75,7 +76,7 @@ class ClusterSearch:
         else:
             self.data_dir = db_path
             self.species = str(species).lower()
-    
+
         return pd.read_csv(os.path.join(db_path, f'{species}.db'))
 
     def parse_gibbs_output(self, gibbs_path: str, n_clusters: int) -> pd.DataFrame:
@@ -187,7 +188,7 @@ class ClusterSearch:
         :param HLA: HLA file name
         :return: Formatted HLA type
         """
-        return HLA.replace("HLA_", "").replace("*", "").replace("txt", "").replace(".","")
+        return HLA.replace("HLA_", "").replace("*", "").replace("txt", "").replace(".", "")
 
     def check_HLA_DB(self, HLA_list: list, ref_folder: str) -> bool:
         """
@@ -270,7 +271,7 @@ class ClusterSearch:
 
         start_time = time.time()
         cluster_found = []
-        
+
         if n_clusters == "all":
             self.console.log("Processing all clusters")
             with self.console.status("Processing all clusters") as status:
@@ -344,7 +345,7 @@ class ClusterSearch:
                         self.console.log(
                             f"Skipping {filename1} as it does not from {n_clusters} clusters"
                         )
-            
+
         else:
             self.console.log(
                 f"Given n_clusters param {n_clusters} is invalid. Proceeding with 'all' clusters"
@@ -412,7 +413,6 @@ class ClusterSearch:
             hla_list = None
             # self.console.log("Processing all available HLA types.")
 
-
         start_time = time.time()
         cluster_found = []
         if n_clusters == "all":
@@ -427,7 +427,7 @@ class ClusterSearch:
                             hla_list is not None
                             and self.formate_HLA_DB(str(mat_path).split('/')[0]) in hla_list
                         ):
- 
+
                             correlation = self._compute_and_log_correlation_V2(
                                 os.path.join(gibbs_result_matrix, gibbs_f),
                                 mat_path,
@@ -440,7 +440,7 @@ class ClusterSearch:
                             # print(correlation)
                         if (
                             hla_list is None
-                            
+
                         ):
                             correlation = self._compute_and_log_correlation_V2(
                                 os.path.join(gibbs_result_matrix, gibbs_f),
@@ -451,13 +451,12 @@ class ClusterSearch:
                                 spinner="squish",
                                 spinner_style="yellow",
                             )
-                        
+
                         else:
                             self.console.log(
                                 f"Skipping {self.formate_HLA_DB(str(mat_path).split('/')[0])} as it is not in the provided HLA list"
                             )
-                         
-                            
+
         elif n_clusters == "best_KL":
             self.console.log("Processing for best KL divergence clusters")
             with self.console.status(
@@ -480,7 +479,7 @@ class ClusterSearch:
                             )
                         if (
                             hla_list is None
-                            
+
                         ):
                             correlation = self._compute_and_log_correlation_V2(
                                 os.path.join(gibbs_result_matrix, gibbs_f),
@@ -491,12 +490,12 @@ class ClusterSearch:
                                 spinner="squish",
                                 spinner_style="yellow",
                             )
-                        
+
                         else:
                             self.console.log(
                                 f"Skipping {str(mat_path).split('/')[0]} as it is not in the provided HLA list"
                             )
-   
+
         elif n_clusters.isdigit() and 0 < int(n_clusters) <= 6:
 
             self.console.log(f"Processing for {n_clusters} clusters")
@@ -511,7 +510,7 @@ class ClusterSearch:
                             ):
                                 correlation = self._compute_and_log_correlation_V2(
                                     os.path.join(gibbs_result_matrix, gibbs_f),
-                                     mat_path,
+                                    mat_path,
                                 )
                                 status.update(
                                     status=f"[bold blue] Compute correlation between {gibbs_f} and {str(mat_path).split('/')[-1]} with correlation {correlation:.4f}",
@@ -519,9 +518,9 @@ class ClusterSearch:
                                     spinner_style="yellow",
                                 )
                             if (
-                            hla_list is None
-                            
-                        ):
+                                hla_list is None
+
+                            ):
                                 correlation = self._compute_and_log_correlation_V2(
                                     os.path.join(gibbs_result_matrix, gibbs_f),
                                     mat_path,
@@ -531,7 +530,7 @@ class ClusterSearch:
                                     spinner="squish",
                                     spinner_style="yellow",
                                 )
-                        
+
                             else:
                                 self.console.log(
                                     f"Skipping ref databse {self.formate_HLA_DB(str(mat_path).split('/')[-1])} as it is not in the provided HLA list {hla_list}"
@@ -559,33 +558,33 @@ class ClusterSearch:
                             )
                         if (
                             hla_list is None
-                            
+
                         ):
-                                correlation = self._compute_and_log_correlation_V2(
-                                    os.path.join(gibbs_result_matrix, gibbs_f),
-                                    mat_path,
-                                )
-                                status.update(
-                                    status=f"[bold blue] Compute correlation between {gibbs_f} and {str(mat_path).split('/')[-1]} with correlation {correlation:.4f}",
-                                    spinner="squish",
-                                    spinner_style="yellow",
-                                )
-                        
+                            correlation = self._compute_and_log_correlation_V2(
+                                os.path.join(gibbs_result_matrix, gibbs_f),
+                                mat_path,
+                            )
+                            status.update(
+                                status=f"[bold blue] Compute correlation between {gibbs_f} and {str(mat_path).split('/')[-1]} with correlation {correlation:.4f}",
+                                spinner="squish",
+                                spinner_style="yellow",
+                            )
+
                         else:
                             self.console.log(
-                                    f"Skipping {str(mat_path).split('/')[0]} as it is not in the provided HLA list"
-                                )
+                                f"Skipping {str(mat_path).split('/')[0]} as it is not in the provided HLA list"
+                            )
         end_time = time.time()
         elapsed_time = end_time - start_time
         self.console.log(
             f"Cluster Search Preprocess completed in {elapsed_time:.2f} seconds."
         )
-        
+
         if len(cluster_found) == 0:
             self.console.log(
-            f"No cluster files found for {n_clusters} clusters exiting({cluster_found})"
+                f"No cluster files found for {n_clusters} clusters exiting({cluster_found})"
             )
-            return 
+            return
 
     def _compute_and_log_correlation(
         self,
@@ -644,18 +643,17 @@ class ClusterSearch:
         :param filename2: File name of the reference Gibbs matrix
         """
         try:
-            if not os.path.exists(os.path.join(self._outfolder,'corr-data')):
-                os.makedirs(os.path.join(self._outfolder,'corr-data'))
+            if not os.path.exists(os.path.join(self._outfolder, 'corr-data')):
+                os.makedirs(os.path.join(self._outfolder, 'corr-data'))
             # breakpoint()
             # Format input data
             m1 = self.format_input_gibbs(gibbs_f)
-            m2 = self.format_input_gibbs(os.path.join(self.data_dir,ref_mat))
+            m2 = self.format_input_gibbs(os.path.join(self.data_dir, ref_mat))
 
             # Align amino acid order
             m1, m2 = self.amino_acid_order_identical(m1, m2)
-            
+
             # print(m1, m2)
-            
 
             # Calculate correlation
             correlation = m1.corrwith(m2, axis=1).mean()
@@ -667,9 +665,9 @@ class ClusterSearch:
             # Store the result in the correlation dictionary
             # self.correlation_dict[(str(gibbs_f).split(
             #     '/')[-1], str(ref_mat).split('/')[-1])] = correlation
-            
-            self.correlation_dict[(gibbs_f),(ref_mat)] = correlation
-                        
+
+            self.correlation_dict[(gibbs_f), (ref_mat)] = correlation
+
             return correlation
 
         except Exception as e:
@@ -688,7 +686,7 @@ class ClusterSearch:
         max_correlation = max(self.correlation_dict.values())
         max_correlation_pair = max(
             self.correlation_dict, key=self.correlation_dict.get)
-        
+
         return max_correlation_pair[0], max_correlation_pair[1], max_correlation
 
     def plot_heatmap(self, output_path) -> None:
@@ -697,7 +695,7 @@ class ClusterSearch:
         """
         # Check if correlation_dict is empty
         if not self.correlation_dict:
-            
+
             raise ValueError(
                 "correlation_dict is empty. Cannot generate heatmap.[Tip: try running without --n_clusters flag or check your gibbs output files]")
 
@@ -892,7 +890,7 @@ class ClusterSearch:
                 return os.path.join(DB_image_folder, filename)
         logging.warning(f"No image found for HLA name {HLA_name}")
         return None
-    
+
     def _naturally_presented_log_V2(self, HLA, path):
         """
         Find all image paths in the specified folder.
@@ -1055,40 +1053,42 @@ class ClusterSearch:
         # }
 
         # imagelayout()
-    def _make_correlation_plot(self, gibbs_df, motif_df,mat_motif):
+    def _make_correlation_plot(self, gibbs_df, motif_df, mat_motif):
         df1 = pd.DataFrame(gibbs_df)
         df2 = pd.DataFrame(motif_df)
-        
-        df1['Position'] = df1.index +1
-        df2['Position'] = df2.index +1
-        
-        df1_melted = df1.melt(id_vars='Position', var_name='Amino Acid', value_name='Cluster')
-        df2_melted = df2.melt(id_vars='Position', var_name='Amino Acid', value_name='Reference')
+
+        df1['Position'] = df1.index + 1
+        df2['Position'] = df2.index + 1
+
+        df1_melted = df1.melt(id_vars='Position',
+                              var_name='Amino Acid', value_name='Cluster')
+        df2_melted = df2.melt(id_vars='Position',
+                              var_name='Amino Acid', value_name='Reference')
 
         # Merge the two dataframes
-        df_merged = pd.merge(df1_melted, df2_melted, on=['Position', 'Amino Acid'])
-        
+        df_merged = pd.merge(df1_melted, df2_melted, on=[
+                             'Position', 'Amino Acid'])
+
         # Create the base chart
-        base = alt.Chart(df_merged,width="container").mark_circle().encode(
+        base = alt.Chart(df_merged, width="container").mark_circle().encode(
             x='Cluster',
             y='Reference',
             color='Amino Acid',
-            tooltip=['Amino Acid', 'Cluster', 'Reference','Position']
+            tooltip=['Amino Acid', 'Cluster', 'Reference', 'Position']
         )
         # Calculate the correlation coefficient
         corr_coef = df_merged[['Cluster', 'Reference']].corr().iloc[0, 1]
         # corr_coef = df_merged['Cluster'].corrwith(df_merged['Reference']).iloc[0]
         # corr_coef = pd.Series(df_merged['Cluster']).corr(pd.Series(df_merged['Reference']))
 
-
         # corrwith
 
         # Create the regression line
-        regression_line = base.transform_regression('Cluster', 'Reference').mark_line(opacity=0.50,shape='mark').transform_fold(
-            ["reg-line"], 
+        regression_line = base.transform_regression('Cluster', 'Reference').mark_line(opacity=0.50, shape='mark').transform_fold(
+            ["reg-line"],
             as_=["Regression", "y"]
         ).encode(alt.Color("Regression:N"))
-        
+
         # Add the correlation coefficient as text
         corr_text = alt.Chart(pd.DataFrame({
             'Cluster': [df_merged['Cluster'].min()],
@@ -1101,12 +1101,14 @@ class ClusterSearch:
         )
         # Combine the charts
         chart = base + regression_line + corr_text
-        if not os.path.exists(os.path.join(self._outfolder,'corr-data')):
-                os.makedirs(os.path.join(self._outfolder,'corr-data'))
-        chart.save(f"{os.path.join(self._outfolder,'corr-data')}/amino_acids_comparison_with_correlation_{mat_motif}.json")
-        chart.save(f"{os.path.join(self._outfolder,'corr-data')}/amino_acids_comparison_with_correlation_{mat_motif}.png")
+        if not os.path.exists(os.path.join(self._outfolder, 'corr-data')):
+            os.makedirs(os.path.join(self._outfolder, 'corr-data'))
+        chart.save(
+            f"{os.path.join(self._outfolder, 'corr-data')}/amino_acids_comparison_with_correlation_{mat_motif}.json")
+        chart.save(
+            f"{os.path.join(self._outfolder, 'corr-data')}/amino_acids_comparison_with_correlation_{mat_motif}.png")
 
-    def insert_script_hla_section(self,script_data_path,div_id):
+    def insert_script_hla_section(self, script_data_path, div_id):
         script_template = Template('''
         fetch('{{ script_data_path }}')
             .then(response => response.json())
@@ -1119,8 +1121,7 @@ class ClusterSearch:
             .catch(error => console.error('Error fetching the JSON data:', error));
         ''')
         return script_template.render(script_data_path=script_data_path, div_id=div_id)
-    
-    
+
     def insert_script_png_json(self, script_data_path, img_fallback_path, div_id):
         script_template = Template('''
             fetch('{{ script_data_path }}')
@@ -1142,17 +1143,17 @@ class ClusterSearch:
         ''')
 
         return script_template.render(script_data_path=script_data_path, img_fallback_path=img_fallback_path, div_id=div_id)
-    
-    def render_hla_section(self,hla_name,corr,best_cluster_img, naturally_presented_img):
+
+    def render_hla_section(self, hla_name, corr, best_cluster_img, naturally_presented_img):
         template = Template('''
         <div class="row" style="border: 2px solid #007bff;">
         <div class="row">
-            <h3 style="text-align: center;">{{ hla_name }} correlations = {{corr}}</h3>
+            <h3 style="text-align: center;">{{ hla_name }} PCC = {{corr}}</h3>
         </div>
         <div class="row">
             <div class="col">
             <div class="card">
-                <h5 style="text-align: center;">Identified Best Cluster</h5>
+                <h5 style="text-align: center;">Gibbs Cluster</h5>
                 <div class="card">
                 {% if best_cluster_img and best_cluster_img != "None" %}
                 <img src="{{ best_cluster_img }}" class="bd-placeholder-img card-img" width="100%" height="260" alt="No Image">
@@ -1173,7 +1174,7 @@ class ClusterSearch:
             </div>
             <div class="col">
             <div class="card">
-                <h5 style="text-align: center;">Naturally presented {{ hla_name }}</h5>
+                <h5 style="text-align: center;">Reference Motif logo of HLA-{{ hla_name }}</h5>
                 <div class="card">
                 {% if naturally_presented_img and naturally_presented_img != "None" %}
                 <img src="{{ naturally_presented_img }}" class="bd-placeholder-img card-img" width="100%" height="260" alt="No Image">
@@ -1195,20 +1196,23 @@ class ClusterSearch:
         </div>
         </div>
         ''')
-        return template.render(hla_name=hla_name,corr=corr ,best_cluster_img=best_cluster_img, naturally_presented_img=naturally_presented_img)
+        return template.render(hla_name=hla_name, corr=corr, best_cluster_img=best_cluster_img, naturally_presented_img=naturally_presented_img)
 
-    
-    def make_datatable(self,correlation_dict):
-        df = pd.DataFrame(correlation_dict.items(), columns=['HLA', 'Correlation'])
-        df['Cluster'] = df['HLA'].apply(lambda x: x[0].split('/')[-1].split('.')[1])    
+    def make_datatable(self, correlation_dict):
+        df = pd.DataFrame(correlation_dict.items(),
+                          columns=['HLA', 'Correlation'])
+        df['Cluster'] = df['HLA'].apply(
+            lambda x: x[0].split('/')[-1].split('.')[1])
         df['HLA'] = df['HLA'].apply(lambda x: x[1])
-        df['HLA'] = df['HLA'].apply(lambda x: x.split('/')[-1].replace('.txt',''))
+        df['HLA'] = df['HLA'].apply(
+            lambda x: x.split('/')[-1].replace('.txt', ''))
         df['Correlation'] = df['Correlation'].apply(lambda x: round(x, 2))
         df = df.sort_values(by='Correlation', ascending=False)
         df = df.reset_index(drop=True)
         df = df[['Cluster', 'HLA', 'Correlation']]
         return df
-    def process_correlation_data(self,df=None):
+
+    def process_correlation_data(self, df=None):
         """
         Process the correlation matrix data from a CSV file and generate the necessary JSON for visualization
         """
@@ -1217,45 +1221,48 @@ class ClusterSearch:
             # Extract unique clusters and HLA types
             unique_clusters = sorted(df['Cluster'].unique())
             unique_hlas = sorted(df['HLA'].unique())
-            
-            self.console.log(f"Found {len(unique_clusters)} unique clusters and {len(unique_hlas)} unique HLA types", style="bold green")
-            
+
+            self.console.log(
+                f"Found {len(unique_clusters)} unique clusters and {len(unique_hlas)} unique HLA types", style="bold green")
+
             # Create a pivot table for the heatmap
             pivot_df = df.pivot_table(
-                index='Cluster', 
-                columns='HLA', 
+                index='Cluster',
+                columns='HLA',
                 values='Correlation',
                 fill_value=0  # Fill missing values with 0
             )
-            
+
             # Create heatmap data for D3.js visualization
             heatmap_data = []
             for cluster in unique_clusters:
                 for hla in unique_hlas:
                     # Get correlation value if it exists
                     try:
-                        correlation = df.loc[(df['Cluster'] == cluster) & (df['HLA'] == hla), 'Correlation'].values[0]
+                        correlation = df.loc[(df['Cluster'] == cluster) & (
+                            df['HLA'] == hla), 'Correlation'].values[0]
                     except IndexError:
                         correlation = 0  # Default if no correlation exists
-                        
+
                     heatmap_data.append({
                         "cluster": cluster,
                         "hla": hla,
                         "correlation": correlation
                     })
-            
+
             # Create a matrix format for alternative visualization
             matrix_data = []
             for cluster in unique_clusters:
                 cluster_data = {"cluster": cluster, "values": []}
                 for hla in unique_hlas:
                     try:
-                        correlation = df.loc[(df['Cluster'] == cluster) & (df['HLA'] == hla), 'Correlation'].values[0]
+                        correlation = df.loc[(df['Cluster'] == cluster) & (
+                            df['HLA'] == hla), 'Correlation'].values[0]
                     except IndexError:
                         correlation = 0  # Default if no correlation exists
                     cluster_data["values"].append(correlation)
                 matrix_data.append(cluster_data)
-            
+
             # Create visualization data object
             visualization_data = {
                 "heatmapData": heatmap_data,
@@ -1263,75 +1270,86 @@ class ClusterSearch:
                 "clusters": unique_clusters,
                 "hlas": unique_hlas
             }
-            
+
             # Save the data as JSON
             output_file = Path("hla_correlation_data.json")
-            with open(os.path.join(self._outfolder,output_file), 'w') as f:
+            with open(os.path.join(self._outfolder, output_file), 'w') as f:
                 json.dump(visualization_data, f, indent=2)
-            
+
             self.console.log(f"Correlation data saved as {output_file}")
-            
+
             # Create a static heatmap image as a reference
             # self.create_static_heatmap(pivot_df)
-                
+
             return visualization_data
-    
+
         else:
             self.console.log("No correlation data found to process")
             return None
 
-    def make_heatmap(self,correlation_dict):
-        df = self.make_datatable(correlation_dict)
-        # print(df)
-        
+
+    
+    def save_correlation_data(self):
+        """Save correlation data to CSV and JSON files"""
         try:
-            self.corr_df = df
-            df.to_csv(os.path.join(self._outfolder, 'corr-data', 'corr_matrix.csv'),index=False)
-            self.d3js_json = self.process_correlation_data(df)
+            # Save dataframe to CSV
+            self.corr_df.to_csv(os.path.join(self._outfolder, 'corr-data', 'corr_matrix.csv'), index=False)
+            
+            # Save to JSON format for D3.js
+            try:
+                json_data = self.write_to_json(self.corr_df)
+                with open(os.path.join(self._outfolder, 'corr-data', 'pcc_data.json'), 'w+') as f:
+                    json.dump(json_data, f, ensure_ascii=False, indent=4)
+                
+                return True
+                
+            except Exception as e:
+                self.console.log(f"Failed to save the correlation matrix JSON for network plot: {str(e)}")
+                return False
+            
         except Exception as e:
             self.console.log(f"Failed to save the correlation matrix: {str(e)}")
-        try:
-
-            chart_h = alt.Chart(df,width="container").mark_rect().encode(
-    alt.X("HLA:O").title("HLA").axis(labelAngle=-45),
-    alt.Y("Cluster:O").title("Cluster"),
-    alt.Color(
-        "Correlation",
-        scale=alt.Scale(
-            domain=[df["Correlation"].min(), self.threshold, df["Correlation"].max()],
-            range=["#d3d3d3", "#add8e6", "#ff4500"],  # Low values fade, high values bright
-        ),
-        legend=None
-    ),
-    tooltip=[
-        alt.Tooltip("HLA", title="HLA"),
-        alt.Tooltip("Cluster", title="Cluster"),
-        alt.Tooltip("Correlation", title="Correlation"),
-    ],
-).configure_view(
-    step=13,
-    strokeWidth=0
-).configure_axis(
-    domain=False
-)
-            chart_h.save(f"{os.path.join(self._outfolder,'corr-data')}/correlation_heatmap.json")
-            chart_h.save(f"{os.path.join(self._outfolder,'corr-data')}/correlation_heatmap.png")
-            return True
-        # rows = sorted(set(key[0] for key in correlation_dict.keys()))
-        # cols = sorted(set(key[1] for key in correlation_dict.keys()))
-        except Exception as e:
-            self.console.log(f"Failed to save the correlation heatmap: {str(e)}")
             return False
+
+    def write_to_json(self, df):
+        """Convert dataframe to JSON format for D3.js visualization"""
+        data = []
         
+        for idx, row in df.iterrows():
+            # Convert each row to the required format
+            data.append({
+                "cluster_id": row['Cluster'],
+                "hla_type": row['HLA'],
+                "correlation": float(row['Correlation'])
+            })
+        
+        return data
+
+    def make_heatmap(self, correlation_dict):
+        df = self.make_datatable(correlation_dict)
+        # print(df)
+
+        try:
+            self.corr_df = df
+            self.d3js_json = self.save_correlation_data()
+        
+            # self.d3js_json = self.process_correlation_data(df)
+        except Exception as e:
+            self.console.log(
+                f"Failed to save the save_correlation_data() -- fun : {str(e)}")
         return False
-        
-        
-        
-    
-    def make_datatable_html(self,correlation_dict,df=None):
+
+    def make_datatable_html(self, correlation_dict, df=None):
         if df is None:
             df = self.make_datatable(correlation_dict)
-            table_start  =     """
+            table_start = """
+                <div class="container py-4">
+        <div class="card">
+            <div class="card-header bg-secondary text-white">
+                <h4 class="card-title mb-0">Correlation For all Reference HLA/MHC</h4>
+            </div>
+            <div class="card-body">
+            
             <table id="correlation_table"  class="table table-bordered">
               <thead class="thead-dark">
                 <tr>
@@ -1377,67 +1395,72 @@ class ClusterSearch:
                         <td>0.0</td>
                     </tr>
                     """
-                
+
             table_end = """
+         
                </tbody>
             </table>
+            
+               </div>
+             </div>
+              </div>
             """
         return table_start + tr + table_end
-              
-              
-            # return df.to_html(classes='table table-striped', index=False, table_id='correlation_table')
-            
-            
-            
+
+        # return df.to_html(classes='table table-striped', index=False, table_id='correlation_table')
+
     #### NEW !!!!! Carousel Control based clusters #########
-    
+
     def create_cluster_hierarchy(self, highest_corr_per_row, gibbs_out):
         """
         Create a hierarchical dictionary of clusters organized by their groups.
-        
+
         Args:
             highest_corr_per_row: Dictionary from find_highest_correlation_for_each_row method
             gibbs_out: Path to the gibbs output directory
-            
+
         Returns:
             Dictionary with hierarchical structure of clusters by group number
         """
         # Initialize result dictionary
         result = {}
         threshold = self.threshold
-        
+
         # Process each row in the correlation dictionary
         for row_path, (col_path, correlation) in highest_corr_per_row.items():
             # Skip if correlation is below threshold
             if correlation < threshold:
                 continue
-                
+
             # Extract cluster information from the row path
             try:
                 # Get the filename from the path
                 filename = os.path.basename(row_path)
-                
+
                 # Extract the cluster identifier (like '1of3')
                 if 'gibbs.' in filename:
                     cluster_id = filename.split('gibbs.')[1].split('.')[0]
-                    group_num = int(cluster_id.split('of')[0])  # First number (before "of")
-                    cluster_num = int(cluster_id.split('of')[1])  # Second number (after "of")
+                    # First number (before "of")
+                    group_num = int(cluster_id.split('of')[0])
+                    # Second number (after "of")
+                    cluster_num = int(cluster_id.split('of')[1])
                 else:
                     # Handle cases where the filename format might be different
                     continue
-                    
+
                 # Extract HLA information
                 if self.species == 'human':
                     # For human, extract HLA from column path
-                    hla = os.path.basename(col_path).replace('.txt', '').split('_')[1]
+                    hla = os.path.basename(col_path).replace(
+                        '.txt', '').split('_')[1]
                 else:
                     # For other species
                     hla = os.path.basename(col_path).replace('.txt', '')
-                    
+
                 # Initialize cluster in the dictionary if it doesn't exist
                 if cluster_num not in result:
                     result[cluster_num] = {}
-                    
+
                 # Add cluster data to the dictionary
                 result[cluster_num][group_num] = {
                     'id': cluster_id,
@@ -1446,16 +1469,18 @@ class ClusterSearch:
                     'hla': hla,
                     'correlation': float(correlation)
                 }
-                
+
                 # Find and add additional data if needed
-                gibbs_img = self._find_gibbs_image_path(cluster_id, os.path.join(gibbs_out, 'logos'))
+                gibbs_img = self._find_gibbs_image_path(
+                    cluster_id, os.path.join(gibbs_out, 'logos'))
 
                 if gibbs_img:
                     gibbs_img_basename = os.path.basename(gibbs_img)
-                    dest_path = os.path.join(os.path.join(self._outfolder, 'cluster-img'), gibbs_img_basename)
+                    dest_path = os.path.join(os.path.join(
+                        self._outfolder, 'cluster-img'), gibbs_img_basename)
                     shutil.copy(gibbs_img, dest_path)
                     result[cluster_num][group_num]['gibbs_img'] = dest_path
-                    
+
                 # If we have a database path, try to find natural motif image
                 if hasattr(self, 'db_path') and hasattr(self, 'db'):
                     try:
@@ -1465,73 +1490,78 @@ class ClusterSearch:
                             if nat_path:
                                 src_path = os.path.join(self.db_path, nat_path)
                                 nat_path_basename = os.path.basename(nat_path)
-                                dest_path = os.path.join(os.path.join(self._outfolder, 'allotypes-img'), nat_path_basename)
+                                dest_path = os.path.join(os.path.join(
+                                    self._outfolder, 'allotypes-img'), nat_path_basename)
                                 # Copy the file
                                 shutil.copy(src_path, dest_path)
                                 result[cluster_num][group_num]['nat_img'] = dest_path
                     except Exception as e:
                         # Handle exceptions when accessing database
                         if hasattr(self, 'console'):
-                            self.console.print(f"Error accessing database for {hla}: {str(e)}")
-                
+                            self.console.print(
+                                f"Error accessing database for {hla}: {str(e)}")
+
             except Exception as e:
                 # Handle any exceptions during processing
                 if hasattr(self, 'console'):
-                    self.console.print(f"Error processing cluster {row_path}: {str(e)}")
+                    self.console.print(
+                        f"Error processing cluster {row_path}: {str(e)}")
                 continue
-        
+
         return result
 
     def render_cluster_carousels(self, highest_corr_per_row, gibbs_out):
         """
         Renders carousels for clusters, grouping them by their group number.
-        
+
         Args:
             highest_corr_per_row: Dictionary from find_highest_correlation_for_each_row method
             gibbs_out: Path to the gibbs output directory
-            
+
         Returns:
             HTML string containing all cluster carousels
         """
         # Create hierarchical structure
-        cluster_hierarchy = self.create_cluster_hierarchy(highest_corr_per_row, gibbs_out)
-        
+        cluster_hierarchy = self.create_cluster_hierarchy(
+            highest_corr_per_row, gibbs_out)
+
         # Generate carousels for each group
         all_carousels_html = ""
         # cluster_num = sorted(cluster_hierarchy.keys()).items()
-        
+
         for cluster_num in sorted(cluster_hierarchy.keys()):
-            
+
             group_data = cluster_hierarchy[cluster_num]
             # Skip empty clusters
             if not group_data:
                 continue
-                
+
             carousel_id = f"carousel-cluster-{cluster_num}"
-            carousel_html = self._create_carousel_for_cluster(carousel_id, cluster_num, group_data)
+            carousel_html = self._create_carousel_for_cluster(
+                carousel_id, cluster_num, group_data)
             all_carousels_html += carousel_html
-        
+
         return all_carousels_html
 
     def _create_carousel_for_cluster(self, carousel_id, cluster_num, group_data):
         """
         Creates a Bootstrap carousel for a specific cluster group.
-        
+
         Args:
             carousel_id: Unique ID for the carousel
             cluster_num: The cluster number
             group_data: Dictionary of groups in this cluster
-            
+
         Returns:
             HTML string for the carousel
         """
         # Get ordered list of group numbers
         group_nums = sorted(group_data.keys())
-        
+
         # Skip if no groups to display
         if not group_nums:
             return ""
-        
+
         # Start building the carousel HTML
         carousel_html = f"""
         <div class="row mt-4 mb-4">
@@ -1539,45 +1569,47 @@ class ClusterSearch:
                 <h2 class="text-center">Clusters{cluster_num}</h2>
                 <div id="{carousel_id}" class="carousel slide" data-ride="carousel" data-interval="false">
         """
-        
+
         # Add indicators
         carousel_html += """
                     <ol class="carousel-indicators">
         """
-        
+
         for i, group_num in enumerate(group_nums):
             active_class = "active" if i == 0 else ""
             carousel_html += f'<li data-target="#{carousel_id}" data-slide-to="{i}" class="{active_class}"></li>\n'
-        
+
         carousel_html += """
                     </ol>
                     <div class="carousel-inner">
         """
-        
+
         # Add carousel items
         for i, group_num in enumerate(group_nums):
             active_class = "active" if i == 0 else ""
             cluster_data = group_data[group_num]
-            
+
             # Get HLA info
             hla_name = cluster_data.get('hla', 'Unknown HLA')
             correlation = cluster_data.get('correlation', 0)
-            correlation_formatted = round(correlation, 2) if isinstance(correlation, (int, float)) else correlation
-            
+            correlation_formatted = round(correlation, 2) if isinstance(
+                correlation, (int, float)) else correlation
+
             # Get image paths
             gibbs_img = cluster_data.get('gibbs_img', None)
             nat_img = cluster_data.get('nat_img', None)
-            
+
             # Remove base path if needed
             if gibbs_img and hasattr(self, '_outfolder'):
                 gibbs_img = str(gibbs_img).replace(f"{self._outfolder}/", '')
-            
+
             if nat_img and hasattr(self, '_outfolder'):
                 nat_img = str(nat_img).replace(f"{self._outfolder}/", '')
-            
+
             # Generate the HLA section for this cluster
-            hla_section = self.render_hla_section(hla_name, correlation_formatted, gibbs_img, nat_img)
-            
+            hla_section = self.render_hla_section(
+                hla_name, correlation_formatted, gibbs_img, nat_img)
+
             # Create carousel item with the HLA section
             carousel_html += f"""
                         <div class="carousel-item {active_class}">
@@ -1589,7 +1621,7 @@ class ClusterSearch:
                             </div>
                         </div>
             """
-        
+
         # Add carousel controls
         carousel_html += f"""
                     </div>
@@ -1605,38 +1637,29 @@ class ClusterSearch:
             </div>
         </div>
         """
-        
+
         return carousel_html
 
     def render_clustered_results(self, highest_corr_per_row, gibbs_out):
         """
         Renders the complete HTML for all clustered results with carousels and necessary JavaScript.
-        
+
         Args:
             highest_corr_per_row: Dictionary from find_highest_correlation_for_each_row method
             gibbs_out: Path to the gibbs output directory
-        
+
         Returns:
             Complete HTML string with carousels and required JavaScript
         """
         # Generate all carousels
-        carousels_html = self.render_cluster_carousels(highest_corr_per_row, gibbs_out)
-        
-        
-        
-        return carousels_html
-        
-    
-        
-        
-        
+        carousels_html = self.render_cluster_carousels(
+            highest_corr_per_row, gibbs_out)
 
-    
-    #####  New functions ends here 
-    
-    
-    
-    def generate_html_layout(self, correlation_dict, db, gibbs_out,immunolyser=False):
+        return carousels_html
+
+    # New functions ends here
+
+    def generate_html_layout(self, correlation_dict, db, gibbs_out, immunolyser=False):
         """
         Generate an image grid for the correlation results.
         """
@@ -1646,63 +1669,67 @@ class ClusterSearch:
         # print(highest_corr_per_row)
         display_search_results(highest_corr_per_row, self.threshold)
         # print(highest_corr_per_row)
-        
-        ## added to self
+
+        # added to self
         self.db = db
 
-        if not os.path.exists(os.path.join(self._outfolder,'cluster-img')):
-            os.makedirs(os.path.join(self._outfolder,'cluster-img'))
-        if not os.path.exists(os.path.join(self._outfolder,'allotypes-img')):
+        if not os.path.exists(os.path.join(self._outfolder, 'cluster-img')):
+            os.makedirs(os.path.join(self._outfolder, 'cluster-img'))
+        if not os.path.exists(os.path.join(self._outfolder, 'allotypes-img')):
             os.makedirs(os.path.join(self._outfolder, 'allotypes-img'))
         output_dict = {
         }
-        #D3 heatmap
+        # D3 heatmap
         heatmap_d3_html = """
-    <div class="row mb-4">
-      <div class="col-12">
+    <div class="container py-4">
         <div class="card">
-          <div class="card-header bg-primary text-white">
-            <h5 class="card-title mb-0">Correlation Heatmap</h5>
-          </div>
-          <div class="card-body">
-            <div class="row mb-3">
-              <div class="col-md-4">
-                <label for="colorScheme" class="form-label">Color Scheme:</label>
-                <select id="colorScheme" class="form-select">
-                  <option value="YlGnBu">Blue-Green</option>
-                  <option value="RdYlBu_r">Red-Blue</option>
-                  <option value="viridis">Viridis</option>
-                  <option value="magma">Magma</option>
-                  <option value="plasma">Plasma</option>
-                </select>
-              </div>
-              <div class="col-md-4">
-                <label for="thresholdValue" class="form-label">Highlight above: <span id="thresholdDisplay">0.7</span></label>
-                <input type="range" class="form-range" id="thresholdValue" min="0" max="1" step="0.05" value="0.7">
-              </div>
-              <div class="col-md-4">
-                <label for="sortBy" class="form-label">Sort Clusters:</label>
-                <select id="sortBy" class="form-select">
-                  <option value="name">By Name</option>
-                  <option value="correlation">By Avg. Correlation</option>
-                </select>
-              </div>
+            <div class="card-header bg-secondary text-white">
+                <h4 class="card-title mb-0">HLA Correlation Analysis</h4>
             </div>
-            
-            <div class="row">
-              <div class="col-12">
-                <div id="heatmap-container" class="mb-3" style="overflow-x: auto;"></div>
-                <div id="legend-container" class="d-flex justify-content-center"></div>
-              </div>
+            <div class="card-body">
+                <!-- Threshold control -->
+                <div class="mb-4">
+                    <label for="threshold" class="form-label">Correlation Threshold: <span id="threshold-value">0.70</span></label>
+                    <input type="range" class="form-range" id="threshold" min="0" max="1" step="0.01" value="0.70">
+                </div>
+                
+                <!-- Tabs navigation -->
+                <ul class="nav nav-tabs" id="visualizationTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="combined-tab" data-bs-toggle="tab" data-bs-target="#combined" type="button" role="tab" aria-controls="combined" aria-selected="true">Combined View</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="heatmap-tab" data-bs-toggle="tab" data-bs-target="#heatmap" type="button" role="tab" aria-controls="heatmap" aria-selected="false">Heatmap</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="network-tab" data-bs-toggle="tab" data-bs-target="#network" type="button" role="tab" aria-controls="network" aria-selected="false">Network</button>
+                    </li>
+                </ul>
+                
+                <!-- Tab content -->
+                <div class="tab-content" id="visualizationTabsContent">
+                    <div class="tab-pane fade show active" id="combined" role="tabpanel" aria-labelledby="combined-tab">
+                        <div id="heatmap-container-combined" class="visualization-container" style="min-height: 300px; position: relative;"></div>
+                        <div id="network-container-combined" class="visualization-container" style="min-height: 400px; position: relative;">
+                            <button class="btn btn-sm btn-secondary center-network-btn" onclick="centerNetwork('network-container-combined')">Center View</button>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="heatmap" role="tabpanel" aria-labelledby="heatmap-tab">
+                        <div id="heatmap-container-single" class="visualization-container" style="min-height: 500px; position: relative;"></div>
+                    </div>
+                    <div class="tab-pane fade" id="network" role="tabpanel" aria-labelledby="network-tab">
+                        <div id="network-container-single" class="visualization-container" style="min-height: 600px; position: relative;">
+                            <button class="btn btn-sm btn-secondary center-network-btn" onclick="centerNetwork('network-container-single')">Center View</button>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
         </div>
-      </div>
     </div>
     """
-        
+
         html_create = html_content + body_start
-        
+
         carousel_js = """
         $(document).ready(function() {
             // Initialize all carousels
@@ -1824,386 +1851,585 @@ class ClusterSearch:
 
 """
         heatmap_d3_js = """
-    // Function to create interactive heatmap
-function createHeatmap(containerId, data) {
-  // Get container width to make the heatmap responsive
-  const containerWidth = document.getElementById(containerId).clientWidth;
-  
-  // Calculate cell size based on container width and number of columns (HLAs)
-  const maxCellSize = 40;
-  const minCellSize = 20;
-  const calculatedCellSize = Math.max(
-    minCellSize, 
-    Math.min(maxCellSize, (containerWidth - 150) / data.hlas.length)
-  );
-  
-  // Set up dimensions and margins
-  const margin = { top: 50, right: 30, bottom: 120, left: 100 };
-  const cellSize = calculatedCellSize;
-  const width = Math.min(containerWidth, cellSize * data.hlas.length + margin.left + margin.right);
-  const height = cellSize * data.clusters.length + margin.top + margin.bottom;
-  
-  // Clear any existing SVG
-  d3.select(`#${containerId}`).html("");
-  
-  // Create SVG with responsive width
-  const svg = d3.select(`#${containerId}`)
-    .append('svg')
-    .attr('width', width)
-    .attr('height', height)
-    .attr('viewBox', `0 0 ${width} ${height}`)
-    .attr('preserveAspectRatio', 'xMidYMid meet')
-    .append('g')
-    .attr('transform', `translate(${margin.left},${margin.top})`);
-  
-  // Create scales
-  const x = d3.scaleBand()
-    .domain(data.hlas)
-    .range([0, cellSize * data.hlas.length])
-    .padding(0.05);
-  
-  const y = d3.scaleBand()
-    .domain(data.clusters)
-    .range([0, cellSize * data.clusters.length])
-    .padding(0.05);
-  
-  // Color scale based on selected scheme (YlGnBu by default)
-  const colorScale = d3.scaleSequential(d3.interpolateYlGnBu)
-    .domain([0, 1]);
-  
-  // Get current threshold from slider or use default
-  const thresholdSlider = document.getElementById('thresholdValue');
-  const threshold = thresholdSlider ? parseFloat(thresholdSlider.value) : 0.7;
-  
-  // Create tooltip
-  const tooltip = d3.select('body')
-    .append('div')
-    .attr('class', 'heatmap-tooltip')
-    .style('opacity', 0)
-    .style('position', 'absolute')
-    .style('padding', '10px')
-    .style('background', 'rgba(255, 255, 255, 0.95)')
-    .style('border-radius', '4px')
-    .style('box-shadow', '0 2px 5px rgba(0, 0, 0, 0.2)')
-    .style('pointer-events', 'none')
-    .style('z-index', '1000')
-    .style('max-width', '220px');
-  
-  // Add X axis labels
-  svg.append('g')
-    .selectAll('text')
-    .data(data.hlas)
-    .enter()
-    .append('text')
-    .attr('x', d => x(d) + x.bandwidth() / 2)
-    .attr('y', -10)
-    .attr('text-anchor', 'end')
-    .attr('transform', d => `rotate(-45, ${x(d) + x.bandwidth() / 2}, -10)`)
-    .text(d => d.replace('HLA_', ''))
-    .style('font-size', `${Math.min(cellSize * 0.3, 12)}px`)
-    .style('font-weight', '500');
-  
-  // Add Y axis labels
-  svg.append('g')
-    .selectAll('text')
-    .data(data.clusters)
-    .enter()
-    .append('text')
-    .attr('x', -10)
-    .attr('y', d => y(d) + y.bandwidth() / 2)
-    .attr('text-anchor', 'end')
-    .attr('dominant-baseline', 'middle')
-    .text(d => d)
-    .style('font-size', `${Math.min(cellSize * 0.3, 12)}px`)
-    .style('font-weight', '500');
-
-  // Create the heatmap cells
-  svg.selectAll('rect')
-    .data(data.heatmapData)
-    .enter()
-    .append('rect')
-    .attr('x', d => x(d.hla))
-    .attr('y', d => y(d.cluster))
-    .attr('width', x.bandwidth())
-    .attr('height', y.bandwidth())
-    .style('fill', d => d.correlation === 0 ? '#f0f0f0' : colorScale(d.correlation))
-    .style('stroke', '#f5f5f7')
-    .style('stroke-width', '1px')
-    .style('opacity', d => d.correlation >= threshold ? 1 : 0) // Make cells below threshold disappear
-    .on('mouseover', function(event, d) {
-      // Only show tooltip and highlight if correlation is above threshold
-      if (d.correlation >= threshold) {
-        // Highlight the cell
-        d3.select(this)
-          .style('stroke', '#333')
-          .style('stroke-width', '2px');
         
-        // Show tooltip
-        tooltip.transition()
-          .duration(200)
-          .style('opacity', 0.9);
         
-        tooltip.html(`<strong>Cluster:</strong> ${d.cluster}<br>
-                    <strong>HLA:</strong> ${d.hla}<br>
-                    <strong>Correlation:</strong> ${d.correlation.toFixed(2)}`)
-          .style('left', (event.pageX + 10) + 'px')
-          .style('top', (event.pageY - 28) + 'px');
-      }
-    })
-    .on('mouseout', function() {
-      // Remove highlight
-      d3.select(this)
-        .style('stroke', '#f5f5f7')
-        .style('stroke-width', '1px');
-      
-      // Hide tooltip
-      tooltip.transition()
-        .duration(500)
-        .style('opacity', 0);
-    });
-  
-  // Add correlation text to cells with correlation > threshold
-  // Adjust font size based on cell size
-  const fontSize = Math.min(cellSize * 0.4, 11);
-  
-  svg.selectAll('text.cell-text')
-    .data(data.heatmapData.filter(d => d.correlation >= threshold)) // Only show text for cells above threshold
-    .enter()
-    .append('text')
-    .attr('class', 'cell-text')
-    .attr('x', d => x(d.hla) + x.bandwidth() / 2)
-    .attr('y', d => y(d.cluster) + y.bandwidth() / 2)
-    .attr('text-anchor', 'middle')
-    .attr('dominant-baseline', 'middle')
-    .text(d => d.correlation.toFixed(2))
-    .style('fill', d => d.correlation > 0.5 ? 'white' : 'black')
-    .style('font-size', `${fontSize}px`)
-    .style('font-weight', 'bold');
-}
+        // Load PCC data from JSON file
+let data = [];
 
-// Function to create the color scale legend
-function createColorLegend(containerId) {
-  const containerWidth = document.getElementById(containerId).clientWidth;
-  const width = Math.min(300, containerWidth * 0.8);
-  const height = 50;
-  
-  // Clear existing content
-  d3.select(`#${containerId}`).html("");
-  
-  const svg = d3.select(`#${containerId}`)
-    .append('svg')
-    .attr('width', width)
-    .attr('height', height)
-    .attr('viewBox', `0 0 ${width} ${height}`)
-    .attr('preserveAspectRatio', 'xMidYMid meet');
-  
-  // Create gradient
-  const defs = svg.append('defs');
-  const gradient = defs.append('linearGradient')
-    .attr('id', 'correlation-gradient')
-    .attr('x1', '0%')
-    .attr('y1', '0%')
-    .attr('x2', '100%')
-    .attr('y2', '0%');
-  
-  // Color stops for YlGnBu
-  gradient.append('stop')
-    .attr('offset', '0%')
-    .attr('stop-color', '#ffffd9');
-  
-  gradient.append('stop')
-    .attr('offset', '20%')
-    .attr('stop-color', '#edf8b1');
-  
-  gradient.append('stop')
-    .attr('offset', '40%')
-    .attr('stop-color', '#7fcdbb');
-  
-  gradient.append('stop')
-    .attr('offset', '60%')
-    .attr('stop-color', '#41b6c4');
-  
-  gradient.append('stop')
-    .attr('offset', '80%')
-    .attr('stop-color', '#1d91c0');
-  
-  gradient.append('stop')
-    .attr('offset', '100%')
-    .attr('stop-color', '#225ea8');
-  
-  // Append rectangle filled with gradient
-  svg.append('rect')
-    .attr('x', 0)
-    .attr('y', 10)
-    .attr('width', width)
-    .attr('height', 20)
-    .style('fill', 'url(#correlation-gradient)')
-    .style('stroke', '#ccc')
-    .style('stroke-width', 1);
-  
-  // Add labels
-  svg.append('text')
-    .attr('x', 0)
-    .attr('y', 45)
-    .text('0.0')
-    .style('font-size', '12px')
-    .style('text-anchor', 'start');
-  
-  svg.append('text')
-    .attr('x', width / 2)
-    .attr('y', 45)
-    .text('0.5')
-    .style('font-size', '12px')
-    .style('text-anchor', 'middle');
-  
-  svg.append('text')
-    .attr('x', width)
-    .attr('y', 45)
-    .text('1.0')
-    .style('font-size', '12px')
-    .style('text-anchor', 'end');
-}
-
-// Function to handle window resize events
-function handleResize(data) {
-  if (data) {
-    createHeatmap('heatmap-container', data);
-    createColorLegend('legend-container');
-  }
-}
-
-// Function to initialize the heatmap
-function initHeatmap() {
-  fetch('hla_correlation_data.json')
+// Fetch and process JSON data
+fetch('corr-data/pcc_data.json')
     .then(response => response.json())
-    .then(data => {
-      // Store data for resize events
-      window.heatmapData = data;
-      
-      // Create the main heatmap
-      createHeatmap('heatmap-container', data);
-      
-      // Create the color legend
-      createColorLegend('legend-container');
-      
-      // Set up controls
-      setupHeatmapControls(data);
-      
-      // Handle window resize
-      window.addEventListener('resize', () => handleResize(data));
+    .then(jsonData => {
+        // Process the data into the format expected by the visualization
+        data = jsonData.map(item => ({
+            Cluster: item.cluster_id,
+            HLA: item.hla_type,
+            Correlation: item.correlation
+        }));
+        
+        // Now that data is loaded, initialize visualizations
+        
+        const simulations = {};
+
+        // Color mapping for clusters
+        const clusterColors = {
+            "1of6": "#E41A1C",
+            "2of6": "#377EB8",
+            "3of6": "#4DAF4A",
+            "4of6": "#984EA3",
+            "5of6": "#FF7F00",
+            "6of6": "#FFFF33"
+        };
+        
+        // Initialize tooltip
+        const tooltip = d3.select("body")
+            .append("div")
+            .attr("class", "tooltip-custom")
+            .style("opacity", 0);
+        
+        // Current threshold value
+        let threshold = 0.70;
+        
+        // Initialize visualizations
+        createHeatmap("heatmap-container-combined", threshold);
+        createNetwork("network-container-combined", threshold);
+        createHeatmap("heatmap-container-single", threshold);
+        createNetwork("network-container-single", threshold);
+        
+        // Set up threshold slider
+        const thresholdSlider = document.getElementById("threshold");
+        const thresholdValueDisplay = document.getElementById("threshold-value");
+        
+        thresholdSlider.addEventListener("input", function() {
+            threshold = parseFloat(this.value);
+            thresholdValueDisplay.textContent = threshold.toFixed(2);
+            
+            // Update visualizations
+            createHeatmap("heatmap-container-combined", threshold);
+            createNetwork("network-container-combined", threshold);
+            
+            // Only update the visible tab's visualization if not on combined view
+            const activeTab = document.querySelector(".tab-pane.active");
+            if (activeTab.id === "heatmap") {
+                createHeatmap("heatmap-container-single", threshold);
+            } else if (activeTab.id === "network") {
+                createNetwork("network-container-single", threshold);
+            }
+        });
+        
+        // Update visualizations when switching tabs
+        const tabs = document.querySelectorAll('button[data-bs-toggle="tab"]');
+        tabs.forEach(tab => {
+            tab.addEventListener('shown.bs.tab', function(event) {
+                const targetId = event.target.getAttribute("aria-controls");
+                if (targetId === "heatmap") {
+                    createHeatmap("heatmap-container-single", threshold);
+                } else if (targetId === "network") {
+                    createNetwork("network-container-single", threshold);
+                }
+            });
+        });
+        
+        // Create heatmap visualization
+        function createHeatmap(containerId, threshold) {
+            const container = document.getElementById(containerId);
+            
+            // Clear previous content
+            container.innerHTML = '';
+            
+            // Filter data
+            const filteredData = data.filter(d => d.Correlation >= threshold);
+            
+            if (filteredData.length === 0) {
+                const noDataMsg = document.createElement("div");
+                noDataMsg.className = "text-center p-4";
+                noDataMsg.textContent = "No data to display with current threshold";
+                container.appendChild(noDataMsg);
+                return;
+            }
+            
+            // Get unique clusters and HLAs
+            const clusters = [...new Set(filteredData.map(d => d.Cluster))].sort();
+            const hlaTypes = [...new Set(filteredData.map(d => d.HLA))].sort();
+            
+            // Set up dimensions
+            const containerWidth = container.clientWidth || 800;
+            
+            // Calculate responsive cell size based on available width
+            const maxCellSize = 40;
+            const minCellSize = 25;
+            const availableWidth = containerWidth - 150; // Account for margins and labels
+            const calculatedCellSize = Math.max(minCellSize, Math.min(maxCellSize, availableWidth / hlaTypes.length));
+            const cellSize = calculatedCellSize;
+            
+            // Increased bottom margin to accommodate labels, and adjusted right margin
+            const margin = { top: 50, right: 20, bottom: 180, left: 100 };
+            
+            // Calculate dimensions with adjusted margins
+            const width = cellSize * hlaTypes.length + margin.left + margin.right;
+            const height = cellSize * clusters.length + margin.top + margin.bottom;
+            
+            // Create a div with overflow visible for the SVG
+            const svgContainer = document.createElement('div');
+            svgContainer.className = 'svg-container';
+            container.appendChild(svgContainer);
+            
+            // Create SVG
+            const svg = d3.select(svgContainer)
+                .append("svg")
+                .attr("width", width)
+                .attr("height", height)
+                .attr("viewBox", `0 0 ${width} ${height}`)
+                .append("g")
+                .attr("transform", `translate(${margin.left},${margin.top})`);
+            
+            // Create scales
+            const x = d3.scaleBand()
+                .domain(hlaTypes)
+                .range([0, cellSize * hlaTypes.length])
+                .padding(0.05);
+            
+            const y = d3.scaleBand()
+                .domain(clusters)
+                .range([0, cellSize * clusters.length])
+                .padding(0.05);
+            
+            // Color scale
+            const colorScale = d3.scaleSequential(d3.interpolateYlGnBu)
+                .domain([0, 1]);
+            
+            // Add Y axis labels
+            svg.append("g")
+                .selectAll("text")
+                .data(clusters)
+                .enter()
+                .append("text")
+                .attr("x", -10)
+                .attr("y", d => y(d) + y.bandwidth() / 2)
+                .attr("text-anchor", "end")
+                .attr("dominant-baseline", "middle")
+                .text(d => d)
+                .style("font-size", "12px")
+                .style("font-weight", "500");
+            
+            // Create labels group for X axis
+            const labelGroup = svg.append("g").attr("class", "axis-labels");
+            
+            // Compact one-line labels with vertically staggered positions
+            hlaTypes.forEach((d, i) => {
+                const xPos = x(d) + x.bandwidth() / 2;
+                const hlaType = d.replace("HLA_", "");
+                const isEven = i % 2 === 0;
+                
+                // Single line compact label
+                labelGroup.append("text")
+                    .attr("x", xPos)
+                    .attr("y", isEven ? -10 : -30)
+                    .attr("text-anchor", "middle")
+                    .attr("dominant-baseline", "middle")
+                    .text(hlaType)
+                    .style("font-size", "10px")
+                    .style("font-weight", "500");
+                
+                // Add connecting line
+                labelGroup.append("line")
+                    .attr("x1", xPos)
+                    .attr("y1", isEven ? -5 : -25)
+                    .attr("x2", xPos)
+                    .attr("y2", -5)
+                    .style("stroke", "#ddd")
+                    .style("stroke-width", 0.5)
+                    .style("stroke-dasharray", "2,2");
+            });
+            
+            // Create cells
+            svg.selectAll("rect")
+                .data(filteredData)
+                .enter()
+                .append("rect")
+                .attr("x", d => x(d.HLA))
+                .attr("y", d => y(d.Cluster))
+                .attr("width", x.bandwidth())
+                .attr("height", y.bandwidth())
+                .style("fill", d => colorScale(d.Correlation))
+                .style("stroke", "#fff")
+                .style("stroke-width", "1px")
+                .on("mouseover", function(event, d) {
+                    // Highlight cell
+                    d3.select(this)
+                        .style("stroke", "#333")
+                        .style("stroke-width", "2px");
+                    
+                    // Show tooltip
+                    tooltip.transition()
+                        .duration(200)
+                        .style("opacity", 1);
+                        
+                    tooltip.html(`
+                        <strong>Cluster:</strong> ${d.Cluster}<br>
+                        <strong>HLA:</strong> ${d.HLA}<br>
+                        <strong>Correlation:</strong> ${d.Correlation.toFixed(2)}
+                    `)
+                    .style("left", (event.pageX + 10) + "px")
+                    .style("top", (event.pageY - 28) + "px");
+                })
+                .on("mouseout", function() {
+                    // Remove highlight
+                    d3.select(this)
+                        .style("stroke", "#fff")
+                        .style("stroke-width", "1px");
+                    
+                    // Hide tooltip
+                    tooltip.transition()
+                        .duration(500)
+                        .style("opacity", 0);
+                });
+            
+            // Add cell text
+            svg.selectAll("text.cell-text")
+                .data(filteredData)
+                .enter()
+                .append("text")
+                .attr("class", "cell-text")
+                .attr("x", d => x(d.HLA) + x.bandwidth() / 2)
+                .attr("y", d => y(d.Cluster) + y.bandwidth() / 2)
+                .attr("text-anchor", "middle")
+                .attr("dominant-baseline", "middle")
+                .text(d => d.Correlation.toFixed(2))
+                .style("fill", d => d.Correlation > 0.5 ? "white" : "black")
+                .style("font-size", "11px")
+                .style("font-weight", "bold");
+        }
+        
+        // Create network visualization
+        function createNetwork(containerId, threshold) {
+            const container = document.getElementById(containerId);
+            
+            // Clear previous content
+            container.innerHTML = '';
+            
+            // Add center button
+            const centerBtn = document.createElement("button");
+            centerBtn.className = "btn btn-sm btn-secondary center-network-btn";
+            centerBtn.textContent = "Center View";
+            centerBtn.onclick = function() { centerNetwork(containerId); };
+            container.appendChild(centerBtn);
+            
+            // Filter data
+            const filteredData = data.filter(d => d.Correlation >= threshold);
+            
+            if (filteredData.length === 0) {
+                const noDataMsg = document.createElement("div");
+                noDataMsg.className = "text-center p-4";
+                noDataMsg.textContent = "No data to display with current threshold";
+                container.appendChild(noDataMsg);
+                return;
+            }
+            
+            // Process data for network
+            const clusters = [...new Set(filteredData.map(d => d.Cluster))];
+            const hlaTypes = [...new Set(filteredData.map(d => d.HLA))];
+            
+            // Create nodes
+            const nodes = [
+                ...clusters.map(c => ({ id: c, group: "cluster" })),
+                ...hlaTypes.map(h => ({ id: h, group: "hla" }))
+            ];
+            
+            // Create links
+            const links = filteredData.map(d => ({
+                source: d.Cluster,
+                target: d.HLA,
+                value: d.Correlation
+            }));
+            
+            // Set dimensions
+            const width = container.clientWidth || 800;
+            const height = container.clientHeight || 400;
+            
+            // Create SVG
+            const svg = d3.select(container)
+                .append("svg")
+                .attr("width", width)
+                .attr("height", height);
+            
+            // Add zoom behavior
+            const zoom = d3.zoom()
+                .scaleExtent([0.5, 5])
+                .on("zoom", (event) => {
+                    g.attr("transform", event.transform);
+                });
+            
+            svg.call(zoom);
+            
+            // Create a container for the graph that can be transformed
+            const g = svg.append("g");
+            
+            // Create simulation
+            const simulation = d3.forceSimulation(nodes)
+                .force("link", d3.forceLink(links).id(d => d.id).distance(d => 100 - d.value * 40))
+                .force("charge", d3.forceManyBody().strength(-100))
+                .force("center", d3.forceCenter(width / 2, height / 2))
+                .force("collision", d3.forceCollide().radius(d => d.group === "cluster" ? 25 : 10))
+                .force("x", d3.forceX(width / 2).strength(0.05))
+                .force("y", d3.forceY(height / 2).strength(0.05));
+            
+            // Store simulation reference
+            simulations[containerId] = simulation;
+            
+            // Create links
+            const link = g.append("g")
+                .selectAll("line")
+                .data(links)
+                .enter()
+                .append("line")
+                .attr("stroke-width", d => Math.max(1, d.value * 3))
+                .attr("stroke", d => clusterColors[d.source.id] || "#999")
+                .attr("opacity", 0.6);
+            
+            // Create nodes
+            const node = g.append("g")
+                .selectAll("circle")
+                .data(nodes)
+                .enter()
+                .append("circle")
+                .attr("r", d => d.group === "cluster" ? 15 : 6)
+                .attr("fill", d => {
+                    if (d.group === "cluster") {
+                        return clusterColors[d.id] || "#999";
+                    }
+                    return "#ccc";
+                })
+                .attr("stroke", "#fff")
+                .attr("stroke-width", 1.5)
+                .on("mouseover", function(event, d) {
+                    // Highlight node
+                    d3.select(this)
+                        .attr("stroke", "#333")
+                        .attr("stroke-width", 2);
+                    
+                    // Show tooltip
+                    tooltip.transition()
+                        .duration(200)
+                        .style("opacity", 1);
+                    
+                    if (d.group === "cluster") {
+                        // Show cluster info
+                        const clusterData = filteredData.filter(item => item.Cluster === d.id);
+                        const avgCorrelation = clusterData.reduce((sum, item) => sum + item.Correlation, 0) / clusterData.length;
+                        
+                        tooltip.html(`
+                            <strong>${d.id}</strong><br>
+                            Average Correlation: ${avgCorrelation.toFixed(3)}<br>
+                            HLA Connections: ${clusterData.length}
+                        `);
+                    } else {
+                        // Show HLA connections
+                        const connections = filteredData.filter(item => item.HLA === d.id)
+                            .sort((a, b) => b.Correlation - a.Correlation);
+                        
+                        let html = `<strong>${d.id}</strong><br><table style="border-collapse: collapse;">
+                            <tr><th style="padding: 3px; text-align: left;">Cluster</th>
+                            <th style="padding: 3px; text-align: right;">Correlation</th></tr>`;
+                        
+                        connections.forEach(conn => {
+                            html += `<tr>
+                                <td style="padding: 3px;">${conn.Cluster}</td>
+                                <td style="padding: 3px; text-align: right;">${conn.Correlation.toFixed(2)}</td>
+                            </tr>`;
+                        });
+                        
+                        html += `</table>`;
+                        tooltip.html(html);
+                    }
+                    
+                    tooltip.style("left", (event.pageX + 10) + "px")
+                        .style("top", (event.pageY - 28) + "px");
+                        
+                    // Highlight connections
+                    if (d.group === "cluster") {
+                        link.attr("opacity", l => l.source.id === d.id ? 1 : 0.1)
+                            .attr("stroke-width", l => l.source.id === d.id ? Math.max(2, l.value * 4) : 1);
+                    } else {
+                        link.attr("opacity", l => l.target.id === d.id ? 1 : 0.1)
+                            .attr("stroke-width", l => l.target.id === d.id ? Math.max(2, l.value * 4) : 1);
+                    }
+                })
+                .on("mouseout", function() {
+                    // Remove highlight
+                    d3.select(this)
+                        .attr("stroke", "#fff")
+                        .attr("stroke-width", 1.5);
+                    
+                    // Hide tooltip
+                    tooltip.transition()
+                        .duration(500)
+                        .style("opacity", 0);
+                    
+                    // Reset link highlighting
+                    link.attr("opacity", 0.6)
+                        .attr("stroke-width", d => Math.max(1, d.value * 3));
+                })
+                .call(d3.drag()
+                    .on("start", dragstarted)
+                    .on("drag", dragged)
+                    .on("end", dragended)
+                );
+            
+            // Add labels to cluster nodes
+            g.append("g")
+                .selectAll("text")
+                .data(nodes.filter(d => d.group === "cluster"))
+                .enter()
+                .append("text")
+                .attr("text-anchor", "middle")
+                .attr("dominant-baseline", "middle")
+                .text(d => d.id)
+                .style("font-size", "12px")
+                .style("fill", "white")
+                .style("pointer-events", "none");
+            
+            // Add labels to HLA nodes with high correlation
+            g.append("g")
+                .selectAll("text.hla-label")
+                .data(nodes.filter(d => {
+                    if (d.group !== "hla") return false;
+                    
+                    // Find max correlation for this HLA
+                    const maxCorr = Math.max(...filteredData
+                        .filter(item => item.HLA === d.id)
+                        .map(item => item.Correlation));
+                    
+                    return maxCorr > 0.7;
+                }))
+                .enter()
+                .append("text")
+                .attr("class", "hla-label")
+                .attr("dx", 8)
+                .attr("dy", 3)
+                .text(d => d.id.replace("HLA_", ""))
+                .style("font-size", "8px")
+                .style("fill", "#333")
+                .style("pointer-events", "none");
+            
+            // Update positions on simulation tick
+            simulation.on("tick", () => {
+                // Constrain nodes to container boundaries
+                nodes.forEach(d => {
+                    // Add padding based on node size
+                    const padding = d.group === "cluster" ? 20 : 10;
+                    
+                    d.x = Math.max(padding, Math.min(width - padding, d.x));
+                    d.y = Math.max(padding, Math.min(height - padding, d.y));
+                });
+                
+                link
+                    .attr("x1", d => d.source.x)
+                    .attr("y1", d => d.source.y)
+                    .attr("x2", d => d.target.x)
+                    .attr("y2", d => d.target.y);
+                
+                node
+                    .attr("cx", d => d.x)
+                    .attr("cy", d => d.y);
+                
+                g.selectAll("text")
+                    .filter(function() {
+                        return !this.classList.contains("hla-label");
+                    })
+                    .data(nodes.filter(d => d.group === "cluster"))
+                    .attr("x", d => d.x)
+                    .attr("y", d => d.y);
+                
+                g.selectAll("text.hla-label")
+                    .data(nodes.filter(d => d.group === "hla" && filteredData
+                        .filter(item => item.HLA === d.id)
+                        .some(item => item.Correlation > 0.7)))
+                    .attr("x", d => d.x)
+                    .attr("y", d => d.y);
+            });
+            
+            // Position nodes in a more balanced layout initially
+            setTimeout(() => {
+                // Start with cluster nodes in a circle
+                const clusterNodes = nodes.filter(d => d.group === "cluster");
+                const radius = Math.min(width, height) / 3;
+                const angleStep = (2 * Math.PI) / clusterNodes.length;
+                
+                clusterNodes.forEach((d, i) => {
+                    const angle = i * angleStep;
+                    d.x = width / 2 + radius * Math.cos(angle);
+                    d.y = height / 2 + radius * Math.sin(angle);
+                    d.fx = d.x;
+                    d.fy = d.y;
+                });
+                
+                // Run simulation for a short time
+                simulation.alpha(1).restart();
+                
+                // Release fixed positions after brief arrangement
+                setTimeout(() => {
+                    clusterNodes.forEach(d => {
+                        d.fx = null;
+                        d.fy = null;
+                    });
+                    simulation.alpha(0.3).restart();
+                }, 1000);
+            }, 100);
+            
+            // Drag functions
+            function dragstarted(event, d) {
+                if (!event.active) simulation.alphaTarget(0.3).restart();
+                d.fx = d.x;
+                d.fy = d.y;
+            }
+            
+            function dragged(event, d) {
+                d.fx = event.x;
+                d.fy = event.y;
+            }
+            
+            function dragended(event, d) {
+                if (!event.active) simulation.alphaTarget(0);
+                d.fx = null;
+                d.fy = null;
+            }
+        }
+        
+        // Center network view function
+        function centerNetwork(containerId) {
+            const container = document.getElementById(containerId);
+            const svg = d3.select(container).select("svg");
+            const simulation = simulations[containerId];
+            
+            if (svg.empty() || !simulation) return;
+            
+            // Reset zoom
+            svg.transition().duration(750).call(
+                d3.zoom().transform,
+                d3.zoomIdentity.translate(0, 0).scale(1)
+            );
+            
+            // Reset node positions
+            const width = container.clientWidth;
+            const height = container.clientHeight;
+            
+            simulation.force("center", d3.forceCenter(width / 2, height / 2))
+                .alpha(1)
+                .restart();
+        }
     })
     .catch(error => {
-      console.error('Error loading the data:', error);
-      document.getElementById('heatmap-container').innerHTML = 
-        '<div class="alert alert-danger">Error loading heatmap data. See console for details.</div>';
-    });
-}
-
-// Function to set up interactive controls
-function setupHeatmapControls(data) {
-  // Color scheme selector
-  const colorSchemeSelect = document.getElementById('colorScheme');
-  if (colorSchemeSelect) {
-    colorSchemeSelect.addEventListener('change', function() {
-      const newScheme = this.value;
-      updateHeatmapColorScheme(data, newScheme);
-    });
-  }
-  
-  // Threshold slider
-  const thresholdSlider = document.getElementById('thresholdValue');
-  const thresholdDisplay = document.getElementById('thresholdDisplay');
-  if (thresholdSlider && thresholdDisplay) {
-    thresholdSlider.addEventListener('input', function() {
-      const threshold = parseFloat(this.value);
-      thresholdDisplay.textContent = threshold.toFixed(2);
-      updateHeatmapThreshold(data, threshold);
-    });
-  }
-  
-  // Sort selector
-  const sortBySelect = document.getElementById('sortBy');
-  if (sortBySelect) {
-    sortBySelect.addEventListener('change', function() {
-      const sortBy = this.value;
-      updateHeatmapSorting(data, sortBy);
-    });
-  }
-}
-
-// Function to update color scheme
-function updateHeatmapColorScheme(data, scheme) {
-  let colorScale;
-  
-  if (scheme === 'RdYlBu_r') {
-    colorScale = d3.scaleSequential(d3.interpolateRdYlBu)
-      .domain([1, 0]); // Reversed for this color scheme
-  } else if (scheme === 'viridis') {
-    colorScale = d3.scaleSequential(d3.interpolateViridis)
-      .domain([0, 1]);
-  } else if (scheme === 'magma') {
-    colorScale = d3.scaleSequential(d3.interpolateMagma)
-      .domain([0, 1]);
-  } else if (scheme === 'plasma') {
-    colorScale = d3.scaleSequential(d3.interpolatePlasma)
-      .domain([0, 1]);
-  } else {
-    // Default YlGnBu
-    colorScale = d3.scaleSequential(d3.interpolateYlGnBu)
-      .domain([0, 1]);
-  }
-  
-  // Update the cell colors
-  d3.selectAll('#heatmap-container rect')
-    .style('fill', d => d.correlation === 0 ? '#f0f0f0' : colorScale(d.correlation));
-}
-
-// Function to update threshold
-function updateHeatmapThreshold(data, threshold) {
-  // Make cells below threshold completely disappear (opacity 0)
-  d3.selectAll('#heatmap-container rect')
-    .style('opacity', d => d.correlation >= threshold ? 1 : 0);
-  
-  // Redraw the heatmap to update the text labels
-  createHeatmap('heatmap-container', data);
-}
-
-// Function to update sorting
-function updateHeatmapSorting(data, sortBy) {
-  // Get current data
-  let sortedClusters = [...data.clusters];
-  
-  if (sortBy === 'correlation') {
-    // Calculate average correlation for each cluster
-    const clusterAvgCorr = {};
-    data.clusters.forEach(cluster => {
-      const clusterData = data.heatmapData.filter(item => 
-        item.cluster === cluster && item.correlation > 0);
-      
-      if (clusterData.length > 0) {
-        const sum = clusterData.reduce((total, item) => total + item.correlation, 0);
-        clusterAvgCorr[cluster] = sum / clusterData.length;
-      } else {
-        clusterAvgCorr[cluster] = 0;
-      }
+        console.error('Error loading correlation data:', error);
+        document.querySelectorAll('.visualization-container').forEach(container => {
+            container.innerHTML = `
+                <div class="alert alert-danger" role="alert">
+                    Error loading data: json_data_path not found or invalid format.
+                </div>
+            `;
+        });
     });
     
-    // Sort by average correlation (descending)
-    sortedClusters.sort((a, b) => clusterAvgCorr[b] - clusterAvgCorr[a]);
-  } else {
-    // Sort by name
-    sortedClusters.sort();
-  }
-  
-  // Simply recreate the heatmap with the new sorted clusters
-  createHeatmap('heatmap-container', {
-    ...data,
-    clusters: sortedClusters
-  });
-}
-
-// Initialize the heatmap when the page loads
-document.addEventListener('DOMContentLoaded', initHeatmap);
 """
         heatmap_div = """
             <div class="row">
@@ -2218,7 +2444,7 @@ document.addEventListener('DOMContentLoaded', initHeatmap);
             </div>
             """
 
-        heatmap_json = self.make_heatmap(correlation_dict)
+        # heatmap_json = self.make_heatmap(correlation_dict)
 
         # script_js = ""
         df_corr_html = self.make_datatable_html(correlation_dict)
@@ -2229,13 +2455,14 @@ document.addEventListener('DOMContentLoaded', initHeatmap);
         # cluster = {}
         # print("##"*100)
         # print(highest_corr_per_row)
-        
-        new_html_carousel = self.render_cluster_carousels(highest_corr_per_row,gibbs_out)
+
+        new_html_carousel = self.render_cluster_carousels(
+            highest_corr_per_row, gibbs_out)
         body_end_1 += carousel_js
         # print(new_html_carousel)
-        
+
         # print("$$$"*100)
-        
+
         # for row, (col, corr) in highest_corr_per_row.items():
         #     # cluster = str(row).split("/")[-1].split('.')[1]
         #     if corr >= self.threshold:
@@ -2256,19 +2483,19 @@ document.addEventListener('DOMContentLoaded', initHeatmap);
         #             gibbs_img_basename = os.path.basename(gibbs_img)
         #             dest_path = os.path.join(os.path.join(self._outfolder, 'cluster-img'), gibbs_img_basename)
         #             shutil.copy(gibbs_img, dest_path)
-                
+
         #             # output_dict[str(row).split("/")[-1].split('.')[1]]['gibbs_img'] = os.path.join(self._outfolder, 'cluster-img', f"{str(gibbs_img).split('/')[-1]}")
         #             # Use platform-independent path operations for the output dictionary
         #             row_basename = os.path.basename(str(row))
         #             row_name = os.path.splitext(row_basename)[0].split('.')[1]
         #             output_dict[row_name]['gibbs_img'] = dest_path
-                    
+
         #         if self.species == 'human':
         #             hla = str(col).split('/')[-1].replace('.txt','').split('_')[1]
         #         else:
         #             hla = str(col).split('/')[-1].replace('.txt','')
         #         nat_path = db[db['formatted_allotypes'] == hla]['motif_path'].values[0]
-                
+
         #         if nat_path:
         #             # shutil.copy(os.path.join(self.db_path,nat_path), os.path.join(self._outfolder, 'allotypes-img', f"{str(nat_path).split('/')[-1]}"))
         #             src_path = os.path.join(self.db_path, nat_path)
@@ -2280,7 +2507,7 @@ document.addEventListener('DOMContentLoaded', initHeatmap);
         #             row_basename = os.path.basename(str(row))
         #             row_name = os.path.splitext(row_basename)[0].split('.')[1]
         #             output_dict[row_name]['nat_img'] = dest_path
-                
+
         #         try:
         #             gibbs_mt = self.format_input_gibbs(row)
         #             nat_mat = self.format_input_gibbs(os.path.join(self.db_path,col))
@@ -2292,7 +2519,7 @@ document.addEventListener('DOMContentLoaded', initHeatmap);
         #             # self._make_correlation_plot(gibbs_mt, nat_mat,mat_motif)
         #             # output_dict[str(row).split("/")[-1].split('.')[1]]['corr_plot'] = f"{os.path.join(self._outfolder,'corr-data')}/amino_acids_comparison_with_correlation_{mat_motif}.png"
         #             # output_dict[str(row).split("/")[-1].split('.')[1]]['corr_json'] = f"{os.path.join(self._outfolder,'corr-data')}/amino_acids_comparison_with_correlation_{mat_motif}.json"
-                    
+
         #         except Exception as e:
         #             self.console.print(
         #                 f"Failed to compute correlation plot between {row} and {col}: {str(e)}"
@@ -2303,41 +2530,43 @@ document.addEventListener('DOMContentLoaded', initHeatmap);
         #         # plot_js = self.insert_script_hla_section(str(output_dict[str(row).split("/")[-1].split('.')[1]]['corr_json']).replace(f"{self._outfolder}/",''), f"correlation_chart_{str(row).split('/')[-1].split('.')[1]}")
         #         plot_js = self.insert_script_png_json(str(output_dict[str(row).split("/")[-1].split('.')[1]]['corr_json']).replace(f"{self._outfolder}/",''),str(output_dict[str(row).split("/")[-1].split('.')[1]]['corr_plot']).replace(f"{self._outfolder}/",''),f"correlation_chart_{str(row).split('/')[-1].split('.')[1]}")
         #         body_end_1  += plot_js
-                
+
         #         immunolyser_out += rows_list
         #         immunolyser_out_js += plot_js
-            
+
         # if heatmap_json:
         #     body_end_1 += heatmap_js
         #     immunolyser_out_js += heatmap_js
         # else:
         #     heatmap_div = ""
         #     heatmap_js =""
-        if  self.d3js_json:
+        if self.d3js_json:
             body_end_1 += heatmap_d3_js
             immunolyser_out_js += heatmap_d3_js
         else:
             heatmap_d3_html = ""
             heatmap_d3_js = ""
-        ## addeing new new_html_carousel
+        # addeing new new_html_carousel
         html_create += new_html_carousel
-        ##ends here
-        html_create += br_tag + df_corr_html + br_tag + heatmap_div + br_tag + heatmap_d3_html +br_tag + body_end_1 + body_end_2
-        
-        immunolyser_out += br_tag + br_tag +  df_corr_html + heatmap_div
+        # ends here
+        html_create += br_tag + \
+            br_tag + heatmap_d3_html +\
+            br_tag + df_corr_html + br_tag + body_end_1 + body_end_2
+
+        immunolyser_out += br_tag + br_tag + df_corr_html 
         with open(os.path.join(self._outfolder, "clust-search-result.html"), "w") as file:
             file.write(html_create)
-            
+
         if immunolyser:
             with open(os.path.join(self._outfolder, "immunolyser-out.html"), "w") as file:
                 file.write(immunolyser_out)
             with open(os.path.join(self._outfolder, "immunolyser-out.js"), "w") as file:
                 file.write(immunolyser_out_js)
-        self.console.log(f"HTML layout saved in {os.path.join(self._outfolder, 'clust-search-result.html')}", style="bold green")
-        
-        
-            # image_path = self._find_gibbs_image_path(row.split(".")[1], image_folder)
-            # nat_img = self._naturally_presented_log(self.formate_HLA_DB(col), DB_image_folder)
+        self.console.log(
+            f"HTML layout saved in {os.path.join(self._outfolder, 'clust-search-result.html')}", style="bold green")
+
+        # image_path = self._find_gibbs_image_path(row.split(".")[1], image_folder)
+        # nat_img = self._naturally_presented_log(self.formate_HLA_DB(col), DB_image_folder)
         #     if gibbs_img and nat_path:
         #         html_content += f"""
         #         <div>
@@ -2359,10 +2588,13 @@ document.addEventListener('DOMContentLoaded', initHeatmap);
         # with open(os.path.join(self._outfolder, "clust-search-result.html"), "w") as file:
         #     file.write(html_content)
         # self.console.log(f"HTML layout saved in {os.path.join(self._outfolder, 'clust-search-result.html')}")
-        
-def generate_heatmap_html(self,correlation_dict):
-        df = self.make_datatable(correlation_dict)
-        # print(df)
+
+
+def generate_heatmap_html(self, correlation_dict):
+    df = self.make_datatable(correlation_dict)
+    # print(df)
+
+
 def run_cluster_search(args):
     # if args.output_folder is None:
     #     os.makedirs("output", exist_ok=True)
@@ -2384,7 +2616,7 @@ def run_cluster_search(args):
         raise ValueError(
             "Invalid species provided. Please provide a valid species. refer only. [Human or Mouse]")
     if args.threshold:
-        
+
         CONSOLE.log(
             f"Threshold provided: [bold yellow]{args.threshold}", style="bold green")
         if args.threshold > 1 or args.threshold < 0:
@@ -2394,7 +2626,7 @@ def run_cluster_search(args):
         args.threshold = 0.70
         CONSOLE.log(
             f"No threshold provided. Using default threshold of 0.70", style="bold yellow")
-    
+
     if args.hla_types:
         CONSOLE.log(
             f"HLA/MHC allotypes types provided: [bold yellow]{args.hla_types}", style="bold green")
@@ -2443,7 +2675,8 @@ def run_cluster_search(args):
     )
 
     # cluster_search.generate_image_grid(cluster_search.correlation_dict,db)
-    cluster_search.generate_html_layout(cluster_search.correlation_dict,db, args.gibbs_folder,args.immunolyser)
+    cluster_search.generate_html_layout(
+        cluster_search.correlation_dict, db, args.gibbs_folder, args.immunolyser)
 
     # breakpoint()
 

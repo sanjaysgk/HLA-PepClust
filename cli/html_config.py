@@ -115,6 +115,51 @@ html_content = """
       width: 100%;
       height: 350px;
     }
+         /* Custom styles */
+     .tab-content {
+        padding-top: 20px;
+    }
+    
+    .visualization-container {
+        border: 1px solid #dee2e6;
+        border-radius: 0.375rem;
+        padding: 1rem;
+        margin-bottom: 1rem;
+        overflow: hidden; /* Prevent content from overflowing */
+    }
+    
+    .nav-tabs .nav-link.active {
+        font-weight: 500;
+        color: #0d6efd;
+    }
+    
+    /* Tooltip style */
+    .tooltip-custom {
+        position: absolute;
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        padding: 10px;
+        pointer-events: none;
+        max-width: 220px;
+        font-size: 14px;
+        z-index: 1000;
+    }
+    
+    /* Custom button for fixing network view */
+    .center-network-btn {
+        position: absolute;
+        bottom: 10px;
+        right: 10px;
+        z-index: 100;
+        opacity: 0.8;
+    }
+
+    /* SVG container to prevent overflow */
+    .svg-container {
+        width: 100%;
+        overflow: visible;
+    }
   </style>
 
 
