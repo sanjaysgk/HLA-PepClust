@@ -142,8 +142,6 @@ Example of `input` folder path:
 ![Example Output](assets/img/google-colab.png)  
 
 
-## Conclusion  
-
 # Demo Results
 [Click here to view the results](https://sanpme66.github.io/HLA-PepClust/)
 
