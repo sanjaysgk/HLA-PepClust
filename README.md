@@ -3,6 +3,9 @@
 ![MultiOS](https://github.com/Sanpme66/HLA-PepClust/actions/workflows/matrix.yml/badge.svg)  
 ![test-hla-pepclust](https://github.com/Sanpme66/HLA-PepClust/actions/workflows/test-hla-pepclust.yml/badge.svg)  
 
+# Demo Results
+[Click here to view the results](https://sanpme66.github.io/HLA-PepClust/)
+
 ## Introduction  
 
 HLA-PepClust is a `CLI` tool designed for clustering peptide sequences based on their HLA binding motifs.  
@@ -142,8 +145,6 @@ Example of `input` folder path:
 ![Example Output](assets/img/google-colab.png)  
 
 
-# Demo Results
-[Click here to view the results](https://sanpme66.github.io/HLA-PepClust/)
 
 More detailed instructions coming soon... 🚀  
 
