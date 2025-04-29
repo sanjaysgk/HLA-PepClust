@@ -8,6 +8,7 @@ from rich_argparse import RichHelpFormatter
 from cli import __version__
 from cli.cluster_search import run_cluster_search
 from cli.logger import CONSOLE
+from cli.database_gen import Database_gen
 
 # from pyfiglet import Figlet
 # fig = Figlet(font="slant")
@@ -85,13 +86,43 @@ def main():
         formatter_class=lambda prog: RichHelpFormatter(prog, max_help_position=42),
     )
 
+    
+    if not any(arg in sys.argv for arg in ("-db", "--database")):
+        parser.add_argument(
+            "gibbs_folder", type=str, help="Path to the test folder containing matrices."
+        )
+        parser.add_argument(
+            "reference_folder",
+            type=str,
+            help="Path to the human reference folder containing matrices.",
+        )
     parser.add_argument(
-        "gibbs_folder", type=str, help="Path to the test folder containing matrices."
+        "-db",
+        "--database",
+        type=str,
+        help="Generate a motif database from the configuration file. (default: data/config.json)",
     )
     parser.add_argument(
-        "reference_folder",
+        "-t",
+        "--threshold",
+        type=float,
+        default=0.70,
+        help="Threshold for motif similarity (default: 0.70).",
+    )
+    
+    parser.add_argument(
+        "-timg",
+        "--treshold_img",
+        action="store_true",
+        help="Only display groups that pass the threshold (default: False).",
+    )
+
+    parser.add_argument(
+        "-s",
+        "--species",
         type=str,
-        help="Path to the human reference folder containing matrices.",
+        default="human",
+        help="Species to search [Human, Mouse] for (default: human).",
     )
 
     parser.add_argument(
@@ -124,6 +155,14 @@ def main():
     parser.add_argument("-l", "--log", action="store_true", help="Enable logging.")
 
     parser.add_argument(
+        "-im",
+        "--immunolyser",
+        default=False,
+        help="Enable immunolyser output.",
+        action="store_true"
+    )
+
+    parser.add_argument(
         "-c",
         "--credits",
         action="store_true",
@@ -142,13 +181,21 @@ def main():
     if args.credits:
         _print_credits(credits=True)
         sys.exit(0)
-
+        
+    if args.database:
+        db = Database_gen(args.database)
+        sys.exit(0)
+        
+    # if args.processes > 1:
+    #     with Pool(args.processes) as pool:
+    #         pool.map(run_cluster_search, [(args.gibbs_folder, args.reference_folder, args.threshold, args.species, args.hla_types, args.n_clusters, args.best_KL, args.output, args.log, args.immunolyser)])
+    # else:
+    #     run_cluster_search(args.gibbs_folder, args.reference_folder, args.threshold, args.species, args.hla_types, args.n_clusters, args.best_KL, args.output, args.log, args.immunolyser)
+    
     if args.processes > 1:
         with Pool(args.processes) as pool:
             pool.map(run_cluster_search, [args])
     else:
         run_cluster_search(args)
-
-
 if __name__ == "__main__":
     main()

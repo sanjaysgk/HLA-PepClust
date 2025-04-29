@@ -36,3 +36,31 @@ Users
 data/D105skinW6_32_305183/
 hla_data.js
 hla_data.json
+#ignore all .pyc files
+*.pyc
+#ignore all .pyo files
+*.pyo
+#ignore all .pyd files
+*.pyd
+#ignore all .pdb files
+*.pdb
+#ignore all .egg files
+*.egg
+#ignore all .egg-info files
+*.egg-info
+#ignore all .whl files
+*.whl
+#ignore all .zip files
+*.zip
+#ignore all .tar files
+*.tar
+#ignore all .tar.gz files
+*.tar.gz
+#ignore all .tar.bz2 files
+*.tar.bz2
+#ignore build directories
+build/
+
+dist/
+#ignore all .log files
+*.log
