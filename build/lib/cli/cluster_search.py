@@ -1,6 +1,7 @@
 from cli.imagegrid import imagelayout
 from cli.logger import *
 from cli.html_config import *
+from cli.utils import *
 from cli import __version__
 import os
 import pandas as pd
@@ -47,7 +48,7 @@ class ClusterSearch:
         self.d3js_json = None
         self.db = None  # databse of motif and matrix
         self.treshold_img = False
-
+        self.gibbs_results = None
     def generate_unique_random_ids(self, count: int) -> list:
         """
         Generate a list of unique 6-digit random IDs.
@@ -397,6 +398,7 @@ class ClusterSearch:
         #Update to self
         self.threshold = threshold
         self.treshold_img = treshold_img
+        self.gibbs_results = gibbs_results
         
         gibbs_result_matrix = os.path.join(gibbs_results, "matrices")
         should_process = False
@@ -1151,16 +1153,18 @@ class ClusterSearch:
 
         return script_template.render(script_data_path=script_data_path, img_fallback_path=img_fallback_path, div_id=div_id)
 
-    def render_hla_section(self, hla_name, corr, best_cluster_img, naturally_presented_img):
+    def render_hla_section(self, hla_name, corr, best_cluster_img, naturally_presented_img,kld_clust_group_kld):
         
         if str(self.species).lower() == "human":
             hla_name = f"HLA-{hla_name}"
         else:
             hla_name
+        # if kld == None:
+        #     kld = "None"
         template = Template('''
         <div class="row" style="border: 2px solid #007bff;">
         <div class="row">
-            <h3 style="text-align: center;">{{ hla_name }}  PCC = {{corr}}</h3>
+            <h5 style="text-align: center;">Best Matched Allotype is {{ hla_name }} and PCC = {{corr}} , KLD= {{ kld }}</h5>
         </div>
         <div class="row">
             <div class="col">
@@ -1208,7 +1212,7 @@ class ClusterSearch:
         </div>
         </div>
         ''')
-        return template.render(hla_name=hla_name, corr=corr, best_cluster_img=best_cluster_img, naturally_presented_img=naturally_presented_img)
+        return template.render(hla_name=hla_name, corr=corr, best_cluster_img=best_cluster_img, naturally_presented_img=naturally_presented_img,kld=kld_clust_group_kld)
 
     def make_datatable(self, correlation_dict):
         df = pd.DataFrame(correlation_dict.items(),
@@ -1543,8 +1547,8 @@ class ClusterSearch:
         carousel_html = f"""
         <div class="row mt-4 mb-4">
             <div class="col-12">
-                <h2 class="text-center">Cluster {cluster_num}</h2>
-                <div id="{carousel_id}" class="carousel slide" data-ride="carousel" data-interval="false">
+            <h2 class="text-center">RESULTS for {cluster_num} CLUSTERS ({'1 group' if str(cluster_num) == "1" else f'1 to {cluster_num} groups'})</h2>
+            <div id="{carousel_id}" class="carousel slide" data-ride="carousel" data-interval="false">
         """
 
         # Add indicators
@@ -1560,7 +1564,20 @@ class ClusterSearch:
                     </ol>
                     <div class="carousel-inner">
         """
-
+        # Add KLD score if available
+        
+        kld_df = read_KLD_file(
+            os.path.join(self.gibbs_results, 'images', 'gibbs.KLDvsClusters.tab')
+            )
+        if kld_df is not None:
+            kld_clust_df = kld_df[kld_df['cluster'] == cluster_num]
+            if not kld_clust_df.empty:
+                kld = kld_clust_df['total'].values[0]
+                self.console.log(f"-------KLD Results for {cluster_num} clusters-------", style="bold green")
+                self.console.log(f"Total KLD score for cluster {cluster_num}: {kld}", style="bold yellow")
+            else:
+                kld_clust_df = None
+        
         # Add carousel items
         for i, group_num in enumerate(group_nums):
             active_class = "active" if i == 0 else ""
@@ -1583,9 +1600,15 @@ class ClusterSearch:
             if nat_img and hasattr(self, '_outfolder'):
                 nat_img = str(nat_img).replace(f"{self._outfolder}/", '')
 
+            #find KLD for group 
+            kld_clust_group_kld = kld_clust_df[f'group{group_num}'].values[0] if kld_clust_df is not None and f'group{group_num}' in kld_clust_df.columns else None
+            self.console.log(f"Group {group_num} KLD score for cluster {cluster_num}: {kld_clust_group_kld}", style="bold yellow")
             # Generate the HLA section for this cluster
+            kld_clust_group_kld = round(kld_clust_group_kld, 2) if isinstance(
+                kld_clust_group_kld, (int, float)) else kld_clust_group_kld
+            
             hla_section = self.render_hla_section(
-                hla_name, correlation_formatted, gibbs_img, nat_img)
+                hla_name, correlation_formatted, gibbs_img, nat_img,kld_clust_group_kld)
 
             # Create carousel item with the HLA section
             carousel_html += f"""

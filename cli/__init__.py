@@ -6,10 +6,11 @@ from rich.traceback import install
 
 install(show_locals=True)  # type: ignore
 
-# mzmlb is not used, so hdf5plugin is not needed
+# Suppress warnings for missing database path
 filterwarnings(
     "ignore",
-    message="hdf5plugin is missing",
+    message="Database path is not set. Using default path",
     category=UserWarning,
-    module="psims.mzmlb",
+    module="cli.database_gen",
+    append=True
 )
