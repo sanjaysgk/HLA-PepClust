@@ -49,6 +49,9 @@ class ClusterSearch:
         self.db = None  # databse of motif and matrix
         self.treshold_img = False
         self.gibbs_results = None
+        self.kld_df = None
+   
+        
     def generate_unique_random_ids(self, count: int) -> list:
         """
         Generate a list of unique 6-digit random IDs.
@@ -399,6 +402,9 @@ class ClusterSearch:
         self.threshold = threshold
         self.treshold_img = treshold_img
         self.gibbs_results = gibbs_results
+        self.kld_df = read_KLD_file(
+            os.path.join(self.gibbs_results, 'images', 'gibbs.KLDvsClusters.tab')
+            )
         
         gibbs_result_matrix = os.path.join(gibbs_results, "matrices")
         should_process = False
@@ -1223,9 +1229,38 @@ class ClusterSearch:
         df['HLA'] = df['HLA'].apply(
             lambda x: x.split('/')[-1].replace('.txt', ''))
         df['Correlation'] = df['Correlation'].apply(lambda x: round(x, 2))
+        #Add KLD from kld_clust_group_kld
+        self.console.log(f"Adding KLD to the dataframe")
+        self.console.log(f"self.kld_df: {self.kld_df}")
+        # self.console.log(f"self.kld_df.columns: {self.kld_df.columns}")
+        if self.kld_df is not None:
+            # kld_df = pd.DataFrame(self.kld_df)
+            # kld_df['Cluster'] = kld_df['Cluster'].apply(
+            #     lambda x: x.split('/')[-1].split('.')[1])
+            # kld_df['KLD'] = kld_df['KLD'].apply(lambda x: round(x, 2))
+            try:
+                df['KLD'] = df['Cluster'].apply(
+                    lambda x: self.kld_df.loc[
+                        self.kld_df['cluster'] == int(str(x).split('of')[-1]),
+                        f'group{str(x).split("of")[0]}'
+                    ].values[0] if f'group{str(x).split("of")[0]}' in self.kld_df.columns else None
+                )
+            except KeyError as e:
+                # Handle the case where the key is not found
+                self.console.log(
+                    f"KeyError: The key KLD group was not found in the Corr DataFrame."
+                )
+                df['KLD'] = 'NA'
+        else:
+            df['KLD'] = 'NA'
+            
+
         df = df.sort_values(by='Correlation', ascending=False)
         df = df.reset_index(drop=True)
-        df = df[['Cluster', 'HLA', 'Correlation']]
+        df = df[['Cluster', 'HLA', 'Correlation', 'KLD']]
+        
+        
+        
         return df
 
     def process_correlation_data(self, df=None):
@@ -1389,7 +1424,7 @@ class ClusterSearch:
                         <td>{df['Cluster'][i]}</td>
                         <td>{df['HLA'][i]}</td>
                         <td>{df['Correlation'][i]}</td>
-                        <td>0.0</td>
+                        <td>{round(df['KLD'][i], 4) if df['KLD'][i] != 'NA' else 'NA'}</td>
                     </tr>
                     """
                 if df['Correlation'][i] >= 0.5 and df['Correlation'][i] < self.threshold:
@@ -1399,7 +1434,7 @@ class ClusterSearch:
                         <td>{df['Cluster'][i]}</td>
                         <td>{df['HLA'][i]}</td>
                         <td>{df['Correlation'][i]}</td>
-                        <td>0.0</td>
+                        <td>{round(df['KLD'][i], 4) if df['KLD'][i] != 'NA' else 'NA'}</td>
                     </tr>
                     """
                 if df['Correlation'][i] < 0.5:
@@ -1409,7 +1444,7 @@ class ClusterSearch:
                         <td>{df['Cluster'][i]}</td>
                         <td>{df['HLA'][i]}</td>
                         <td>{df['Correlation'][i]}</td>
-                        <td>0.0</td>
+                        <td>{round(df['KLD'][i], 4) if df['KLD'][i] != 'NA' else 'NA'}</td>
                     </tr>
                     """
 
@@ -1566,11 +1601,9 @@ class ClusterSearch:
         """
         # Add KLD score if available
         
-        kld_df = read_KLD_file(
-            os.path.join(self.gibbs_results, 'images', 'gibbs.KLDvsClusters.tab')
-            )
-        if kld_df is not None:
-            kld_clust_df = kld_df[kld_df['cluster'] == cluster_num]
+        
+        if self.kld_df is not None:
+            kld_clust_df = self.kld_df[self.kld_df['cluster'] == cluster_num]
             if not kld_clust_df.empty:
                 kld = kld_clust_df['total'].values[0]
                 self.console.log(f"-------KLD Results for {cluster_num} clusters-------", style="bold green")
