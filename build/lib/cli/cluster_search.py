@@ -1230,14 +1230,7 @@ class ClusterSearch:
             lambda x: x.split('/')[-1].replace('.txt', ''))
         df['Correlation'] = df['Correlation'].apply(lambda x: round(x, 2))
         #Add KLD from kld_clust_group_kld
-        self.console.log(f"Adding KLD to the dataframe")
-        self.console.log(f"self.kld_df: {self.kld_df}")
-        # self.console.log(f"self.kld_df.columns: {self.kld_df.columns}")
         if self.kld_df is not None:
-            # kld_df = pd.DataFrame(self.kld_df)
-            # kld_df['Cluster'] = kld_df['Cluster'].apply(
-            #     lambda x: x.split('/')[-1].split('.')[1])
-            # kld_df['KLD'] = kld_df['KLD'].apply(lambda x: round(x, 2))
             try:
                 df['KLD'] = df['Cluster'].apply(
                     lambda x: self.kld_df.loc[
@@ -1259,8 +1252,12 @@ class ClusterSearch:
         df = df.reset_index(drop=True)
         df = df[['Cluster', 'HLA', 'Correlation', 'KLD']]
         
-        
-        
+        # self.console.log(
+        #     f"Correlation data:\n{df}", style="bold green")
+        fig, ax = plot_kld_pcc_distance(self.kld_df,df)
+        fig.savefig(os.path.join(self._outfolder, 'corr-data', 'kld_pcc_distance.png'))
+        self.console.log(
+            f"Saved KLD and PCC distance plot at {os.path.join(self._outfolder, 'corr-data', 'kld_pcc_distance.png')}", style="bold green")
         return df
 
     def process_correlation_data(self, df=None):
@@ -1434,7 +1431,7 @@ class ClusterSearch:
                         <td>{df['Cluster'][i]}</td>
                         <td>{df['HLA'][i]}</td>
                         <td>{df['Correlation'][i]}</td>
-                        <td>{df['KLD'][i]}</td>
+                        <td>{round(df['KLD'][i], 4) if df['KLD'][i] != 'NA' else 'NA'}</td>
                     </tr>
                     """
                 if df['Correlation'][i] < 0.5:
@@ -1444,7 +1441,7 @@ class ClusterSearch:
                         <td>{df['Cluster'][i]}</td>
                         <td>{df['HLA'][i]}</td>
                         <td>{df['Correlation'][i]}</td>
-                        <td>{df['KLD'][i]}</td>
+                        <td>{round(df['KLD'][i], 4) if df['KLD'][i] != 'NA' else 'NA'}</td>
                     </tr>
                     """
 
@@ -1460,6 +1457,216 @@ class ClusterSearch:
         return table_start + tr + table_end
 
         # return df.to_html(classes='table table-striped', index=False, table_id='correlation_table')
+
+    #!!! Best HLA View
+    
+    def generate_best_matches_tab(self, highest_corr_per_row, threshold=0.7):
+        """
+        Extracts the best HLA-A, HLA-B, and HLA-C matches from highest_corr_per_row and generates the HTML tab view.
+        
+        Args:
+            highest_corr_per_row: Dictionary mapping cluster ID to tuple of (hla_id, correlation)
+            threshold: Minimum correlation value to consider (default: 0.7)
+            
+        Returns:
+            HTML string for the Best Matched Results tab content
+        """
+        # Initialize dictionaries to store best matches for each HLA type
+        best_hla_matches = {
+            'A': {'best': None, 'second': None},
+            'B': {'best': None, 'second': None},
+            'C': {'best': None, 'second': None}
+        }
+        
+        # Parse highest_corr_per_row to extract HLA type information
+        for cluster_id, (hla_id, correlation) in highest_corr_per_row.items():
+            # Extract HLA type (A, B, or C) from the HLA ID
+            # Check different formats: HLA_A0101, HLA-A0101, or A0101
+            hla_name = hla_id
+            if isinstance(hla_id, str):
+                if 'HLA_' in hla_id:
+                    hla_name = hla_id.split('HLA_')[-1]
+                elif 'HLA-' in hla_id:
+                    hla_name = hla_id.split('HLA-')[-1]
+                
+                # Extract the HLA type letter (A, B, C)
+                hla_type = None
+                if hla_name.startswith('A'):
+                    hla_type = 'A'
+                elif hla_name.startswith('B'):
+                    hla_type = 'B'
+                elif hla_name.startswith('C'):
+                    hla_type = 'C'
+                
+                # Skip if correlation is below threshold or HLA type not recognized
+                if correlation < threshold or hla_type is None:
+                    continue
+                    
+                # Format HLA name for display
+                formatted_hla = f"HLA-{hla_name}"
+                
+                # Check if this is better than current best match
+                if best_hla_matches[hla_type]['best'] is None or correlation > best_hla_matches[hla_type]['best'][1]:
+                    # Move current best to second best
+                    best_hla_matches[hla_type]['second'] = best_hla_matches[hla_type]['best']
+                    # Set new best
+                    best_hla_matches[hla_type]['best'] = (formatted_hla, correlation, cluster_id)
+                # Check if this is better than current second best
+                elif best_hla_matches[hla_type]['second'] is None or correlation > best_hla_matches[hla_type]['second'][1]:
+                    best_hla_matches[hla_type]['second'] = (formatted_hla, correlation, cluster_id)
+        
+        # Generate HTML for tab content
+        html = '<div class="tab-pane fade show active" id="beastresults" role="tabpanel" aria-labelledby="beastresults-tab">'
+        
+        # Function to lookup KLD value (to be implemented based on your data structure)
+        def get_kld_value(cluster_id, hla_id):
+            # Replace with actual lookup in your KLD dataframe or data structure
+            # For now returning a placeholder value
+            return 1.5
+        
+        # Function to get image paths (to be implemented based on your data structure)
+        def get_image_paths(cluster_id, hla_id):
+            # Replace with actual path construction logic
+            gibbs_img = f"cluster-img/gibbs_logos_{str(cluster_id).replace(".mat","")}-001.png"
+            ref_img = f"allotypes-img/{str(hla_id).replace(".txt","").replace("-","_")}.png"
+            return gibbs_img, ref_img
+        
+        # Generate row for each HLA type
+        for hla_type, color in [('A', 'primary'), ('B', 'success'), ('C', 'info')]:
+            if best_hla_matches[hla_type]['best'] is None:
+                continue  # Skip if no matches found for this HLA type
+            
+            html += f'<!-- HLA-{hla_type} Row -->\n<div class="row">'
+            
+            # First column (best match)
+            if best_hla_matches[hla_type]['best']:
+                hla_id, correlation, cluster_id = best_hla_matches[hla_type]['best']
+                kld = get_kld_value(cluster_id, hla_id)
+                gibbs_img, ref_img = get_image_paths(cluster_id, hla_id)
+                
+                html += f'''
+                <div class="col-md-6">
+                    <div class="card mt-4 shadow-sm">
+                        <div class="card-header bg-{color} text-white">
+                            <h5 class="card-title mb-0 text-center">{hla_id} (PCC: {correlation:.2f}, KLD: {kld:.2f})</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row mb-3">
+                                <h5 class="mb-2">Gibbs Cluster</h5>
+                                <div class="text-center">
+                                    <img src="{gibbs_img}" class="img-fluid border" alt="Gibbs Cluster" style="max-height: 300px;">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <h5 class="mb-2">Reference HLA</h5>
+                                <div class="text-center">
+                                    <img src="{ref_img}" class="img-fluid border" alt="Reference HLA" style="max-height: 300px;">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                '''
+            
+            # Second column (second best match)
+            if best_hla_matches[hla_type]['second']:
+                hla_id, correlation, cluster_id = best_hla_matches[hla_type]['second']
+                kld = get_kld_value(cluster_id, hla_id)
+                gibbs_img, ref_img = get_image_paths(cluster_id, hla_id)
+                
+                html += f'''
+                <div class="col-md-6">
+                    <div class="card mt-4 shadow-sm">
+                        <div class="card-header bg-{color} text-white">
+                            <h5 class="card-title mb-0 text-center">{hla_id} (PCC: {correlation:.2f}, KLD: {kld:.2f})</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row mb-3">
+                                <h5 class="mb-2">Gibbs Cluster</h5>
+                                <div class="text-center">
+                                    <img src="{gibbs_img}" class="img-fluid border" alt="Gibbs Cluster" style="max-height: 300px;">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <h5 class="mb-2">Reference HLA</h5>
+                                <div class="text-center">
+                                    <img src="{ref_img}" class="img-fluid border" alt="Reference HLA" style="max-height: 300px;">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                '''
+            
+            html += '</div>\n'
+        
+        html += '</div>'
+        
+        return html
+
+    def create_tab_views(self, highest_corr_per_row, all_results_html):
+        """
+        Creates the complete tabbed interface with Best Matched Results and All Results tabs.
+        
+        Args:
+            highest_corr_per_row: Dictionary mapping cluster ID to tuple of (hla_id, correlation)
+            all_results_html: HTML content for the All Results by Cluster tab
+            
+        Returns:
+            String containing the complete HTML for the tabbed interface
+        """
+        # Generate the best matches tab content
+        best_matches_html = self.generate_best_matches_tab(highest_corr_per_row)
+        
+        # Create the tabs structure
+        tabs_html = f'''
+        
+        <!-- Tabs navigation -->
+        <ul class="nav nav-tabs" id="compareTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="beastresults-tab" data-bs-toggle="tab"
+                    data-bs-target="#beastresults" type="button" role="tab" aria-controls="combined"
+                    aria-selected="true">Best Matched Results</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="gibbsresults-tab" data-bs-toggle="tab"
+                    data-bs-target="#gibbsresults" type="button" role="tab" aria-controls="combined"
+                    aria-selected="false">Gibbs KLD</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="allresults-tab" data-bs-toggle="tab"
+                    data-bs-target="#allresults" type="button" role="tab" aria-controls="heatmap"
+                    aria-selected="false">All Results by Cluster</button>
+            </li>
+        </ul>
+        
+        <div class="tab-content" id="compareTabsContent">
+            <!-- Best Matched Results Tab -->
+            {best_matches_html}
+            
+            <!-- Gibbs KLD Tab -->
+            <div class="tab-pane fade" id="gibbsresults" role="tabpanel" aria-labelledby="gibbsresults-tab">
+            <div class="col-md-12">
+                    <div class="card mt-4 shadow-sm">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="text-center">
+                                    <img src="corr-data/kld_pcc_distance.png" class="img-fluid border" alt="Gibbs Cluster" style="max-height: 400px;">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- All Results by Cluster Tab -->
+            <div class="tab-pane fade" id="allresults" role="tabpanel" aria-labelledby="allresults-tab">
+                {all_results_html}
+            </div>
+        </div>
+        '''
+        
+        return tabs_html
+
 
     #### NEW !!!!! Carousel Control based clusters #########
 
@@ -1520,14 +1727,20 @@ class ClusterSearch:
         Renders carousels for clusters, grouping them by their group number.
         """
         cluster_hierarchy = self.create_cluster_hierarchy(highest_corr_per_row, gibbs_out)
-        cluster_html = """
-                <div class="container py-4">
-                <div class="card">
-                    <div class="card-header bg-secondary text-white">
-                        <h4 class="card-title mb-0">Gibbs Cluster and Reference Motif Comparisons</h4>
-                    </div>
-                    <div class="card-body">
-        """
+        # cluster_html = """
+        #         <div class="container py-4">
+        #         <div class="card">
+        #             <div class="card-header bg-secondary text-white">
+        #                 <h4 class="card-title mb-0">Gibbs Cluster and Reference Motif Comparisons</h4>
+        #             </div>
+        #             <div class="card-body">
+        # """
+        
+        cluster_html = """ 
+                    """
+        
+    
+        
         
         for cluster_num in sorted(cluster_hierarchy.keys()):
             if cluster_hierarchy[cluster_num]:
@@ -1672,7 +1885,7 @@ class ClusterSearch:
         return carousel_html
 
 
-    def render_clustered_results(self, highest_corr_per_row, gibbs_out):
+    def render_clustered_results_nav(self, highest_corr_per_row, gibbs_out):
         """
         Renders the complete HTML for all clustered results with carousels and necessary JavaScript.
         """
@@ -1687,7 +1900,15 @@ class ClusterSearch:
                     
         
         """
-        html_card += self.render_cluster_carousels(highest_corr_per_row, gibbs_out)
+        
+        # cluster_hierarchy = self.create_cluster_hierarchy(highest_corr_per_row, gibbs_out)
+
+        all_results_html = self.render_cluster_carousels(highest_corr_per_row, gibbs_out)
+        
+        
+        # Add the carousel HTML to the card
+        html_card += self.create_tab_views(
+            highest_corr_per_row, all_results_html)
         
         html_card += """"
                 </div>
@@ -2501,7 +2722,9 @@ fetch('corr-data/pcc_data.json')
         # print("##"*100)
         # print(highest_corr_per_row)
 
-        new_html_carousel = self.render_cluster_carousels(
+        # new_html_carousel = self.render_cluster_carousels(
+        #     highest_corr_per_row, gibbs_out)
+        new_html_carousel = self.render_clustered_results_nav(
             highest_corr_per_row, gibbs_out)
         body_end_1 += carousel_js
         # print(new_html_carousel)
