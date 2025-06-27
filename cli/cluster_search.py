@@ -96,7 +96,7 @@ class ClusterSearch:
         for c_file in os.listdir(res_path):
             if f'{n_clusters}g.ds' in c_file:
                 file_path = os.path.join(res_path, c_file)
-                df = pd.read_csv(file_path, sep='\s+')
+                df = pd.read_csv(file_path, sep="\s+")
                 # output_path = f'data/sampledata_701014/res_{n_clusters}g.csv'
                 # df.to_csv(output_path, index=False)
                 logging.info(f"Data parsed for No clusters {n_clusters}")
@@ -1540,11 +1540,26 @@ class ClusterSearch:
         total_slides = len(group_nums)
 
         # Start building the carousel HTML
+        # Convert cluster_num to words for display
+        def number_to_words(n):
+            words = {
+            1: "One", 2: "Two", 3: "Three", 4: "Four", 5: "Five", 6: "Six",
+            7: "Seven", 8: "Eight", 9: "Nine", 10: "Ten"
+            }
+            return words.get(n, str(n))
+
+        cluster_num_word = number_to_words(int(cluster_num))
         carousel_html = f"""
         <div class="row mt-4 mb-4">
             <div class="col-12">
-                <h2 class="text-center">Cluster {cluster_num}</h2>
-                <div id="{carousel_id}" class="carousel slide" data-ride="carousel" data-interval="false">
+            <div class="d-flex justify-content-between align-items-center">
+                <h2 class="text-center flex-grow-1">{cluster_num_word} cluster output</h2>
+                    <span class="d-inline-block" tabindex="0" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="Use the left and right arrows to navigate through the cluster presentations.">
+                        <i class="bi bi-info-circle" style="font-size: 1.5rem; color: #0d6efd; cursor: pointer;"></i>
+                    </span>
+            </div>
+ 
+            <div id="{carousel_id}" class="carousel slide" data-ride="carousel" data-interval="false">
         """
 
         # Add indicators
@@ -1599,16 +1614,16 @@ class ClusterSearch:
 
         # Add carousel controls
         carousel_html += f"""
-                    </div>
-                    <a class="carousel-control-prev" href="#{carousel_id}" role="button" data-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="sr-only">Previous</span>
-                    </a>
-                    <a class="carousel-control-next" href="#{carousel_id}" role="button" data-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="sr-only">Next</span>
-                    </a>
                 </div>
+                <a class="carousel-control-prev" href="#{carousel_id}" role="button" data-slide="prev" style="filter: invert(36%) sepia(97%) saturate(7477%) hue-rotate(202deg) brightness(97%) contrast(101%);">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only text-dark">Previous</span>
+                </a>
+                <a class="carousel-control-next" href="#{carousel_id}" role="button" data-slide="next" style="filter: invert(36%) sepia(97%) saturate(7477%) hue-rotate(202deg) brightness(97%) contrast(101%);">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only text-dark">Next</span>
+                </a>
+            </div>
             </div>
         </div>
         """
@@ -1742,6 +1757,13 @@ class ClusterSearch:
                 $(targetId).carousel(parseInt(slideIndex));
             });
         });
+        
+                    document.addEventListener('DOMContentLoaded', function () {
+                var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
+                popoverTriggerList.forEach(function (popoverTriggerEl) {
+                    new bootstrap.Popover(popoverTriggerEl);
+                });
+            });
         """
         body_end_1 = Template("""
 </div>
@@ -1800,6 +1822,7 @@ class ClusterSearch:
     noImgDivs.forEach(div => {
         div.innerHTML = placeholderSVG; // Add placeholder to each "no-img" div
     });
+    
 });
 </script>
 

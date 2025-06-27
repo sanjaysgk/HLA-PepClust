@@ -192,6 +192,7 @@ body_end_1 = """
     </div>
   </footer>
   <script>
+  
   document.addEventListener('DOMContentLoaded', function() {
     const downloadLinks = document.querySelectorAll('.dropdown-item');
 
@@ -218,6 +219,12 @@ body_end_1 = """
     `;
 
     document.getElementById('no-img').innerHTML = placeholderSVG;
+    
+    
+    var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
+    popoverTriggerList.forEach(function (popoverTriggerEl) {
+        new bootstrap.Popover(popoverTriggerEl);
+    });
 </script>
 
 <script>
