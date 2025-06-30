@@ -1207,7 +1207,7 @@ class ClusterSearch:
         template = Template('''
         <div class="row" style="border: 2px solid #007bff;">
         <div class="row">
-            <h3 style="text-align: center;"> Best matched allotype is {{ hla_name }} with PCC = {{corr}}, KLD= {{ kld }} </h3>
+            <h4 style="text-align: center;"> Best matched allotype is {{ hla_name }} with PCC = {{corr}} and KLD= {{ kld }} </h4>
         </div>
         <div class="row">
             <div class="col">
@@ -1617,7 +1617,7 @@ class ClusterSearch:
         if self.kld_df is not None:
             kld_clust_df = self.kld_df[self.kld_df['cluster'] == cluster_num]
             if not kld_clust_df.empty:
-                kld = kld_clust_df['total'].values[0]
+                kld = round(kld_clust_df['total'].values[0], 2)
         else:
             kld = None
         # Determine singular/plural for group(s)
