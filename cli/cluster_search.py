@@ -1629,7 +1629,7 @@ class ClusterSearch:
         <div class="row mt-4 mb-4">
             <div class="col-12">
             <div class="d-flex justify-content-between align-items-center">
-            <h2 class="text-center flex-grow-1">{cluster_label} (KLD = {kld}) ({group_range} {group_label}) </h2>
+            <h2 class="text-center flex-grow-1">{cluster_label} ({group_range} {group_label}) (KLD = {kld})</h2>
             <span class="d-inline-block" tabindex="0" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="Use the left and right arrows to navigate through the cluster presentations.">
                 <i class="bi bi-info-circle" style="font-size: 1.5rem; color: #0d6efd; cursor: pointer;"></i>
             </span>
