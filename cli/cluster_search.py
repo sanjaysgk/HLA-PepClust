@@ -47,6 +47,8 @@ class ClusterSearch:
         self.d3js_json = None
         self.db = None  # databse of motif and matrix
         self.treshold_img = False
+        self.gibbs_results = None
+        self.kld_df = None
 
     def generate_unique_random_ids(self, count: int) -> list:
         """
@@ -376,7 +378,49 @@ class ClusterSearch:
         self.console.log(
             f"Cluster Search Preprocess completed in {elapsed_time:.2f} seconds."
         )
-
+    def read_KLD_file(self,file_path):
+        """
+        Read & Prase Gibbs gibbs.KLDvsClusters file.
+        Args:
+            file_path (str): The path to the Gibbs gibbs.KLDvsClusters file.
+        Returns:
+            list: A list of tuples containing the cluster number and KLD value.
+        """
+        try:
+            # Initialize an empty dictionary to store data
+            data_dict = {'cluster': []}
+            
+            with open(file_path, 'r') as file:
+                lines = file.readlines()
+                for line in lines[1:]:  # Skip the header line
+                    parts = line.strip().split('\t')
+                    cluster_number = int(parts[0])
+                    kld_values = [float(value) for value in parts[1:]]
+                    
+                    # Ensure the dictionary has enough group columns
+                    for i in range(1, len(kld_values) + 1):
+                        group_key = f'group{i}'
+                        if group_key not in data_dict:
+                            data_dict[group_key] = []
+                    
+                    # Populate the row data
+                    data_dict['cluster'].append(cluster_number)
+                    for i, kld_value in enumerate(kld_values, start=1):
+                        data_dict[f'group{i}'].append(kld_value if kld_value > 0 else 0)
+                    
+                    # Fill remaining groups with zeros if necessary
+                    for j in range(len(kld_values) + 1, len(data_dict) - 1):
+                        data_dict[f'group{j}'].append(0)
+            
+            # Convert the dictionary to a DataFrame
+            df = pd.DataFrame(data_dict)
+            df.loc[:, 'total'] = df.iloc[:, 1:].sum(axis=1)
+            df.reset_index(drop=True, inplace=True)
+            # print(df)
+            return df
+        except Exception as e:
+            print(f"Error reading file: {e}")
+            sys.exit(1)
     def compute_correlations_v2(
         self,
         db: pd.DataFrame,
@@ -397,7 +441,10 @@ class ClusterSearch:
         #Update to self
         self.threshold = threshold
         self.treshold_img = treshold_img
-        
+        self.gibbs_results = gibbs_results
+        self.kld_df = self.read_KLD_file(
+            os.path.join(self.gibbs_results, 'images', 'gibbs.KLDvsClusters.tab')
+            )
         gibbs_result_matrix = os.path.join(gibbs_results, "matrices")
         should_process = False
         if os.path.exists(gibbs_result_matrix) and any(".mat" in file for file in os.listdir(gibbs_result_matrix)):
@@ -1151,7 +1198,7 @@ class ClusterSearch:
 
         return script_template.render(script_data_path=script_data_path, img_fallback_path=img_fallback_path, div_id=div_id)
 
-    def render_hla_section(self, hla_name, corr, best_cluster_img, naturally_presented_img):
+    def render_hla_section(self, hla_name, corr, best_cluster_img, naturally_presented_img,kld_clust_group_kld):
         
         if str(self.species).lower() == "human":
             hla_name = f"HLA-{hla_name}"
@@ -1160,7 +1207,7 @@ class ClusterSearch:
         template = Template('''
         <div class="row" style="border: 2px solid #007bff;">
         <div class="row">
-            <h3 style="text-align: center;">{{ hla_name }}  PCC = {{corr}}</h3>
+            <h3 style="text-align: center;"> Best matched allotype is {{ hla_name }} with PCC = {{corr}}, KLD= {{ kld }} </h3>
         </div>
         <div class="row">
             <div class="col">
@@ -1208,7 +1255,7 @@ class ClusterSearch:
         </div>
         </div>
         ''')
-        return template.render(hla_name=hla_name, corr=corr, best_cluster_img=best_cluster_img, naturally_presented_img=naturally_presented_img)
+        return template.render(hla_name=hla_name, corr=corr, best_cluster_img=best_cluster_img, naturally_presented_img=naturally_presented_img,kld= kld_clust_group_kld)
 
     def make_datatable(self, correlation_dict):
         df = pd.DataFrame(correlation_dict.items(),
@@ -1219,9 +1266,26 @@ class ClusterSearch:
         df['HLA'] = df['HLA'].apply(
             lambda x: x.split('/')[-1].replace('.txt', ''))
         df['Correlation'] = df['Correlation'].apply(lambda x: round(x, 2))
+        #Add KLD from kld_clust_group_kld
+        if self.kld_df is not None:
+            try:
+                df['KLD'] = df['Cluster'].apply(
+                    lambda x: self.kld_df.loc[
+                        self.kld_df['cluster'] == int(str(x).split('of')[-1]),
+                        f'group{str(x).split("of")[0]}'
+                    ].values[0] if f'group{str(x).split("of")[0]}' in self.kld_df.columns else None
+                )
+            except KeyError as e:
+                # Handle the case where the key is not found
+                self.console.log(
+                    f"KeyError: The key KLD group was not found in the Corr DataFrame."
+                )
+                df['KLD'] = 'NA'
+        else:
+            df['KLD'] = 'NA'
         df = df.sort_values(by='Correlation', ascending=False)
         df = df.reset_index(drop=True)
-        df = df[['Cluster', 'HLA', 'Correlation']]
+        df = df[['Cluster', 'HLA', 'Correlation', 'KLD']]
         return df
 
     def process_correlation_data(self, df=None):
@@ -1549,16 +1613,27 @@ class ClusterSearch:
             return words.get(n, str(n))
 
         cluster_num_word = number_to_words(int(cluster_num))
+        # KLD = self.kld_df[]
+        if self.kld_df is not None:
+            kld_clust_df = self.kld_df[self.kld_df['cluster'] == cluster_num]
+            if not kld_clust_df.empty:
+                kld = kld_clust_df['total'].values[0]
+        else:
+            kld = None
+        # Determine singular/plural for group(s)
+        group_label = "group" if len(group_nums) == 1 else "groups"
+        group_range = f"{min(group_nums)}" if len(group_nums) == 1 else f"{min(group_nums)} to {max(group_nums)}"
+        cluster_label = f"{cluster_num_word} cluster output" 
+
         carousel_html = f"""
         <div class="row mt-4 mb-4">
             <div class="col-12">
             <div class="d-flex justify-content-between align-items-center">
-                <h2 class="text-center flex-grow-1">{cluster_num_word} cluster output</h2>
-                    <span class="d-inline-block" tabindex="0" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="Use the left and right arrows to navigate through the cluster presentations.">
-                        <i class="bi bi-info-circle" style="font-size: 1.5rem; color: #0d6efd; cursor: pointer;"></i>
-                    </span>
+            <h2 class="text-center flex-grow-1">{cluster_label} (KLD = {kld}) ({group_range} {group_label}) </h2>
+            <span class="d-inline-block" tabindex="0" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="Use the left and right arrows to navigate through the cluster presentations.">
+                <i class="bi bi-info-circle" style="font-size: 1.5rem; color: #0d6efd; cursor: pointer;"></i>
+            </span>
             </div>
- 
             <div id="{carousel_id}" class="carousel slide" data-ride="carousel" data-interval="false">
         """
 
@@ -1575,7 +1650,18 @@ class ClusterSearch:
                     </ol>
                     <div class="carousel-inner">
         """
-
+        # Add KLD score if available
+        
+        
+        if self.kld_df is not None:
+            kld_clust_df = self.kld_df[self.kld_df['cluster'] == cluster_num]
+            if not kld_clust_df.empty:
+                kld = kld_clust_df['total'].values[0]
+                self.console.log(f"-------KLD Results for {cluster_num} clusters-------", style="bold green")
+                self.console.log(f"Total KLD score for cluster {cluster_num}: {kld}", style="bold yellow")
+            else:
+                kld_clust_df = None
+                
         # Add carousel items
         for i, group_num in enumerate(group_nums):
             active_class = "active" if i == 0 else ""
@@ -1597,10 +1683,17 @@ class ClusterSearch:
 
             if nat_img and hasattr(self, '_outfolder'):
                 nat_img = str(nat_img).replace(f"{self._outfolder}/", '')
-
+            #find KLD for group 
+            kld_clust_group_kld = kld_clust_df[f'group{group_num}'].values[0] if kld_clust_df is not None and f'group{group_num}' in kld_clust_df.columns else None
+            
+            self.console.log(f"Group {group_num} KLD score for cluster {cluster_num}: {kld_clust_group_kld}", style="bold yellow")
+            # Generate the HLA section for this cluster
+            kld_clust_group_kld = round(kld_clust_group_kld, 2) if isinstance(
+                kld_clust_group_kld, (int, float)) else kld_clust_group_kld
+            
             # Generate the HLA section for this cluster
             hla_section = self.render_hla_section(
-                hla_name, correlation_formatted, gibbs_img, nat_img)
+                hla_name, correlation_formatted, gibbs_img, nat_img,kld_clust_group_kld)
 
             # Create carousel item with the HLA section
             carousel_html += f"""
