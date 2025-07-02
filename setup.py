@@ -3,7 +3,7 @@ import os
 
 setup(
     name="HLA-PEPCLUST",
-    version="0.1.0-dev",
+    version="1.1.0-dev",
     author="Sanjay Krishna",
     author_email="sanjay.sondekoppagopalakrishna@mail.com",
     packages=find_packages(),
